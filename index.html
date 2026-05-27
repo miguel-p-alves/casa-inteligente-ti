@@ -177,15 +177,15 @@
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="sensor-title">Gás/Fumo</h3>
-                    <p class="sensor-meta mb-0">Cozinha</p>
+                    <h3 class="sensor-title">Botão Campainha</h3>
+                    <p class="sensor-meta mb-0">Porta</p>
                   </div>
-                  <span class="sensor-icon"><i class="bi bi-fire"></i></span>
+                  <span class="sensor-icon"><i class="bi bi-bell  "></i></span>
                 </div>
-                <div class="sensor-value">Normal</div>
+                <div class="sensor-value">Inativa</div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
                   <span class="sensor-meta">Origem: MCU</span>
-                  <span class="state-badge state-on">Seguro</span>
+                  <span class="state-badge state-on">Inativa</span>
                 </div>
               </div>
             </div>
@@ -303,19 +303,19 @@
           </article>
 
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card actuator-card actuator-active h-100" id="cartaoEstores">
+            <div class="card actuator-card actuator-active h-100" id="cartaoCampainha">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="actuator-title">Estores</h3>
+                    <h3 class="actuator-title">Campainha (Buzzer)</h3>
                     <p class="sensor-meta mb-0">Controlo local</p>
                   </div>
-                  <span class="actuator-icon"><i class="bi bi-window"></i></span>
+                  <span class="actuator-icon"><i class="bi bi-alarm"></i></span>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-4">
-                  <span class="state-badge state-on" id="estadoEstores">Aberto</span>
-                  <button class="btn btn-outline-secondary control-button" type="button" id="botaoEstores" onclick="alternarAtuador('cartaoEstores', 'estadoEstores', 'botaoEstores', 'Aberto', 'Fechado', 'Fechar', 'Abrir')">
-                    Fechar
+                  <span class="state-badge state-off" id="estadoCampainha">Inativo</span>
+                  <button class="btn btn-primary control-button" type="button" id="botaoCampainha" onclick="alternarAtuador('cartaoCampainha', 'estadoCampainha', 'botaoCampainha', 'Ativo', 'Inativo', 'Desligar', 'Ligar')">
+                    Ligar
                   </button>
                 </div>
               </div>
@@ -323,18 +323,18 @@
           </article>
 
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card actuator-card h-100" id="cartaoTomada">
+            <div class="card actuator-card h-100" id="cartaoLuzPorta">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="actuator-title">Tomada inteligente</h3>
+                    <h3 class="actuator-title">Luz da Porta</h3>
                     <p class="sensor-meta mb-0">Controlo local</p>
                   </div>
-                  <span class="actuator-icon"><i class="bi bi-plug"></i></span>
+                  <span class="actuator-icon"><i class="bi bi-lightbulb "></i></span>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-4">
-                  <span class="state-badge state-off" id="estadoTomada">Desligado</span>
-                  <button class="btn btn-primary control-button" type="button" id="botaoTomada" onclick="alternarAtuador('cartaoTomada', 'estadoTomada', 'botaoTomada', 'Ligado', 'Desligado', 'Desligar', 'Ligar')">
+                  <span class="state-badge state-off" id="estadoLuzPorta">Desligado</span>
+                  <button class="btn btn-primary control-button" type="button" id="botaoLuzPorta" onclick="alternarAtuador('cartaoLuzPorta', 'estadoLuzPorta', 'botaoLuzPorta', 'Ligado', 'Desligado', 'Desligar', 'Ligar')">
                     Ligar
                   </button>
                 </div>
