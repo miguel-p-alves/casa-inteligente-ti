@@ -1,0 +1,586 @@
+:root {
+  --cor-fundo: #f4f8fb;
+  --cor-superficie: #ffffff;
+  --cor-texto: #172026;
+  --cor-suave: #64748b;
+  --cor-linha: #dbe5ec;
+  --cor-tecnologia: #0f5f6b;
+  --cor-seguranca: #1d7c59;
+  --cor-conforto: #f2a93b;
+  --cor-alerta: #d84f3f;
+  --cor-energia: #17a7b8;
+  --sombra-suave: 0 18px 50px rgba(21, 39, 54, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+  letter-spacing: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--cor-texto);
+  background:
+    linear-gradient(135deg, rgba(15, 95, 107, 0.08), rgba(242, 169, 59, 0.06)),
+    var(--cor-fundo);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.app-navbar {
+  background: linear-gradient(135deg, #123d46, #0f5f6b 58%, #1d7c59);
+  box-shadow: 0 12px 34px rgba(15, 47, 58, 0.28);
+}
+
+.navbar-brand {
+  font-weight: 800;
+}
+
+.brand-mark {
+  display: inline-flex;
+  width: 2.25rem;
+  height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.app-navbar .nav-link {
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 600;
+}
+
+.app-navbar .nav-link:hover,
+.app-navbar .nav-link:focus {
+  color: #ffffff;
+}
+
+.user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.logout-button {
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.dashboard-shell {
+  width: min(100%, 1440px);
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.overview-band {
+  overflow: hidden;
+  padding: 1.5rem;
+  border-radius: 8px;
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, rgba(18, 61, 70, 0.98), rgba(15, 95, 107, 0.94) 56%, rgba(242, 169, 59, 0.84)),
+    #123d46;
+  box-shadow: var(--sombra-suave);
+}
+
+.overview-band h1 {
+  font-size: 2.25rem;
+  font-weight: 850;
+}
+
+.overline,
+.section-kicker {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.status-tile {
+  display: grid;
+  min-height: 7rem;
+  align-content: center;
+  gap: 0.2rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.status-tile i {
+  font-size: 1.45rem;
+}
+
+.status-tile span {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.status-tile strong {
+  font-size: 1.05rem;
+}
+
+.dashboard-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 820;
+}
+
+.section-kicker {
+  color: var(--cor-tecnologia);
+}
+
+.compact-heading {
+  align-items: center;
+}
+
+.refresh-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgba(15, 95, 107, 0.16);
+  border-radius: 8px;
+  color: var(--cor-tecnologia);
+  background: rgba(23, 167, 184, 0.12);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.card {
+  border: 1px solid rgba(219, 229, 236, 0.94);
+  border-radius: 8px;
+  background: var(--cor-superficie);
+  box-shadow: 0 12px 32px rgba(21, 39, 54, 0.08);
+}
+
+.sensor-card,
+.actuator-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 12rem;
+}
+
+.sensor-card::before,
+.actuator-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0.32rem;
+  background: var(--sensor-accent, var(--cor-energia));
+}
+
+.sensor-card.sensor-warning {
+  --sensor-accent: var(--cor-alerta);
+}
+
+.sensor-card.sensor-active {
+  --sensor-accent: var(--cor-seguranca);
+}
+
+.sensor-card.sensor-closed {
+  --sensor-accent: var(--cor-tecnologia);
+}
+
+.sensor-icon,
+.actuator-icon {
+  display: inline-flex;
+  width: 2.8rem;
+  height: 2.8rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--cor-tecnologia);
+  background: rgba(23, 167, 184, 0.14);
+  font-size: 1.45rem;
+}
+
+.sensor-title,
+.actuator-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.sensor-value {
+  margin-top: 1rem;
+  font-size: 2rem;
+  font-weight: 850;
+  line-height: 1.05;
+}
+
+.sensor-meta {
+  color: var(--cor-suave);
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.state-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.state-on {
+  color: #0f5132;
+  background: rgba(29, 124, 89, 0.14);
+}
+
+.state-off {
+  color: #475569;
+  background: rgba(100, 116, 139, 0.14);
+}
+
+.state-alert {
+  color: #842029;
+  background: rgba(216, 79, 63, 0.16);
+}
+
+.actuator-card {
+  --sensor-accent: var(--cor-tecnologia);
+}
+
+.actuator-card.actuator-active {
+  --sensor-accent: var(--cor-seguranca);
+}
+
+.actuator-card.actuator-warning {
+  --sensor-accent: var(--cor-conforto);
+}
+
+.control-button {
+  min-width: 7.25rem;
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.camera-card,
+.events-card,
+.temperature-card {
+  overflow: hidden;
+}
+
+.camera-icon {
+  color: var(--cor-tecnologia);
+  font-size: 1.55rem;
+}
+
+.camera-placeholder {
+  position: relative;
+  min-height: 18rem;
+  overflow: hidden;
+  border: 1px solid rgba(15, 95, 107, 0.16);
+  border-radius: 8px;
+  background: #1f3f46;
+}
+
+.camera-overlay {
+  position: absolute;
+  z-index: 2;
+  inset: 0.8rem 0.8rem auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.camera-overlay span {
+  padding: 0.28rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(18, 61, 70, 0.72);
+}
+
+.room-wall {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(28, 91, 98, 0.96) 0 58%, rgba(232, 184, 108, 0.95) 58% 100%);
+}
+
+.room-wall::before {
+  content: "";
+  position: absolute;
+  inset: 58% 0 auto;
+  height: 0.35rem;
+  background: rgba(18, 61, 70, 0.35);
+}
+
+.room-window {
+  position: absolute;
+  top: 4.6rem;
+  right: 12%;
+  width: 6.4rem;
+  height: 5rem;
+  border: 0.35rem solid rgba(255, 255, 255, 0.86);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #bce9f2, #f8d78a);
+  box-shadow: inset 0 0 0 0.2rem rgba(18, 61, 70, 0.12);
+}
+
+.room-window::before,
+.room-window::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.room-window::before {
+  inset: 0 50% 0 auto;
+  width: 0.22rem;
+}
+
+.room-window::after {
+  inset: 50% 0 auto;
+  height: 0.22rem;
+}
+
+.room-lamp {
+  position: absolute;
+  top: 4.2rem;
+  left: 16%;
+  width: 3.7rem;
+  height: 5.9rem;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(180deg, #ffd36a 0 42%, transparent 42% 100%);
+}
+
+.room-lamp::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0.35rem;
+  height: 3.2rem;
+  transform: translateX(-50%);
+  border-radius: 8px;
+  background: #123d46;
+}
+
+.room-sofa {
+  position: absolute;
+  left: 11%;
+  right: 22%;
+  bottom: 2.2rem;
+  height: 4.3rem;
+  border-radius: 8px;
+  background: #164f5a;
+  box-shadow:
+    0 1.2rem 0 #123d46,
+    0.8rem -1.45rem 0 -0.15rem #206a75,
+    7.4rem -1.45rem 0 -0.15rem #206a75;
+}
+
+.capture-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.capture-label {
+  display: block;
+  color: var(--cor-suave);
+  font-size: 0.85rem;
+  font-weight: 750;
+}
+
+.event-list {
+  display: grid;
+  gap: 0.7rem;
+  max-height: 29rem;
+  overflow: auto;
+}
+
+.event-list .list-group-item {
+  display: flex;
+  gap: 0.75rem;
+  border: 1px solid rgba(219, 229, 236, 0.9);
+  border-radius: 8px;
+}
+
+.event-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  flex: 0 0 auto;
+  margin-top: 0.4rem;
+  border-radius: 50%;
+  background: var(--cor-energia);
+  box-shadow: 0 0 0 0.25rem rgba(23, 167, 184, 0.12);
+}
+
+.event-text {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.event-text strong {
+  font-size: 0.98rem;
+}
+
+.event-text small {
+  color: var(--cor-suave);
+  font-weight: 650;
+}
+
+.history-table {
+  min-width: 46rem;
+}
+
+.history-table thead th {
+  color: #ffffff;
+  background: #123d46;
+  font-size: 0.88rem;
+}
+
+.history-table tbody td {
+  color: var(--cor-texto);
+  font-size: 0.92rem;
+}
+
+.origin-label {
+  display: inline-flex;
+  min-width: 5rem;
+  justify-content: center;
+  padding: 0.22rem 0.45rem;
+  border-radius: 8px;
+  color: var(--cor-tecnologia);
+  background: rgba(15, 95, 107, 0.1);
+  font-weight: 800;
+}
+
+.temperature-chart {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  align-items: end;
+  gap: 0.55rem;
+  min-height: 19rem;
+  padding: 1rem;
+  border: 1px solid rgba(219, 229, 236, 0.94);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(244, 248, 251, 0.84), rgba(255, 255, 255, 0.95)),
+    #ffffff;
+}
+
+.chart-item {
+  display: grid;
+  height: 100%;
+  min-width: 0;
+  align-content: end;
+  gap: 0.45rem;
+  text-align: center;
+}
+
+.chart-track {
+  display: flex;
+  height: 14rem;
+  align-items: end;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(15, 95, 107, 0.07);
+}
+
+.chart-bar {
+  width: 70%;
+  min-height: 0.7rem;
+  border-radius: 8px 8px 3px 3px;
+  background: linear-gradient(180deg, var(--cor-conforto), var(--cor-alerta));
+  transition: height 0.35s ease;
+}
+
+.chart-label {
+  color: var(--cor-suave);
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+@media (max-width: 991.98px) {
+  .dashboard-shell {
+    padding: 1rem;
+  }
+
+  .overview-band h1 {
+    font-size: 1.9rem;
+  }
+
+  .section-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .compact-heading {
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .overview-band,
+  .dashboard-shell {
+    padding: 0.85rem;
+  }
+
+  .status-tile {
+    min-height: 6.25rem;
+    padding: 0.7rem;
+  }
+
+  .status-tile span,
+  .status-tile strong {
+    font-size: 0.78rem;
+  }
+
+  .sensor-value {
+    font-size: 1.72rem;
+  }
+
+  .camera-overlay {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .capture-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .temperature-chart {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
