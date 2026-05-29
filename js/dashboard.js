@@ -1,6 +1,6 @@
 "use strict";
 
-function alternarAtuador(idCartao, idEstado, idBotao, estadoAtivo, estadoInativo, textoAtivo, textoInativo) {
+function alternarAtuador(idCartao, idEstado, idBotao, estadoAtivo, estadoInativo, textoAtivo, textoInativo, nomeApi) {
   var cartao = document.getElementById(idCartao);
   var estado = document.getElementById(idEstado);
   var botao = document.getElementById(idBotao);
@@ -9,6 +9,8 @@ function alternarAtuador(idCartao, idEstado, idBotao, estadoAtivo, estadoInativo
     return;
   }
 
+  let valorEstado = "0";
+
   if (estado.innerText === estadoAtivo) {
     estado.innerText = estadoInativo;
     botao.innerText = textoInativo;
@@ -16,6 +18,7 @@ function alternarAtuador(idCartao, idEstado, idBotao, estadoAtivo, estadoInativo
     estado.className = "state-badge state-off";
     botao.className = "btn btn-primary control-button";
     cartao.className = "card actuator-card h-100";
+    valorEstado = "0"; // 0 para desligado
   } else {
     estado.innerText = estadoAtivo;
     botao.innerText = textoAtivo;
@@ -23,10 +26,40 @@ function alternarAtuador(idCartao, idEstado, idBotao, estadoAtivo, estadoInativo
     estado.className = "state-badge state-on";
     botao.className = "btn btn-outline-secondary control-button";
     cartao.className = "card actuator-card actuator-active h-100";
+    valorEstado = "1"; // 1 para ligado
   }
 
-  // Futuramente, este ponto pode chamar uma API PHP para alterar o atuador real.
-  // Agora altera apenas o aspeto do cartão no navegador.
+  // Se passarmos o nome da API (ex: "campainha"), ele envia para o PHP
+  if (nomeApi) {
+    enviarComandoAPI(nomeApi, valorEstado);
+  }
+}
+
+// Nova função para comunicar com a tua API
+function enviarComandoAPI(nomeDispositivo, valor) {
+  const dataAtual = new Date();
+  const hora = dataAtual.getHours().toString().padStart(2, '0') + ":" + dataAtual.getMinutes().toString().padStart(2, '0');
+
+  const formData = new URLSearchParams();
+  formData.append("nome", nomeDispositivo);
+  formData.append("valor", valor);
+  formData.append("hora", hora);
+
+  fetch("api/api.php", {
+    method: "POST",
+    body: formData,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  })
+  .then(response => {
+    if(response.ok) {
+      console.log("Comando enviado com sucesso para: " + nomeDispositivo);
+    } else {
+      console.error("Erro ao comunicar com a API.");
+    }
+  })
+  .catch(error => console.error("Erro no Fetch:", error));
 }
 
 function capturarImagem() {
