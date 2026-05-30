@@ -169,8 +169,11 @@ function atualizarTudo() {
   // Parâmetros: Nome na API, ID Cartão, ID Badge, ID Botão, é atuador? (true)
   atualizarDispositivo("buzzer-alarme", "cartaoBuzzerAlarme", "estadoBuzzerAlarme", "botaoBuzzerAlarme", true);
 
-  // Para atualizar o Buzzer Alarme (Atuador)
+  // Para atualizar o Buzzer do Aviso de Fogo (Atuador)
   atualizarDispositivo("buzzer-fogo", "cartaoBuzzerFogo", "estadoBuzzerFogo", "botaoBuzzerFogo", true);
+
+  // Para atualizar o Led de Aviso de Fogo (Atuador)
+  atualizarDispositivo("led-fogo", "cartaoLedFogo", "estadoLedFogo", "botaoLedFogo", true);
 }
 
 // 3. O Relógio (setInterval) que corre a cada 2 segundos
