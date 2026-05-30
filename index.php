@@ -2,6 +2,12 @@
   // Tenta ler o estado atual da campainha do ficheiro
   $ficheiro_campainha = "api/files/campainha/valor.txt";
   $valor_campainha = file_exists($ficheiro_campainha) ? file_get_contents($ficheiro_campainha) : "0";
+
+  $ficheiro_led = "api/files/led/valor.txt";
+  $valor_led = file_exists($ficheiro_led) ? file_get_contents($ficheiro_led) : "0";
+
+  $ficheiro_botao_campainha = "api/files/botao-campainha/valor.txt";
+  $valor_botao_campainha = file_exists($ficheiro_botao_campainha) ? file_get_contents($ficheiro_botao_campainha) : "0";
 ?>
 
 <!doctype html>
@@ -102,20 +108,28 @@
 
         <!-- Futuramente, estes cartões podem ser gerados por PHP lendo ficheiros .txt. -->
         <div class="row g-3">
+
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card sensor-card sensor-closed h-100">
+            <div class="card sensor-card <?php echo ($valor_botao_campainha == '1') ? 'sensor-active' : 'sensor-closed'; ?> h-100" id="cartaoBotaoCampainha">
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
                     <h3 class="sensor-title">Botão Campainha</h3>
                     <p class="sensor-meta mb-0">Porta</p>
                   </div>
-                  <span class="sensor-icon"><i class="bi bi-bell  "></i></span>
+                  <span class="sensor-icon"><i class="bi bi-bell"></i></span>
                 </div>
-                <div class="sensor-value">Inativa</div>
+                
+                <div class="sensor-value" id="valorBotaoCampainha">
+                  <?php echo ($valor_botao_campainha == '1') ? 'Ativo' : 'Inativo'; ?>
+                </div>
+                
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
                   <span class="sensor-meta">Origem: MCU</span>
-                  <span class="state-badge state-on">Inativa</span>
+                  
+                  <span class="state-badge <?php echo ($valor_botao_campainha == '1') ? 'state-on' : 'state-off'; ?>" id="badgeBotaoCampainha">
+                    <?php echo ($valor_botao_campainha == '1') ? 'Ativo' : 'Inativo'; ?>
+                  </span>
                 </div>
               </div>
             </div>
@@ -177,19 +191,22 @@
           </article>
 
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card actuator-card h-100" id="cartaoLuzPorta">
+            <div class="card actuator-card <?php echo ($valor_led == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLed">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="actuator-title">Luz da Porta</h3>
+                    <h3 class="actuator-title">Led Campainha</h3>
                     <p class="sensor-meta mb-0">Controlo local</p>
                   </div>
-                  <span class="actuator-icon"><i class="bi bi-lightbulb "></i></span>
+                  <span class="actuator-icon"><i class="bi bi-lightbulb"></i></span>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-4">
-                  <span class="state-badge state-off" id="estadoLuzPorta">Desligado</span>
-                  <button class="btn btn-primary control-button" type="button" id="botaoLuzPorta" onclick="alternarAtuador('cartaoLuzPorta', 'estadoLuzPorta', 'botaoLuzPorta', 'Ligado', 'Desligado', 'Desligar', 'Ligar')">
-                    Ligar
+                  <span class="state-badge <?php echo ($valor_led == '1') ? 'state-on' : 'state-off'; ?>" id="estadoLed">
+                    <?php echo ($valor_led == '1') ? 'Ativo' : 'Inativo'; ?>
+                  </span>
+                  
+                  <button class="btn <?php echo ($valor_led == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoLed" onclick="alternarAtuador('cartaoLed', 'estadoLed', 'botaoLed', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led')">
+                    <?php echo ($valor_led == '1') ? 'Desligar' : 'Ligar'; ?>
                   </button>
                 </div>
               </div>

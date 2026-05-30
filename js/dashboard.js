@@ -37,13 +37,22 @@ function alternarAtuador(idCartao, idEstado, idBotao, estadoAtivo, estadoInativo
 
 // Nova função para comunicar com a tua API
 function enviarComandoAPI(nomeDispositivo, valor) {
+  // Extrai cada parte da data e hora, garantindo que têm sempre 2 dígitos (ex: "04" em vez de "4")
   const dataAtual = new Date();
-  const hora = dataAtual.getHours().toString().padStart(2, '0') + ":" + dataAtual.getMinutes().toString().padStart(2, '0');
+  const ano = dataAtual.getFullYear();
+  const mes = String(dataAtual.getMonth() + 1).padStart(2, '0'); // Os meses em JS começam no 0
+  const dia = String(dataAtual.getDate()).padStart(2, '0');
+  const horas = String(dataAtual.getHours()).padStart(2, '0');
+  const minutos = String(dataAtual.getMinutes()).padStart(2, '0');
+  const segundos = String(dataAtual.getSeconds()).padStart(2, '0');
+
+  // Junta tudo no formato YYYY-MM-DD HH:mm:ss
+  const dataFormatada = `${ano}-${mes}-${dia} ${horas}:${minutos}:${segundos}`;
 
   const formData = new URLSearchParams();
   formData.append("nome", nomeDispositivo);
   formData.append("valor", valor);
-  formData.append("hora", hora);
+  formData.append("hora", dataFormatada);
 
   fetch("api/api.php", {
     method: "POST",
