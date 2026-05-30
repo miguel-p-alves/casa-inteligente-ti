@@ -37,17 +37,7 @@ function alternarAtuador(idCartao, idEstado, idBotao, estadoAtivo, estadoInativo
 
 // Nova função para comunicar com a tua API
 function enviarComandoAPI(nomeDispositivo, valor) {
-  // Extrai cada parte da data e hora, garantindo que têm sempre 2 dígitos (ex: "04" em vez de "4")
-  const dataAtual = new Date();
-  const ano = dataAtual.getFullYear();
-  const mes = String(dataAtual.getMonth() + 1).padStart(2, '0'); // Os meses em JS começam no 0
-  const dia = String(dataAtual.getDate()).padStart(2, '0');
-  const horas = String(dataAtual.getHours()).padStart(2, '0');
-  const minutos = String(dataAtual.getMinutes()).padStart(2, '0');
-  const segundos = String(dataAtual.getSeconds()).padStart(2, '0');
-
-  // Junta tudo no formato YYYY-MM-DD HH:mm:ss
-  const dataFormatada = `${ano}-${mes}-${dia} ${horas}:${minutos}:${segundos}`;
+  const dataFormatada = get_date();
 
   const formData = new URLSearchParams();
   formData.append("nome", nomeDispositivo);
@@ -78,19 +68,99 @@ function capturarImagem() {
     return;
   }
 
-  textoData.innerText = formatarDataHora(new Date());
+  // Agora usamos a função do teu professor aqui também!
+  textoData.innerText = get_date();
 
   // Futuramente, a imagem real pode ser enviada pela Raspberry Pi para o servidor PHP.
   // Agora apenas se atualiza a data/hora de exemplo.
 }
 
-function formatarDataHora(data) {
-  return data.toLocaleString("pt-PT", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  });
+function get_date() {
+  const agora = new Date();
+  
+  const ano = agora.getFullYear();
+  const mes = String(agora.getMonth() + 1).padStart(2, "0");
+  const dia = String(agora.getDate()).padStart(2, "0");
+  
+  const hora = String(agora.getHours()).padStart(2, "0");
+  const minuto = String(agora.getMinutes()).padStart(2, "0");
+  const segundo = String(agora.getSeconds()).padStart(2, "0");
+
+  const datahora = `${ano}-${mes}-${dia} ${hora}:${minuto}:${segundo}`;
+
+  // Se quiseres atualizar um texto no HTML (como na foto), podes manter a linha abaixo.
+  // Caso contrário, podes apagá-la ou deixá-la comentada.
+  // document.getElementById("time").innerHTML = datahora;
+
+  // Isto é o que permite que a enviarComandoAPI use esta data!
+  return datahora; 
 }
+
+// 1. A Função Inteligente (Faz o fetch e atualiza o visual)
+function atualizarDispositivo(nomeApi, idCartao, idBadge, idElementoExtra, isAtuador) {
+  fetch("api/api.php?nome=" + nomeApi)
+    .then(response => {
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      return response.text();
+    })
+    .then(data => {
+      // Vai buscar os elementos pelo ID que lhe passamos
+      const cartao = document.getElementById(idCartao);
+      const badge = document.getElementById(idBadge);
+      const elementoExtra = document.getElementById(idElementoExtra); // Pode ser o Sensor ou o Atuador
+
+      if (!cartao || !badge || !elementoExtra){
+        return;
+      }
+
+      const estado = data.trim();
+
+      // Se o dispositivo estiver LIGADO / ATIVO ("1")
+      if (estado === "1") {
+        badge.innerText = "Ativo";
+        badge.className = "state-badge state-on";
+        
+        if (isAtuador) {
+          elementoExtra.innerText = "Desligar";
+          elementoExtra.className = "btn btn-outline-secondary control-button";
+          cartao.className = "card actuator-card actuator-active h-100";
+        } else {
+          elementoExtra.innerText = "Ativo";
+          cartao.className = "card sensor-card sensor-active h-100";
+        }
+      } 
+      // Se o dispositivo estiver DESLIGADO / INATIVO ("0")
+      else {
+        badge.innerText = "Inativo";
+        badge.className = "state-badge state-off";
+        
+        if (isAtuador) {
+          elementoExtra.innerText = "Ligar";
+          elementoExtra.className = "btn btn-primary control-button";
+          cartao.className = "card actuator-card h-100";
+        } else {
+          elementoExtra.innerText = "Inativo";
+          cartao.className = "card sensor-card sensor-closed h-100";
+        }
+      }
+    })
+    .catch(error => console.error("Erro a ler " + nomeApi + ":", error));
+}
+
+// 2. A Central de Atualizações
+function atualizarTudo() {
+  // Para atualizar o Botão Campainha (Sensor)
+  // Parâmetros: Nome na API, ID Cartão, ID Badge, ID Texto, é atuador? (false)
+  atualizarDispositivo("botao-campainha", "cartaoBotaoCampainha", "badgeBotaoCampainha", "valorBotaoCampainha", false);
+
+  // Para atualizar o LED (Atuador)
+  // Parâmetros: Nome na API, ID Cartão, ID Badge, ID Botão, é atuador? (true)
+  atualizarDispositivo("led", "cartaoLed", "estadoLed", "botaoLed", true);
+
+  // Para atualizar a Campainha Buzzer (Atuador)
+  atualizarDispositivo("campainha", "cartaoCampainha", "estadoCampainha", "botaoCampainha", true);
+  
+}
+
+// 3. O Relógio (setInterval) que corre a cada 2 segundos
+setInterval(atualizarTudo, 2000);
