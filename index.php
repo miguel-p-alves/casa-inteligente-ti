@@ -8,6 +8,28 @@
 
   $ficheiro_botao_campainha = "api/files/botao-campainha/valor.txt";
   $valor_botao_campainha = file_exists($ficheiro_botao_campainha) ? file_get_contents($ficheiro_botao_campainha) : "0";
+
+  $ficheiro_sensor_movimento = "api/files/sensor-movimento/valor.txt";
+  $valor_sensor_movimento = file_exists($ficheiro_sensor_movimento) ? file_get_contents($ficheiro_sensor_movimento) : "0";
+
+  $ficheiro_botao_alarme = "api/files/botao-alarme/valor.txt";
+  $valor_botao_alarme = file_exists($ficheiro_botao_alarme) ? file_get_contents($ficheiro_botao_alarme) : "0";
+
+  $ficheiro_sensor_temperatura = "api/files/sensor-temperatura/valor.txt";
+  $valor_sensor_temperatura = file_exists($ficheiro_sensor_temperatura) ? file_get_contents($ficheiro_sensor_temperatura) : "0";
+
+  $ficheiro_sensor_chama = "api/files/sensor-chama/valor.txt";
+  $valor_sensor_chama = file_exists($ficheiro_sensor_chama) ? file_get_contents($ficheiro_sensor_chama) : "0";
+
+  $ficheiro_buzzer_alarme = "api/files/buzzer-alarme/valor.txt";
+  $valor_buzzer_alarme = file_exists($ficheiro_buzzer_alarme) ? file_get_contents($ficheiro_buzzer_alarme) : "0";
+
+  $ficheiro_buzzer_fogo = "api/files/buzzer-fogo/valor.txt";
+  $valor_buzzer_fogo = file_exists($ficheiro_buzzer_fogo) ? file_get_contents($ficheiro_buzzer_fogo) : "0";
+
+  $ficheiro_led_fogo = "api/files/led-fogo/valor.txt";
+  $valor_led_fogo = file_exists($ficheiro_led_fogo) ? file_get_contents($ficheiro_led_fogo) : "0";
+
 ?>
 
 <!doctype html>
@@ -103,32 +125,28 @@
             <span class="section-kicker">Monitorização</span>
             <h2>Sensores</h2>
           </div>
-          <span class="refresh-chip">Exemplos estáticos</span>
         </div>
 
         <!-- Futuramente, estes cartões podem ser gerados por PHP lendo ficheiros .txt. -->
         <div class="row g-3">
 
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card sensor-card <?php echo ($valor_botao_campainha == '1') ? 'sensor-active' : 'sensor-closed'; ?> h-100" id="cartaoBotaoCampainha">
+            <div class="card sensor-card <?php echo ($valor_sensor_movimento == '1') ? 'sensor-active' : 'sensor-closed'; ?> h-100" id="cartaoSensorMovimento">
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="sensor-title">Botão Campainha</h3>
-                    <p class="sensor-meta mb-0">Porta</p>
+                    <h3 class="sensor-title">Sensor de Movimento</h3>
+                    <p class="sensor-meta mb-0">Botão de Pressão</p>
                   </div>
-                  <span class="sensor-icon"><i class="bi bi-bell"></i></span>
+                  <span class="sensor-icon"><i class="bi-broadcast"></i></span>
                 </div>
-                
-                <div class="sensor-value" id="valorBotaoCampainha">
-                  <?php echo ($valor_botao_campainha == '1') ? 'Ativo' : 'Inativo'; ?>
+                <div class="sensor-value" id="valorSensorMovimento">
+                  <?php echo ($valor_sensor_movimento == '1') ? 'Ativo' : 'Inativo'; ?>
                 </div>
-                
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
-                  <span class="sensor-meta">Origem: MCU</span>
-                  
-                  <span class="state-badge <?php echo ($valor_botao_campainha == '1') ? 'state-on' : 'state-off'; ?>" id="badgeBotaoCampainha">
-                    <?php echo ($valor_botao_campainha == '1') ? 'Ativo' : 'Inativo'; ?>
+                  <span class="sensor-meta">Origem: ?</span>
+                  <span class="state-badge <?php echo ($valor_sensor_movimento == '1') ? 'state-on' : 'state-off'; ?>" id="badgeSensorMovimento">
+                    <?php echo ($valor_sensor_movimento == '1') ? 'Ativo' : 'Inativo'; ?>
                   </span>
                 </div>
               </div>
@@ -136,23 +154,74 @@
           </article>
 
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card sensor-card sensor-closed h-100">
+            <div class="card sensor-card <?php echo ($valor_botao_alarme == '1') ? 'sensor-active' : 'sensor-closed'; ?> h-100" id="cartaoBotaoAlarme">
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="sensor-title">Estado da Porta</h3>
-                    <p class="sensor-meta mb-0">Entrada</p>
+                    <h3 class="sensor-title">Alarme</h3>
+                    <p class="sensor-meta mb-0">Botão de Pressão</p>
                   </div>
-                  <span class="sensor-icon"><i class="bi bi-door-closed"></i></span>
+                  <span class="sensor-icon"><i class="bi-record-circle-fill"></i></span>
                 </div>
-                <div class="sensor-value">Fechado</div>
+                <div class="sensor-value" id="valorBotaoAlarme">
+                  <?php echo ($valor_botao_alarme == '1') ? 'Ativo' : 'Inativo'; ?>
+                </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
-                  <span class="sensor-meta">Origem: SBC</span>
-                  <span class="state-badge state-on">Seguro</span>
+                  <span class="sensor-meta">Origem: ?</span>
+                  <span class="state-badge <?php echo ($valor_botao_alarme == '1') ? 'state-on' : 'state-off'; ?>" id="badgeBotaoAlarme">
+                    <?php echo ($valor_botao_alarme == '1') ? 'Ativo' : 'Inativo'; ?>
+                  </span>
                 </div>
               </div>
             </div>
           </article>
+
+          <article class="col-12 col-sm-6 col-xl-4">
+            <div class="card sensor-card <?php echo ($valor_sensor_temperatura == '1') ? 'sensor-active' : 'sensor-closed'; ?> h-100" id="cartaoSensorTemperatura">
+              <div class="card-body">
+                <div class="d-flex align-items-start justify-content-between gap-3">
+                  <div>
+                    <h3 class="sensor-title">Sensor de Temperatura</h3>
+                    <p class="sensor-meta mb-0">Mostrar temp aqui?</p>
+                  </div>
+                  <span class="sensor-icon"><i class="bi-thermometer-half"></i></span>
+                </div>
+                <div class="sensor-value" id="valorSensorTemperatura">
+                  <?php echo ($valor_sensor_temperatura == '1') ? 'Ativo' : 'Inativo'; ?>
+                </div>
+                <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
+                  <span class="sensor-meta">Origem: ?</span>
+                  <span class="state-badge <?php echo ($valor_sensor_temperatura == '1') ? 'state-on' : 'state-off'; ?>" id="badgeSensorTemperatura">
+                    <?php echo ($valor_sensor_temperatura == '1') ? 'Ativo' : 'Inativo'; ?>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="col-12 col-sm-6 col-xl-4">
+            <div class="card sensor-card <?php echo ($valor_sensor_chama == '1') ? 'sensor-active' : 'sensor-closed'; ?> h-100" id="cartaoSensorChama">
+              <div class="card-body">
+                <div class="d-flex align-items-start justify-content-between gap-3">
+                  <div>
+                    <h3 class="sensor-title">Detetor de Fogo</h3>
+                    <p class="sensor-meta mb-0">Sensor de Chama / Mostrar o que ele envia?</p>
+                  </div>
+                  <span class="sensor-icon"><i class="bi-fire"></i></span>
+                </div>
+                <div class="sensor-value" id="valorSensorChama">
+                  <?php echo ($valor_sensor_chama == '1') ? 'Ativo' : 'Inativo'; ?>
+                </div>
+                <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
+                  <span class="sensor-meta">Origem: ?</span>
+                  <span class="state-badge <?php echo ($valor_sensor_chama == '1') ? 'state-on' : 'state-off'; ?>" id="badgeSensorChama">
+                    <?php echo ($valor_sensor_chama == '1') ? 'Ativo' : 'Inativo'; ?>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </article>
+
         </div>
       </section>
 
@@ -164,26 +233,24 @@
           </div>
         </div>
 
-        <!-- Futuramente, estes botões podem chamar uma API PHP. Agora alteram apenas o aspeto no navegador. -->
         <div class="row g-3">
 
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card actuator-card <?php echo ($valor_campainha == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoCampainha">
+            <div class="card actuator-card <?php echo ($valor_buzzer_alarme == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoBuzzerAlarme">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="actuator-title">Campainha (Buzzer)</h3>
-                    <p class="sensor-meta mb-0">Controlo local</p>
+                    <h3 class="actuator-title">Alarme Sonoro</h3>
+                    <p class="sensor-meta mb-0">Buzzer</p>
                   </div>
-                  <span class="actuator-icon"><i class="bi bi-alarm"></i></span>
+                  <span class="actuator-icon"><i class="bi bi-bell-fill"></i></span>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-4">
-                  <span class="state-badge <?php echo ($valor_campainha == '1') ? 'state-on' : 'state-off'; ?>" id="estadoCampainha">
-                    <?php echo ($valor_campainha == '1') ? 'Ativo' : 'Inativo'; ?>
+                  <span class="state-badge <?php echo ($valor_buzzer_alarme == '1') ? 'state-on' : 'state-off'; ?>" id="estadoBuzzerAlarme">
+                    <?php echo ($valor_buzzer_alarme == '1') ? 'Ativo' : 'Inativo'; ?>
                   </span>
-                  
-                  <button class="btn <?php echo ($valor_campainha == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoCampainha" onclick="alternarAtuador('cartaoCampainha', 'estadoCampainha', 'botaoCampainha', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'campainha')">
-                    <?php echo ($valor_campainha == '1') ? 'Desligar' : 'Ligar'; ?>
+                  <button class="btn <?php echo ($valor_buzzer_alarme == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoBuzzerAlarme" onclick="alternarAtuador('cartaoBuzzerAlarme', 'estadoBuzzerAlarme', 'botaoBuzzerAlarme', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'buzzer-alarme')">
+                    <?php echo ($valor_buzzer_alarme == '1') ? 'Desligar' : 'Ligar'; ?>
                   </button>
                 </div>
               </div>
@@ -191,27 +258,49 @@
           </article>
 
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card actuator-card <?php echo ($valor_led == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLed">
+            <div class="card actuator-card <?php echo ($valor_buzzer_fogo == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoBuzzerFogo">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="actuator-title">Led Campainha</h3>
-                    <p class="sensor-meta mb-0">Controlo local</p>
+                    <h3 class="actuator-title">Alarme de Aviso de Fogo</h3>
+                    <p class="sensor-meta mb-0">Buzzer</p>
                   </div>
-                  <span class="actuator-icon"><i class="bi bi-lightbulb"></i></span>
+                  <span class="actuator-icon"><i class="bi bi-bell-fill"></i></span>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-4">
-                  <span class="state-badge <?php echo ($valor_led == '1') ? 'state-on' : 'state-off'; ?>" id="estadoLed">
-                    <?php echo ($valor_led == '1') ? 'Ativo' : 'Inativo'; ?>
+                  <span class="state-badge <?php echo ($valor_buzzer_fogo == '1') ? 'state-on' : 'state-off'; ?>" id="estadoBuzzerFogo">
+                    <?php echo ($valor_buzzer_fogo == '1') ? 'Ativo' : 'Inativo'; ?>
                   </span>
-                  
-                  <button class="btn <?php echo ($valor_led == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoLed" onclick="alternarAtuador('cartaoLed', 'estadoLed', 'botaoLed', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led')">
-                    <?php echo ($valor_led == '1') ? 'Desligar' : 'Ligar'; ?>
+                  <button class="btn <?php echo ($valor_buzzer_fogo == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoBuzzerFogo" onclick="alternarAtuador('cartaoBuzzerFogo', 'estadoBuzzerFogo', 'botaoBuzzerFogo', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'buzzer-fogo')">
+                    <?php echo ($valor_buzzer_fogo == '1') ? 'Desligar' : 'Ligar'; ?>
                   </button>
                 </div>
               </div>
             </div>
           </article>
+
+          <article class="col-12 col-sm-6 col-xl-4">
+            <div class="card actuator-card <?php echo ($valor_led_fogo == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLedFogo">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-start justify-content-between gap-3">
+                  <div>
+                    <h3 class="actuator-title">Led de Aviso de Fogo</h3>
+                    <p class="sensor-meta mb-0">Led</p>
+                  </div>
+                  <span class="actuator-icon"><i class="bi bi-lightbulb-fill"></i></span>
+                </div>
+                <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-4">
+                  <span class="state-badge <?php echo ($valor_led_fogo == '1') ? 'state-on' : 'state-off'; ?>" id="estadoLedFogo">
+                    <?php echo ($valor_led_fogo == '1') ? 'Ativo' : 'Inativo'; ?>
+                  </span>
+                  <button class="btn <?php echo ($valor_led_fogo == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoLedFogo" onclick="alternarAtuador('cartaoLedFogo', 'estadoLedFogo', 'botaoLedFogo', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-fogo')">
+                    <?php echo ($valor_led_fogo == '1') ? 'Desligar' : 'Ligar'; ?>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+          
         </div>
       </section>
 

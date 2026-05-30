@@ -96,7 +96,6 @@ function get_date() {
   return datahora; 
 }
 
-// 1. A Função Inteligente (Faz o fetch e atualiza o visual)
 function atualizarDispositivo(nomeApi, idCartao, idBadge, idElementoExtra, isAtuador) {
   fetch("api/api.php?nome=" + nomeApi)
     .then(response => {
@@ -147,19 +146,31 @@ function atualizarDispositivo(nomeApi, idCartao, idBadge, idElementoExtra, isAtu
     .catch(error => console.error("Erro a ler " + nomeApi + ":", error));
 }
 
-// 2. A Central de Atualizações
 function atualizarTudo() {
+  // Sensores:
   // Para atualizar o Botão Campainha (Sensor)
   // Parâmetros: Nome na API, ID Cartão, ID Badge, ID Texto, é atuador? (false)
-  atualizarDispositivo("botao-campainha", "cartaoBotaoCampainha", "badgeBotaoCampainha", "valorBotaoCampainha", false);
+  atualizarDispositivo("botao-campainha", "cartaoBotaoCampainha", "badgeBotaoCampainha", "valorBotaoCampainha", false);~
 
-  // Para atualizar o LED (Atuador)
+  // Para atualizar o Sensor de Movimento (Sensor)
+  atualizarDispositivo("sensor-movimento", "cartaoSensorMovimento", "badgeSensorMovimento", "valorSensorMovimento", false);
+
+  // Para atualizar o Botão do Alarme (Sensor)
+  atualizarDispositivo("botao-alarme", "cartaoBotaoAlarme", "badgeBotaoAlarme", "valorBotaoAlarme", false);
+
+  // Para atualizar o Sensor de Temperatura (Sensor)
+  atualizarDispositivo("sensor-temperatura", "cartaoSensorTemperatura", "badgeSensorTemperatura", "valorSensorTemperatura", false);
+
+  // Para atualizar o Sensor de Chama (Sensor)
+  atualizarDispositivo("sensor-chama", "cartaoSensorChama", "badgeSensorChama", "valorSensorChama", false);
+
+  // Atuadores:
+  // Para atualizar o Buzzer Alarme (Atuador)
   // Parâmetros: Nome na API, ID Cartão, ID Badge, ID Botão, é atuador? (true)
-  atualizarDispositivo("led", "cartaoLed", "estadoLed", "botaoLed", true);
+  atualizarDispositivo("buzzer-alarme", "cartaoBuzzerAlarme", "estadoBuzzerAlarme", "botaoBuzzerAlarme", true);
 
-  // Para atualizar a Campainha Buzzer (Atuador)
-  atualizarDispositivo("campainha", "cartaoCampainha", "estadoCampainha", "botaoCampainha", true);
-  
+  // Para atualizar o Buzzer Alarme (Atuador)
+  atualizarDispositivo("buzzer-fogo", "cartaoBuzzerFogo", "estadoBuzzerFogo", "botaoBuzzerFogo", true);
 }
 
 // 3. O Relógio (setInterval) que corre a cada 2 segundos
