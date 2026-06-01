@@ -138,7 +138,7 @@
                     <h3 class="sensor-title">Sensor de Movimento</h3>
                     <p class="sensor-meta mb-0">Botão de Pressão</p>
                   </div>
-                  <span class="sensor-icon"><i class="bi-broadcast"></i></span>
+                  <span class="sensor-icon"><i class="bi bi-broadcast"></i></span>
                 </div>
                 <div class="sensor-value" id="valorSensorMovimento">
                   <?php echo ($valor_sensor_movimento == '1') ? 'Ativo' : 'Inativo'; ?>
@@ -205,7 +205,7 @@
                     <h3 class="sensor-title">Detetor de Fogo</h3>
                     <p class="sensor-meta mb-0">Sensor de Chama / Mostrar o que ele envia?</p>
                   </div>
-                  <span class="sensor-icon"><i class="bi-fire"></i></span>
+                  <span class="sensor-icon"><i class="bi bi-fire"></i></span>
                 </div>
                 <div class="sensor-value" id="valorSensorChama">
                   <?php echo ($valor_sensor_chama == '1') ? 'Ativo' : 'Inativo'; ?>
