@@ -114,6 +114,20 @@ function atualizarDispositivo(nomeApi, idCartao, idBadge, idElementoExtra, isAtu
 
       const estado = data.trim();
 
+      // --- TRATAMENTO ESPECIAL PARA A TEMPERATURA ---
+      if (nomeApi === "sensor-temperatura") {
+        // Atualiza o valor grande no centro do cartão com o número do ficheiro + " °C"
+        elementoExtra.innerText = estado + " °C"; 
+        
+        // Atualiza a badge pequena em baixo
+        badge.innerText = "Monitorizando";
+        badge.className = "state-badge state-on";
+        
+        // Mantém o cartão com um visual neutro/ativo
+        cartao.className = "card sensor-card sensor-active h-100";
+        return; // Sai da função para não executar o código binário abaixo
+      }
+
       // Se o dispositivo estiver LIGADO / ATIVO ("1")
       if (estado === "1") {
         badge.innerText = "Ativo";
@@ -150,7 +164,7 @@ function atualizarTudo() {
   // Sensores:
   // Para atualizar o Botão Campainha (Sensor)
   // Parâmetros: Nome na API, ID Cartão, ID Badge, ID Texto, é atuador? (false)
-  atualizarDispositivo("botao-campainha", "cartaoBotaoCampainha", "badgeBotaoCampainha", "valorBotaoCampainha", false);~
+  atualizarDispositivo("botao-campainha", "cartaoBotaoCampainha", "badgeBotaoCampainha", "valorBotaoCampainha", false);
 
   // Para atualizar o Sensor de Movimento (Sensor)
   atualizarDispositivo("sensor-movimento", "cartaoSensorMovimento", "badgeSensorMovimento", "valorSensorMovimento", false);

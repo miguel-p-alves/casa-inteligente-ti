@@ -177,22 +177,20 @@
           </article>
 
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card sensor-card <?php echo ($valor_sensor_temperatura == '1') ? 'sensor-active' : 'sensor-closed'; ?> h-100" id="cartaoSensorTemperatura">
+            <div class="card sensor-card sensor-closed h-100" id="cartaoSensorTemperatura">
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="sensor-title">Sensor de Temperatura</h3>
-                    <p class="sensor-meta mb-0">Mostrar temp aqui?</p>
+                    <h3 class="sensor-title">Medição de Temperatura</h3>
+                    <p class="sensor-meta mb-0">Sensor de Temperatura</p>
                   </div>
                   <span class="sensor-icon"><i class="bi-thermometer-half"></i></span>
                 </div>
-                <div class="sensor-value" id="valorSensorTemperatura">
-                  <?php echo ($valor_sensor_temperatura == '1') ? 'Ativo' : 'Inativo'; ?>
-                </div>
+                <div class="sensor-value" id="valorSensorTemperatura">Inativo</div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
-                  <span class="sensor-meta">Origem: ?</span>
-                  <span class="state-badge <?php echo ($valor_sensor_temperatura == '1') ? 'state-on' : 'state-off'; ?>" id="badgeSensorTemperatura">
-                    <?php echo ($valor_sensor_temperatura == '1') ? 'Ativo' : 'Inativo'; ?>
+                  <span class="sensor-meta">Origem: MCU</span>
+                  <span class="state-badge state-off" id="badgeSensorTemperatura">
+                    Inativo
                   </span>
                 </div>
               </div>
