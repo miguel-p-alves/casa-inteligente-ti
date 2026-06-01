@@ -41,9 +41,15 @@ function enviarComandoAPI(nomeDispositivo, valor) {
   const hora = dataAtual.getHours().toString().padStart(2, '0') + ":" + dataAtual.getMinutes().toString().padStart(2, '0');
 
   const formData = new URLSearchParams();
+
+  // Estes dados identificam qual dispositivo mudou e qual foi o novo estado.
   formData.append("nome", nomeDispositivo);
   formData.append("valor", valor);
   formData.append("hora", hora);
+
+  // Estes campos extras permitem preencher as colunas Tipo e Origem no histórico.
+  formData.append("tipo", "Atuador");
+  formData.append("origem", "Dashboard");
 
   fetch("api/api.php", {
     method: "POST",
