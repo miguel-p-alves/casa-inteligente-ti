@@ -35,7 +35,7 @@ function alternarAtuador(idCartao, idEstado, idBotao, estadoAtivo, estadoInativo
   }
 }
 
-// Nova função para comunicar com a tua API
+// Função para comunicar com a API
 function enviarComandoAPI(nomeDispositivo, valor) {
   const dataFormatada = get_date();
 
@@ -92,7 +92,7 @@ function get_date() {
   const minuto = String(agora.getMinutes()).padStart(2, "0");
   const segundo = String(agora.getSeconds()).padStart(2, "0");
 
-  const datahora = `${ano}-${mes}-${dia} ${hora}:${minuto}:${segundo}`;
+  const datahora = `${dia}-${mes}-${ano} ${hora}:${minuto}:${segundo}`;
 
   // Se quiseres atualizar um texto no HTML (como na foto), podes manter a linha abaixo.
   // Caso contrário, podes apagá-la ou deixá-la comentada.
@@ -166,6 +166,13 @@ function atualizarDispositivo(nomeApi, idCartao, idBadge, idElementoExtra, isAtu
     .catch(error => console.error("Erro a ler " + nomeApi + ":", error));
 }
 
+function atualizarHistorico() {
+  // Pede ao PHP apenas as linhas da tabela
+  fetch("index.php?tabela=sim")
+    .then(resposta => resposta.text()) 
+    .then(linhas => document.getElementById("tabela-historico").innerHTML = linhas);
+}
+
 function atualizarTudo() {
   // Sensores:
   // Para atualizar o Botão Campainha (Sensor)
@@ -194,6 +201,9 @@ function atualizarTudo() {
 
   // Para atualizar o Led de Aviso de Fogo (Atuador)
   atualizarDispositivo("led-fogo", "cartaoLedFogo", "estadoLedFogo", "botaoLedFogo", true);
+
+  //Histórico:
+  atualizarHistorico();
 }
 
 // 3. O Relógio (setInterval) que corre a cada 2 segundos

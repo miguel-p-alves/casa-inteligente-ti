@@ -8,7 +8,7 @@
 			$origem = isset($_POST['origem']) ? $_POST['origem'] : "Dashboard";
 
 			// A data/hora do servidor marca quando o registro foi realmente gravado.
-			$data_hora = date("d/m/Y H:i:s");
+			$data_hora = date("d-m-Y H:i:s");
 
 			// Estes três arquivos guardam apenas o estado atual do dispositivo.
 			file_put_contents("files/".$_POST['nome']."/valor.txt",$_POST['valor']);

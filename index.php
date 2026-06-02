@@ -82,8 +82,42 @@
     return $historico;
   }
 
-  // Por enquanto lê o log da campainha, mas depois será mudado para ler os logs de forma dinâmica.
-  $historico = lerLogs("api/files/campainha/log.txt");
+    // 1. Criamos um histórico vazio (uma lista limpa)
+  $historico = array();
+
+  // 2. O 'glob' pesquisa automaticamente todos os ficheiros log.txt dentro da pasta files
+  $todos_os_logs = glob("api/files/*/log.txt");
+
+  // 3. Fazemos um ciclo simples para ler cada ficheiro que ele encontrou
+  foreach ($todos_os_logs as $ficheiro) {
+      // Lê o ficheiro atual
+      $log_desta_pasta = lerLogs($ficheiro);
+      
+      // array_merge junta as linhas deste log ao nosso histórico principal
+      $historico = array_merge($historico, $log_desta_pasta);
+  }
+
+  // 4. Ordenação cronológica (Mais recente primeiro)
+  usort($historico, function($a, $b) {
+      // strtotime transforma o texto da data em segundos para o PHP conseguir comparar números
+      return strtotime($b[0]) - strtotime($a[0]);
+  });
+
+  // Se o JavaScript pedir "tabela=sim", o PHP desenha só as linhas e PARA!
+  if (isset($_GET['tabela'])) {
+      foreach ($historico as $registro) {
+          echo "<tr>";
+          echo "<td>" . $registro[0] . "</td>";
+          echo "<td>" . $registro[1] . "</td>";
+          echo "<td>" . $registro[2] . "</td>";
+          echo "<td>" . $registro[3] . "</td>";
+          echo "<td><span class='origin-label'>" . $registro[4] . "</span></td>";
+          echo "</tr>";
+      }
+      exit(); // Este comando é a magia: faz o PHP parar e não carregar o HTML todo!
+  }
+  // -----------------------------
+
 ?>
 
 <!doctype html>
@@ -473,7 +507,7 @@
                         <th scope="col">Origem</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tabela-historico">
                       <?php if (count($historico) == 0): ?>
                         <!-- Mostra uma mensagem quando ainda não existe histórico. -->
                         <tr>
