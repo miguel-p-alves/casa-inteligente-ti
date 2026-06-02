@@ -40,9 +40,15 @@ function enviarComandoAPI(nomeDispositivo, valor) {
   const dataFormatada = get_date();
 
   const formData = new URLSearchParams();
+
+  // Estes dados identificam qual dispositivo mudou e qual foi o novo estado.
   formData.append("nome", nomeDispositivo);
   formData.append("valor", valor);
   formData.append("hora", dataFormatada);
+
+  // Estes campos extras permitem preencher as colunas Tipo e Origem no histórico.
+  formData.append("tipo", "Atuador");
+  formData.append("origem", "Dashboard");
 
   fetch("api/api.php", {
     method: "POST",
