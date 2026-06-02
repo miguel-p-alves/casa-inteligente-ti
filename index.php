@@ -2,6 +2,60 @@
   // Tenta ler o estado atual da campainha do ficheiro
   $ficheiro_campainha = "api/files/campainha/valor.txt";
   $valor_campainha = file_exists($ficheiro_campainha) ? file_get_contents($ficheiro_campainha) : "0";
+
+  // O histórico usa uma linha por registro no formato: data/hora;tipo;nome;valor;origem.
+  // Esta função lê o log, separa cada linha nesses 5 campos e prepara os dados para a tabela.
+  function lerLogs($ficheiro_log) {
+    $historico = array();
+
+    // Se o arquivo ainda não existir, a função retorna a lista vazia.
+    if (file_exists($ficheiro_log)) {
+      $conteudo = file_get_contents($ficheiro_log);
+
+      // Cada quebra de linha representa um registro diferente do histórico.
+      $linhas = explode(PHP_EOL, $conteudo);
+
+      foreach ($linhas as $linha) {
+        // O trim remove espaços, tabs e quebras de linha do começo e do fim do texto.
+        $linha = trim($linha);
+
+        // Linhas vazias são ignoradas para não criar linhas em branco na tabela.
+        if ($linha != "") {
+          // O ponto e vírgula separa os campos que depois viram as colunas da tabela.
+          $dados = explode(";", $linha);
+
+          // Se não tiver 5 campos, a linha não serve para preencher a tabela inteira.
+          if (count($dados) == 5) {
+            $data = $dados[0];
+            $tipo = $dados[1];
+            $nome = $dados[2];
+            $valor = $dados[3];
+            $origem = $dados[4];
+          }
+          else {
+            continue;
+          }
+
+          // No arquivo fica mais simples guardar 1 e 0, mas na tabela é melhor mostrar texto.
+          if ($valor == "1") {
+            $valor = "Ativo";
+          }
+
+          if ($valor == "0") {
+            $valor = "Inativo";
+          }
+
+          // Cada posição do array corresponde a uma coluna da tabela.
+          $historico[] = array($data, $tipo, $nome, $valor, $origem);
+        }
+      }
+    }
+
+    return $historico;
+  }
+
+  // Por enquanto lê o log da campainha, mas depois será mudado para ler os logs de forma dinâmica.
+  $historico = lerLogs("api/files/campainha/log.txt");
 ?>
 
 <!doctype html>
@@ -316,48 +370,23 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>27/05/2026, 14:12:00</td>
-                        <td>Sensor</td>
-                        <td>Temperatura</td>
-                        <td>21,6 °C</td>
-                        <td><span class="origin-label">MCU</span></td>
-                      </tr>
-                      <tr>
-                        <td>27/05/2026, 14:05:00</td>
-                        <td>Atuador</td>
-                        <td>Luz principal</td>
-                        <td>Ligado</td>
-                        <td><span class="origin-label">Dashboard</span></td>
-                      </tr>
-                      <tr>
-                        <td>27/05/2026, 13:58:00</td>
-                        <td>Sensor</td>
-                        <td>Movimento</td>
-                        <td>Detetado</td>
-                        <td><span class="origin-label">SBC</span></td>
-                      </tr>
-                      <tr>
-                        <td>27/05/2026, 13:54:00</td>
-                        <td>Sensor</td>
-                        <td>Gás/Fumo</td>
-                        <td>Normal</td>
-                        <td><span class="origin-label">MCU</span></td>
-                      </tr>
-                      <tr>
-                        <td>27/05/2026, 13:45:00</td>
-                        <td>Atuador</td>
-                        <td>Alarme</td>
-                        <td>Ativo</td>
-                        <td><span class="origin-label">Dashboard</span></td>
-                      </tr>
-                      <tr>
-                        <td>27/05/2026, 13:40:00</td>
-                        <td>Sensor</td>
-                        <td>Estado da Porta</td>
-                        <td>Aberto</td>
-                        <td><span class="origin-label">SBC</span></td>
-                      </tr>
+                      <?php if (count($historico) == 0): ?>
+                        <!-- Mostra uma mensagem quando ainda não existe histórico. -->
+                        <tr>
+                          <td colspan="5">Nenhum registro encontrado.</td>
+                        </tr>
+                      <?php else: ?>
+                        <!-- Cria uma linha da tabela para cada registro encontrado no log. -->
+                        <?php foreach ($historico as $registro): ?>
+                          <tr>
+                            <td><?php echo $registro[0]; ?></td>
+                            <td><?php echo $registro[1]; ?></td>
+                            <td><?php echo $registro[2]; ?></td>
+                            <td><?php echo $registro[3]; ?></td>
+                            <td><span class="origin-label"><?php echo $registro[4]; ?></span></td>
+                          </tr>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
                     </tbody>
                   </table>
                 </div>
