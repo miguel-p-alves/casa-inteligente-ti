@@ -6,13 +6,13 @@ print("Prima CTRL+C para terminar")
 
 # Usamos o "LED" para controlar a campainha, pois ambos são saídas digitais.
 # Substitui o 16 pelo pino GPIO onde ligaste a campainha fisicamente.
-buzzer_fogo = LED(16) 
+buzzer_fogo = LED(23) 
 
 try:
     while True:
         # Faz o pedido GET à tua API. 
         # ATENÇÃO: Substitui o IP pelo endereço onde tens a pasta "api" alojada!
-        request = requests.get('http://172.22.201.13/projeto-ti/api/api.php?nome=buzzer-fogo')
+        request = requests.get('http://10.20.228.51/projeto-ti/api/api.php?nome=buzzer-fogo')
         
         if(request.status_code == 200):
             # Imprime a hora e o valor recebido (como no pedidohttp.py)
@@ -24,7 +24,6 @@ try:
                 # Quando a API disser que o buzzer está a 1:
                 print("ALARME DE FOGO ATIVADO!")
                 
-                # Faz 3 beeps muito rápidos num só ciclo
                 buzzer_fogo.on()
                 time.sleep(0.1)
                 buzzer_fogo.off()

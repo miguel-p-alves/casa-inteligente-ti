@@ -1,3 +1,0 @@
-01/06/2026 12:52:00;Atuador;campainha;1;Dashboard
-01/06/2026 12:53:00;Atuador;campainha;0;Dashboard
-01/06/2026 12:54:00;Atuador;campainha;1;Dashboard
