@@ -1,0 +1,228 @@
+<?php
+  $dispositivos = array(
+    "sensor-movimento" => "Movimento",
+    "luz-camera" => "Luz da câmara",
+    "sensor-temperatura" => "Temperatura",
+    "led-temperatura" => "LED de temperatura",
+    "sensor-chama" => "Chama",
+    "buzzer-fogo" => "Buzzer de fogo",
+    "camera" => "Câmara"
+  );
+
+  $filtro_nome = "";
+
+  if (isset($_GET["nome"]) && array_key_exists($_GET["nome"], $dispositivos)) {
+    $filtro_nome = $_GET["nome"];
+  }
+
+  // O histórico usa uma linha por registo no formato: data/hora;tipo;nome;valor;origem.
+  function lerLogs($ficheiro_log) {
+    $historico = array();
+
+    if (file_exists($ficheiro_log)) {
+      $conteudo = file_get_contents($ficheiro_log);
+      $linhas = explode(PHP_EOL, $conteudo);
+
+      foreach ($linhas as $linha) {
+        $linha = trim($linha);
+
+        if ($linha == "") {
+          continue;
+        }
+
+        $dados = explode(";", $linha);
+
+        if (count($dados) != 5) {
+          continue;
+        }
+
+        $data = $dados[0];
+        $tipo = $dados[1];
+        $nome = $dados[2];
+        $valor = $dados[3];
+        $origem = $dados[4];
+
+        if ($valor == "1") {
+          $valor = "Ativo";
+        }
+
+        if ($valor == "0") {
+          $valor = "Inativo";
+        }
+
+        $historico[] = array($data, $tipo, $nome, $valor, $origem);
+      }
+    }
+
+    return $historico;
+  }
+
+  function carregarHistorico($dispositivos, $filtro_nome) {
+    $historico = array();
+
+    foreach ($dispositivos as $nome => $label) {
+      if ($filtro_nome != "" && $nome != $filtro_nome) {
+        continue;
+      }
+
+      $ficheiro = "api/files/" . $nome . "/log.txt";
+      $historico = array_merge($historico, lerLogs($ficheiro));
+    }
+
+    usort($historico, function($a, $b) {
+      return strtotime($b[0]) - strtotime($a[0]);
+    });
+
+    return $historico;
+  }
+
+  function mostrarLinhasHistorico($historico) {
+    if (count($historico) == 0) {
+      echo "<tr>";
+      echo "<td colspan='5'>Nenhum registo encontrado.</td>";
+      echo "</tr>";
+      return;
+    }
+
+    foreach ($historico as $registo) {
+      echo "<tr>";
+      echo "<td>" . htmlspecialchars($registo[0]) . "</td>";
+      echo "<td>" . htmlspecialchars($registo[1]) . "</td>";
+      echo "<td>" . htmlspecialchars($registo[2]) . "</td>";
+      echo "<td>" . htmlspecialchars($registo[3]) . "</td>";
+      echo "<td><span class='origin-label'>" . htmlspecialchars($registo[4]) . "</span></td>";
+      echo "</tr>";
+    }
+  }
+
+  $historico = carregarHistorico($dispositivos, $filtro_nome);
+
+  if (isset($_GET["tabela"])) {
+    mostrarLinhasHistorico($historico);
+    exit();
+  }
+?>
+
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Histórico - Casa Inteligente IoT</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark app-navbar sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="index.php">
+          <span class="brand-mark"><i class="bi bi-house-heart-fill"></i></span>
+          <span>Casa Inteligente IoT</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Alternar navegação">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuPrincipal">
+          <ul class="navbar-nav ms-lg-4 me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="index.php#sensores">Sensores</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.php#atuadores">Atuadores</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.php#camara">Câmara</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="historico.php">Histórico</a>
+            </li>
+          </ul>
+
+          <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
+            <span class="user-pill">
+              <i class="bi bi-person-circle"></i>
+              Miguel Alves
+            </span>
+            <button class="btn btn-outline-light btn-sm logout-button" type="button">
+              <i class="bi bi-box-arrow-right"></i>
+              Terminar sessão
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="dashboard-shell">
+      <section class="overview-band mb-4">
+        <div class="row g-3 align-items-center">
+          <div class="col-lg-7">
+            <p class="overline mb-2">Casa Inteligente</p>
+            <h1 class="mb-0">Histórico</h1>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard-section" id="historico">
+        <div class="card mb-3">
+          <div class="card-body">
+            <form class="row g-3 align-items-end" method="GET" action="historico.php">
+              <div class="col-12 col-md-6 col-lg-4">
+                <label class="capture-label" for="nome">Dispositivo</label>
+                <select class="form-select" id="nome" name="nome">
+                  <option value="">Todos</option>
+                  <?php foreach ($dispositivos as $nome => $label): ?>
+                    <option value="<?php echo htmlspecialchars($nome); ?>" <?php echo ($filtro_nome == $nome) ? "selected" : ""; ?>>
+                      <?php echo htmlspecialchars($label); ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+
+              <div class="col-12 col-md-auto">
+                <button class="btn btn-primary" type="submit">Filtrar</button>
+              </div>
+
+              <div class="col-12 col-md-auto">
+                <a class="btn btn-outline-secondary" href="historico.php">Limpar filtro</a>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <div class="section-heading compact-heading">
+              <div>
+                <span class="section-kicker">Amostras</span>
+                <h2>Registos</h2>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-hover align-middle history-table mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">Data/Hora</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Valor/Estado</th>
+                    <th scope="col">Origem</th>
+                  </tr>
+                </thead>
+                <tbody id="tabela-historico">
+                  <?php mostrarLinhasHistorico($historico); ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

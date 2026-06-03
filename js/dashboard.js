@@ -167,13 +167,28 @@ function atualizarDispositivo(nomeApi, idCartao, idBadge, idElementoExtra, isAtu
 }
 
 function atualizarHistorico() {
-  // Pede ao PHP apenas as linhas da tabela
-  fetch("index.php?tabela=sim")
+  const tabela = document.getElementById("tabela-historico");
+
+  if (!tabela) {
+    return;
+  }
+
+  const parametros = new URLSearchParams(window.location.search);
+  const filtroNome = parametros.get("nome");
+  let url = "historico.php?tabela=sim";
+
+  if (filtroNome) {
+    url += "&nome=" + encodeURIComponent(filtroNome);
+  }
+
+  // Pede ao PHP apenas as linhas da tabela.
+  fetch(url)
     .then(resposta => resposta.text()) 
-    .then(linhas => document.getElementById("tabela-historico").innerHTML = linhas);
+    .then(linhas => tabela.innerHTML = linhas);
 }
 
 function atualizarTudo() {
+  if (document.getElementById("cartaoSensorMovimento")) {
   // Sensores Arduino e Raspberry Pi.
   atualizarDispositivo("sensor-movimento", "cartaoSensorMovimento", "badgeSensorMovimento", "valorSensorMovimento", false);
   atualizarDispositivo("sensor-temperatura", "cartaoSensorTemperatura", "badgeSensorTemperatura", "valorSensorTemperatura", false);
@@ -183,6 +198,7 @@ function atualizarTudo() {
   atualizarDispositivo("luz-camera", "cartaoLuzCamera", "estadoLuzCamera", "botaoLuzCamera", true);
   atualizarDispositivo("buzzer-fogo", "cartaoBuzzerFogo", "estadoBuzzerFogo", "botaoBuzzerFogo", true);
   atualizarDispositivo("led-temperatura", "cartaoLedTemperatura", "estadoLedTemperatura", "botaoLedTemperatura", true);
+  }
 
   //Histórico:
   atualizarHistorico();
