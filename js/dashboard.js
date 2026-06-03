@@ -195,9 +195,11 @@ function atualizarTudo() {
   atualizarDispositivo("sensor-chama", "cartaoSensorChama", "badgeSensorChama", "valorSensorChama", false);
 
   // Atuadores finais do protótipo.
-  atualizarDispositivo("luz-camera", "cartaoLuzCamera", "estadoLuzCamera", "botaoLuzCamera", true);
-  atualizarDispositivo("buzzer-fogo", "cartaoBuzzerFogo", "estadoBuzzerFogo", "botaoBuzzerFogo", true);
+  atualizarDispositivo("led-camera", "cartaoLedCamera", "estadoLedCamera", "botaoLedCamera", true);
+  atualizarDispositivo("led-fogo", "cartaoLedFogo", "estadoLedFogo", "botaoLedFogo", true);
   atualizarDispositivo("led-temperatura", "cartaoLedTemperatura", "estadoLedTemperatura", "botaoLedTemperatura", true);
+  atualizarDispositivo("buzzer-fogo", "cartaoBuzzerFogo", "estadoBuzzerFogo", "botaoBuzzerFogo", true);
+  atualizarDispositivo("buzzer-alarme", "cartaoBuzzerAlarme", "estadoBuzzerAlarme", "botaoBuzzerAlarme", true);
   }
 
   //Histórico:

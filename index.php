@@ -8,11 +8,17 @@
   $ficheiro_sensor_chama = "api/files/sensor-chama/valor.txt";
   $valor_sensor_chama = file_exists($ficheiro_sensor_chama) ? file_get_contents($ficheiro_sensor_chama) : "0";
 
-  $ficheiro_luz_camera = "api/files/luz-camera/valor.txt";
-  $valor_luz_camera = file_exists($ficheiro_luz_camera) ? file_get_contents($ficheiro_luz_camera) : "0";
-
   $ficheiro_buzzer_fogo = "api/files/buzzer-fogo/valor.txt";
   $valor_buzzer_fogo = file_exists($ficheiro_buzzer_fogo) ? file_get_contents($ficheiro_buzzer_fogo) : "0";
+
+  $ficheiro_buzzer_alarme = "api/files/buzzer-alarme/valor.txt";
+  $valor_buzzer_alarme = file_exists($ficheiro_buzzer_alarme) ? file_get_contents($ficheiro_buzzer_alarme) : "0";
+
+  $ficheiro_led_camera = "api/files/led-camera/valor.txt";
+  $valor_led_camera = file_exists($ficheiro_led_camera) ? file_get_contents($ficheiro_led_camera) : "0";
+
+  $ficheiro_led_fogo = "api/files/led-fogo/valor.txt";
+  $valor_led_fogo = file_exists($ficheiro_led_fogo) ? file_get_contents($ficheiro_led_fogo) : "0";
 
   $ficheiro_led_temperatura = "api/files/led-temperatura/valor.txt";
   $valor_led_temperatura = file_exists($ficheiro_led_temperatura) ? file_get_contents($ficheiro_led_temperatura) : "0";
@@ -97,7 +103,7 @@
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="sensor-title">Movimento</h3>
+                    <h3 class="sensor-title">Sensor de Movimento</h3>
                     <p class="sensor-meta mb-0">Detetado pelo Arduino</p>
                   </div>
                   <span class="sensor-icon"><i class="bi bi-broadcast"></i></span>
@@ -106,7 +112,6 @@
                   <?php echo ($valor_sensor_movimento == '1') ? 'Ativo' : 'Inativo'; ?>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
-                  <span class="sensor-meta">Origem: Arduino</span>
                   <span class="state-badge <?php echo ($valor_sensor_movimento == '1') ? 'state-on' : 'state-off'; ?>" id="badgeSensorMovimento">
                     <?php echo ($valor_sensor_movimento == '1') ? 'Ativo' : 'Inativo'; ?>
                   </span>
@@ -120,7 +125,7 @@
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="sensor-title">Temperatura</h3>
+                    <h3 class="sensor-title">Sensor deTemperatura</h3>
                     <p class="sensor-meta mb-0">Monitorizada pelo Arduino</p>
                   </div>
                   <span class="sensor-icon"><i class="bi bi-thermometer-half"></i></span>
@@ -129,7 +134,6 @@
                   <?php echo trim($valor_sensor_temperatura) . ' °C'; ?>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
-                  <span class="sensor-meta">Origem: Arduino</span>
                   <span class="state-badge state-off" id="badgeSensorTemperatura">
                     Inativo
                   </span>
@@ -143,7 +147,7 @@
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="sensor-title">Chama</h3>
+                    <h3 class="sensor-title">Detetor de Chama</h3>
                     <p class="sensor-meta mb-0">Detetada pela Raspberry Pi</p>
                   </div>
                   <span class="sensor-icon"><i class="bi bi-fire"></i></span>
@@ -152,7 +156,6 @@
                   <?php echo ($valor_sensor_chama == '1') ? 'Ativo' : 'Inativo'; ?>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
-                  <span class="sensor-meta">Origem: Raspberry Pi</span>
                   <span class="state-badge <?php echo ($valor_sensor_chama == '1') ? 'state-on' : 'state-off'; ?>" id="badgeSensorChama">
                     <?php echo ($valor_sensor_chama == '1') ? 'Ativo' : 'Inativo'; ?>
                   </span>
@@ -175,21 +178,21 @@
         <div class="row g-3">
 
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card actuator-card <?php echo ($valor_luz_camera == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLuzCamera">
+            <div class="card actuator-card <?php echo ($valor_buzzer_alarme == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoBuzzerAlarme">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="actuator-title">Luz da câmara</h3>
-                    <p class="sensor-meta mb-0">LED controlado pelo Arduino</p>
+                    <h3 class="actuator-title">Buzzer de alarme</h3>
+                    <p class="sensor-meta mb-0">Controlado pela Raspberry Pi</p>
                   </div>
                   <span class="actuator-icon"><i class="bi bi-lightbulb-fill"></i></span>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-4">
-                  <span class="state-badge <?php echo ($valor_luz_camera == '1') ? 'state-on' : 'state-off'; ?>" id="estadoLuzCamera">
-                    <?php echo ($valor_luz_camera == '1') ? 'Ativo' : 'Inativo'; ?>
+                  <span class="state-badge <?php echo ($valor_buzzer_alarme == '1') ? 'state-on' : 'state-off'; ?>" id="estadoBuzzerAlarme">
+                    <?php echo ($valor_buzzer_alarme == '1') ? 'Ativo' : 'Inativo'; ?>
                   </span>
-                  <button class="btn <?php echo ($valor_luz_camera == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoLuzCamera" onclick="alternarAtuador('cartaoLuzCamera', 'estadoLuzCamera', 'botaoLuzCamera', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'luz-camera')">
-                    <?php echo ($valor_luz_camera == '1') ? 'Desligar' : 'Ligar'; ?>
+                  <button class="btn <?php echo ($valor_buzzer_alarme == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoBuzzerAlarme" onclick="alternarAtuador('cartaoBuzzerAlarme', 'estadoBuzzerAlarme', 'botaoBuzzerAlarme', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'buzzer-alarme')">
+                    <?php echo ($valor_buzzer_alarme == '1') ? 'Desligar' : 'Ligar'; ?>
                   </button>
                 </div>
               </div>
@@ -219,11 +222,55 @@
           </article>
 
           <article class="col-12 col-sm-6 col-xl-4">
+            <div class="card actuator-card <?php echo ($valor_led_camera == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLedCamera">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-start justify-content-between gap-3">
+                  <div>
+                    <h3 class="actuator-title">LED da Câmara</h3>
+                    <p class="sensor-meta mb-0">LED controlado pelo Arduino</p>
+                  </div>
+                  <span class="actuator-icon"><i class="bi bi-lightbulb-fill"></i></span>
+                </div>
+                <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-4">
+                  <span class="state-badge <?php echo ($valor_led_camera == '1') ? 'state-on' : 'state-off'; ?>" id="estadoLedCamera">
+                    <?php echo ($valor_led_camera == '1') ? 'Ativo' : 'Inativo'; ?>
+                  </span>
+                  <button class="btn <?php echo ($valor_led_camera == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoLedCamera" onclick="alternarAtuador('cartaoLedCamera', 'estadoLedCamera', 'botaoLedCamera', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-camera')">
+                    <?php echo ($valor_led_camera == '1') ? 'Desligar' : 'Ligar'; ?>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="col-12 col-sm-6 col-xl-4">
+            <div class="card actuator-card <?php echo ($valor_led_camera == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLedCamera">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-start justify-content-between gap-3">
+                  <div>
+                    <h3 class="actuator-title">LED de Aviso de Fogo</h3>
+                    <p class="sensor-meta mb-0">LED controlado pelo Arduino</p>
+                  </div>
+                  <span class="actuator-icon"><i class="bi bi-lightbulb-fill"></i></span>
+                </div>
+                <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-4">
+                  <span class="state-badge <?php echo ($valor_led_fogo == '1') ? 'state-on' : 'state-off'; ?>" id="estadoLedFogo">
+                    <?php echo ($valor_led_fogo == '1') ? 'Ativo' : 'Inativo'; ?>
+                  </span>
+                  <button class="btn <?php echo ($valor_led_fogo == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoLedFogo" onclick="alternarAtuador('cartaoLedFogo', 'estadoLedFogo', 'botaoLedFogo', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-fogo')">
+                    <?php echo ($valor_led_fogo == '1') ? 'Desligar' : 'Ligar'; ?>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="col-12 col-sm-6 col-xl-4">
             <div class="card actuator-card <?php echo ($valor_led_temperatura == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLedTemperatura">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="actuator-title">LED de temperatura</h3>
+                    <h3 class="actuator-title">LED de Aviso de Temperatura</h3>
                     <p class="sensor-meta mb-0">Aviso controlado pelo Arduino</p>
                   </div>
                   <span class="actuator-icon"><i class="bi bi-lightbulb-fill"></i></span>
