@@ -127,7 +127,7 @@
           <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
             <span class="user-pill">
               <i class="bi bi-person-circle"></i>
-              Miguel Santos
+              Miguel Alves
             </span>
             <button class="btn btn-outline-light btn-sm logout-button" type="button">
               <i class="bi bi-box-arrow-right"></i>
