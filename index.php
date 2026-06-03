@@ -8,14 +8,14 @@
   $ficheiro_sensor_chama = "api/files/sensor-chama/valor.txt";
   $valor_sensor_chama = file_exists($ficheiro_sensor_chama) ? file_get_contents($ficheiro_sensor_chama) : "0";
 
-  $ficheiro_buzzer_alarme = "api/files/buzzer-alarme/valor.txt";
-  $valor_buzzer_alarme = file_exists($ficheiro_buzzer_alarme) ? file_get_contents($ficheiro_buzzer_alarme) : "0";
+  $ficheiro_luz_camera = "api/files/luz-camera/valor.txt";
+  $valor_luz_camera = file_exists($ficheiro_luz_camera) ? file_get_contents($ficheiro_luz_camera) : "0";
 
   $ficheiro_buzzer_fogo = "api/files/buzzer-fogo/valor.txt";
   $valor_buzzer_fogo = file_exists($ficheiro_buzzer_fogo) ? file_get_contents($ficheiro_buzzer_fogo) : "0";
 
-  $ficheiro_led_fogo = "api/files/led-fogo/valor.txt";
-  $valor_led_fogo = file_exists($ficheiro_led_fogo) ? file_get_contents($ficheiro_led_fogo) : "0";
+  $ficheiro_led_temperatura = "api/files/led-temperatura/valor.txt";
+  $valor_led_temperatura = file_exists($ficheiro_led_temperatura) ? file_get_contents($ficheiro_led_temperatura) : "0";
 
 
   // O histórico usa uma linha por registro no formato: data/hora;tipo;nome;valor;origem.
@@ -72,11 +72,25 @@
     // 1. Criamos um histórico vazio (uma lista limpa)
   $historico = array();
 
-  // 2. O 'glob' pesquisa automaticamente todos os ficheiros log.txt dentro da pasta files
-  $todos_os_logs = glob("api/files/*/log.txt");
+  // 2. Lista final dos dispositivos do protótipo Casa Inteligente.
+  $dispositivos_finais = array(
+    "sensor-movimento",
+    "luz-camera",
+    "sensor-temperatura",
+    "led-temperatura",
+    "sensor-chama",
+    "buzzer-fogo",
+    "camera"
+  );
 
   // 3. Fazemos um ciclo simples para ler cada ficheiro que ele encontrou
-  foreach ($todos_os_logs as $ficheiro) {
+  foreach ($dispositivos_finais as $dispositivo) {
+      $ficheiro = "api/files/" . $dispositivo . "/log.txt";
+
+      if (!file_exists($ficheiro)) {
+          continue;
+      }
+
       // Lê o ficheiro atual
       $log_desta_pasta = lerLogs($ficheiro);
       
@@ -148,7 +162,7 @@
           <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
             <span class="user-pill">
               <i class="bi bi-person-circle"></i>
-              Miguel Santos
+              Miguel Alves
             </span>
             <button class="btn btn-outline-light btn-sm logout-button" type="button">
               <i class="bi bi-box-arrow-right"></i>
@@ -185,8 +199,8 @@
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="sensor-title">Sensor de Movimento</h3>
-                    <p class="sensor-meta mb-0">Botão de Pressão</p>
+                    <h3 class="sensor-title">Movimento</h3>
+                    <p class="sensor-meta mb-0">Detetado pelo Arduino</p>
                   </div>
                   <span class="sensor-icon"><i class="bi bi-broadcast"></i></span>
                 </div>
@@ -208,12 +222,14 @@
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="sensor-title">Medição de Temperatura</h3>
-                    <p class="sensor-meta mb-0">Sensor de Temperatura</p>
+                    <h3 class="sensor-title">Temperatura</h3>
+                    <p class="sensor-meta mb-0">Monitorizada pelo Arduino</p>
                   </div>
-                  <span class="sensor-icon"><i class="bi-thermometer-half"></i></span>
+                  <span class="sensor-icon"><i class="bi bi-thermometer-half"></i></span>
                 </div>
-                <div class="sensor-value" id="valorSensorTemperatura">Inativo</div>
+                <div class="sensor-value" id="valorSensorTemperatura">
+                  <?php echo trim($valor_sensor_temperatura) . ' °C'; ?>
+                </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
                   <span class="sensor-meta">Origem: Arduino</span>
                   <span class="state-badge state-off" id="badgeSensorTemperatura">
@@ -229,8 +245,8 @@
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="sensor-title">Detetor de Fogo</h3>
-                    <p class="sensor-meta mb-0">Sensor de Chama / Mostrar o que ele envia?</p>
+                    <h3 class="sensor-title">Chama</h3>
+                    <p class="sensor-meta mb-0">Detetada pela Raspberry Pi</p>
                   </div>
                   <span class="sensor-icon"><i class="bi bi-fire"></i></span>
                 </div>
@@ -238,7 +254,7 @@
                   <?php echo ($valor_sensor_chama == '1') ? 'Ativo' : 'Inativo'; ?>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
-                  <span class="sensor-meta">Origem: Raspberry</span>
+                  <span class="sensor-meta">Origem: Raspberry Pi</span>
                   <span class="state-badge <?php echo ($valor_sensor_chama == '1') ? 'state-on' : 'state-off'; ?>" id="badgeSensorChama">
                     <?php echo ($valor_sensor_chama == '1') ? 'Ativo' : 'Inativo'; ?>
                   </span>
@@ -261,21 +277,21 @@
         <div class="row g-3">
 
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card actuator-card <?php echo ($valor_buzzer_alarme == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoBuzzerAlarme">
+            <div class="card actuator-card <?php echo ($valor_luz_camera == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLuzCamera">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="actuator-title">Alarme Sonoro</h3>
-                    <p class="sensor-meta mb-0">Buzzer</p>
+                    <h3 class="actuator-title">Luz da câmara</h3>
+                    <p class="sensor-meta mb-0">LED controlado pelo Arduino</p>
                   </div>
-                  <span class="actuator-icon"><i class="bi bi-bell-fill"></i></span>
+                  <span class="actuator-icon"><i class="bi bi-lightbulb-fill"></i></span>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-4">
-                  <span class="state-badge <?php echo ($valor_buzzer_alarme == '1') ? 'state-on' : 'state-off'; ?>" id="estadoBuzzerAlarme">
-                    <?php echo ($valor_buzzer_alarme == '1') ? 'Ativo' : 'Inativo'; ?>
+                  <span class="state-badge <?php echo ($valor_luz_camera == '1') ? 'state-on' : 'state-off'; ?>" id="estadoLuzCamera">
+                    <?php echo ($valor_luz_camera == '1') ? 'Ativo' : 'Inativo'; ?>
                   </span>
-                  <button class="btn <?php echo ($valor_buzzer_alarme == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoBuzzerAlarme" onclick="alternarAtuador('cartaoBuzzerAlarme', 'estadoBuzzerAlarme', 'botaoBuzzerAlarme', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'buzzer-alarme')">
-                    <?php echo ($valor_buzzer_alarme == '1') ? 'Desligar' : 'Ligar'; ?>
+                  <button class="btn <?php echo ($valor_luz_camera == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoLuzCamera" onclick="alternarAtuador('cartaoLuzCamera', 'estadoLuzCamera', 'botaoLuzCamera', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'luz-camera')">
+                    <?php echo ($valor_luz_camera == '1') ? 'Desligar' : 'Ligar'; ?>
                   </button>
                 </div>
               </div>
@@ -287,8 +303,8 @@
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="actuator-title">Alarme de Aviso de Fogo</h3>
-                    <p class="sensor-meta mb-0">Buzzer</p>
+                    <h3 class="actuator-title">Buzzer de fogo</h3>
+                    <p class="sensor-meta mb-0">Controlado pela Raspberry Pi</p>
                   </div>
                   <span class="actuator-icon"><i class="bi bi-bell-fill"></i></span>
                 </div>
@@ -305,21 +321,21 @@
           </article>
 
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card actuator-card <?php echo ($valor_led_fogo == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLedFogo">
+            <div class="card actuator-card <?php echo ($valor_led_temperatura == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLedTemperatura">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="actuator-title">Led de Aviso de Fogo</h3>
-                    <p class="sensor-meta mb-0">Led</p>
+                    <h3 class="actuator-title">LED de temperatura</h3>
+                    <p class="sensor-meta mb-0">Aviso controlado pelo Arduino</p>
                   </div>
                   <span class="actuator-icon"><i class="bi bi-lightbulb-fill"></i></span>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-auto pt-4">
-                  <span class="state-badge <?php echo ($valor_led_fogo == '1') ? 'state-on' : 'state-off'; ?>" id="estadoLedFogo">
-                    <?php echo ($valor_led_fogo == '1') ? 'Ativo' : 'Inativo'; ?>
+                  <span class="state-badge <?php echo ($valor_led_temperatura == '1') ? 'state-on' : 'state-off'; ?>" id="estadoLedTemperatura">
+                    <?php echo ($valor_led_temperatura == '1') ? 'Ativo' : 'Inativo'; ?>
                   </span>
-                  <button class="btn <?php echo ($valor_led_fogo == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoLedFogo" onclick="alternarAtuador('cartaoLedFogo', 'estadoLedFogo', 'botaoLedFogo', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-fogo')">
-                    <?php echo ($valor_led_fogo == '1') ? 'Desligar' : 'Ligar'; ?>
+                  <button class="btn <?php echo ($valor_led_temperatura == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button" type="button" id="botaoLedTemperatura" onclick="alternarAtuador('cartaoLedTemperatura', 'estadoLedTemperatura', 'botaoLedTemperatura', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-temperatura')">
+                    <?php echo ($valor_led_temperatura == '1') ? 'Desligar' : 'Ligar'; ?>
                   </button>
                 </div>
               </div>
@@ -337,14 +353,14 @@
                 <div class="section-heading compact-heading">
                   <div>
                     <span class="section-kicker">Câmara</span>
-                    <h2>Última captura</h2>
+                    <h2>Última imagem da câmara</h2>
                   </div>
                   <i class="bi bi-camera-video camera-icon"></i>
                 </div>
 
                 <div class="camera-placeholder" role="img" aria-label="Imagem simulada da última captura">
                   <div class="camera-overlay">
-                    <span>Sala principal</span>
+                    <span>Raspberry Pi</span>
                     <span>Imagem de exemplo</span>
                   </div>
                   <div class="room-wall">
@@ -374,7 +390,7 @@
                 <div class="section-heading compact-heading">
                   <div>
                     <span class="section-kicker">Registos</span>
-                    <h2>Eventos recentes</h2>
+                    <h2>Último evento</h2>
                   </div>
                   <i class="bi bi-activity camera-icon"></i>
                 </div>
@@ -384,36 +400,36 @@
                   <li class="list-group-item">
                     <span class="event-dot"></span>
                     <span class="event-text">
-                      <strong>Movimento detetado na sala</strong>
-                      <small>27/05/2026, 14:10:00 · SBC</small>
+                      <strong>Movimento detetado pelo Arduino</strong>
+                      <small>27/05/2026, 14:10:00 · Arduino</small>
                     </span>
                   </li>
                   <li class="list-group-item">
                     <span class="event-dot"></span>
                     <span class="event-text">
-                      <strong>Luz principal ligada</strong>
-                      <small>27/05/2026, 14:05:00 · Dashboard</small>
+                      <strong>Luz da câmara ligada</strong>
+                      <small>27/05/2026, 14:05:00 · Arduino</small>
                     </span>
                   </li>
                   <li class="list-group-item">
                     <span class="event-dot"></span>
                     <span class="event-text">
-                      <strong>Porta aberta</strong>
-                      <small>27/05/2026, 13:58:00 · SBC</small>
+                      <strong>Chama detetada pela Raspberry Pi</strong>
+                      <small>27/05/2026, 13:58:00 · Raspberry Pi</small>
                     </span>
                   </li>
                   <li class="list-group-item">
                     <span class="event-dot"></span>
                     <span class="event-text">
-                      <strong>Temperatura atualizada</strong>
-                      <small>27/05/2026, 13:52:00 · MCU</small>
+                      <strong>Temperatura monitorizada pelo Arduino</strong>
+                      <small>27/05/2026, 13:52:00 · Arduino</small>
                     </span>
                   </li>
                   <li class="list-group-item">
                     <span class="event-dot"></span>
                     <span class="event-text">
-                      <strong>Alarme ativado</strong>
-                      <small>27/05/2026, 13:45:00 · Dashboard</small>
+                      <strong>Buzzer de fogo controlado pela Raspberry Pi</strong>
+                      <small>27/05/2026, 13:45:00 · Raspberry Pi</small>
                     </span>
                   </li>
                 </ul>

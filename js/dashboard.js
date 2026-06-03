@@ -29,7 +29,7 @@ function alternarAtuador(idCartao, idEstado, idBotao, estadoAtivo, estadoInativo
     valorEstado = "1"; // 1 para ligado
   }
 
-  // Se passarmos o nome da API (ex: "campainha"), ele envia para o PHP
+  // Se passarmos o nome da API (ex: "luz-camera"), ele envia para o PHP.
   if (nomeApi) {
     enviarComandoAPI(nomeApi, valorEstado);
   }
@@ -174,30 +174,15 @@ function atualizarHistorico() {
 }
 
 function atualizarTudo() {
-  // Sensores:
-  // Para atualizar o Botão Campainha (Sensor)
-  // Parâmetros: Nome na API, ID Cartão, ID Badge, ID Texto, é atuador? (false)
-  atualizarDispositivo("botao-campainha", "cartaoBotaoCampainha", "badgeBotaoCampainha", "valorBotaoCampainha", false);
-
-  // Para atualizar o Sensor de Movimento (Sensor)
+  // Sensores Arduino e Raspberry Pi.
   atualizarDispositivo("sensor-movimento", "cartaoSensorMovimento", "badgeSensorMovimento", "valorSensorMovimento", false);
-
-  // Para atualizar o Sensor de Temperatura (Sensor)
   atualizarDispositivo("sensor-temperatura", "cartaoSensorTemperatura", "badgeSensorTemperatura", "valorSensorTemperatura", false);
-
-  // Para atualizar o Sensor de Chama (Sensor)
   atualizarDispositivo("sensor-chama", "cartaoSensorChama", "badgeSensorChama", "valorSensorChama", false);
 
-  // Atuadores:
-  // Para atualizar o Buzzer Alarme (Atuador)
-  // Parâmetros: Nome na API, ID Cartão, ID Badge, ID Botão, é atuador? (true)
-  atualizarDispositivo("buzzer-alarme", "cartaoBuzzerAlarme", "estadoBuzzerAlarme", "botaoBuzzerAlarme", true);
-
-  // Para atualizar o Buzzer do Aviso de Fogo (Atuador)
+  // Atuadores finais do protótipo.
+  atualizarDispositivo("luz-camera", "cartaoLuzCamera", "estadoLuzCamera", "botaoLuzCamera", true);
   atualizarDispositivo("buzzer-fogo", "cartaoBuzzerFogo", "estadoBuzzerFogo", "botaoBuzzerFogo", true);
-
-  // Para atualizar o Led de Aviso de Fogo (Atuador)
-  atualizarDispositivo("led-fogo", "cartaoLedFogo", "estadoLedFogo", "botaoLedFogo", true);
+  atualizarDispositivo("led-temperatura", "cartaoLedTemperatura", "estadoLedTemperatura", "botaoLedTemperatura", true);
 
   //Histórico:
   atualizarHistorico();
