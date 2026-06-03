@@ -182,9 +182,6 @@ function atualizarTudo() {
   // Para atualizar o Sensor de Movimento (Sensor)
   atualizarDispositivo("sensor-movimento", "cartaoSensorMovimento", "badgeSensorMovimento", "valorSensorMovimento", false);
 
-  // Para atualizar o Botão do Alarme (Sensor)
-  atualizarDispositivo("botao-alarme", "cartaoBotaoAlarme", "badgeBotaoAlarme", "valorBotaoAlarme", false);
-
   // Para atualizar o Sensor de Temperatura (Sensor)
   atualizarDispositivo("sensor-temperatura", "cartaoSensorTemperatura", "badgeSensorTemperatura", "valorSensorTemperatura", false);
 
