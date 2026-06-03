@@ -17,108 +17,6 @@
   $ficheiro_led_temperatura = "api/files/led-temperatura/valor.txt";
   $valor_led_temperatura = file_exists($ficheiro_led_temperatura) ? file_get_contents($ficheiro_led_temperatura) : "0";
 
-
-  // O histórico usa uma linha por registro no formato: data/hora;tipo;nome;valor;origem.
-  // Esta função lê o log, separa cada linha nesses 5 campos e prepara os dados para a tabela.
-  function lerLogs($ficheiro_log) {
-    $historico = array();
-
-    // Se o arquivo ainda não existir, a função retorna a lista vazia.
-    if (file_exists($ficheiro_log)) {
-      $conteudo = file_get_contents($ficheiro_log);
-
-      // Cada quebra de linha representa um registro diferente do histórico.
-      $linhas = explode(PHP_EOL, $conteudo);
-
-      foreach ($linhas as $linha) {
-        // O trim remove espaços, tabs e quebras de linha do começo e do fim do texto.
-        $linha = trim($linha);
-
-        // Linhas vazias são ignoradas para não criar linhas em branco na tabela.
-        if ($linha != "") {
-          // O ponto e vírgula separa os campos que depois viram as colunas da tabela.
-          $dados = explode(";", $linha);
-
-          // Se não tiver 5 campos, a linha não serve para preencher a tabela inteira.
-          if (count($dados) == 5) {
-            $data = $dados[0];
-            $tipo = $dados[1];
-            $nome = $dados[2];
-            $valor = $dados[3];
-            $origem = $dados[4];
-          }
-          else {
-            continue;
-          }
-
-          // No arquivo fica mais simples guardar 1 e 0, mas na tabela é melhor mostrar texto.
-          if ($valor == "1") {
-            $valor = "Ativo";
-          }
-
-          if ($valor == "0") {
-            $valor = "Inativo";
-          }
-
-          // Cada posição do array corresponde a uma coluna da tabela.
-          $historico[] = array($data, $tipo, $nome, $valor, $origem);
-        }
-      }
-    }
-
-    return $historico;
-  }
-
-    // 1. Criamos um histórico vazio (uma lista limpa)
-  $historico = array();
-
-  // 2. Lista final dos dispositivos do protótipo Casa Inteligente.
-  $dispositivos_finais = array(
-    "sensor-movimento",
-    "luz-camera",
-    "sensor-temperatura",
-    "led-temperatura",
-    "sensor-chama",
-    "buzzer-fogo",
-    "camera"
-  );
-
-  // 3. Fazemos um ciclo simples para ler cada ficheiro que ele encontrou
-  foreach ($dispositivos_finais as $dispositivo) {
-      $ficheiro = "api/files/" . $dispositivo . "/log.txt";
-
-      if (!file_exists($ficheiro)) {
-          continue;
-      }
-
-      // Lê o ficheiro atual
-      $log_desta_pasta = lerLogs($ficheiro);
-      
-      // array_merge junta as linhas deste log ao nosso histórico principal
-      $historico = array_merge($historico, $log_desta_pasta);
-  }
-
-  // 4. Ordenação cronológica (Mais recente primeiro)
-  usort($historico, function($a, $b) {
-      // strtotime transforma o texto da data em segundos para o PHP conseguir comparar números
-      return strtotime($b[0]) - strtotime($a[0]);
-  });
-
-  // Se o JavaScript pedir "tabela=sim", o PHP desenha só as linhas e PARA!
-  if (isset($_GET['tabela'])) {
-      foreach ($historico as $registro) {
-          echo "<tr>";
-          echo "<td>" . $registro[0] . "</td>";
-          echo "<td>" . $registro[1] . "</td>";
-          echo "<td>" . $registro[2] . "</td>";
-          echo "<td>" . $registro[3] . "</td>";
-          echo "<td><span class='origin-label'>" . $registro[4] . "</span></td>";
-          echo "</tr>";
-      }
-      exit(); // Este comando é a magia: faz o PHP parar e não carregar o HTML todo!
-  }
-  // -----------------------------
-
 ?>
 
 <!doctype html>
@@ -155,7 +53,7 @@
               <a class="nav-link" href="#camara">Câmara</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#historico">Histórico</a>
+              <a class="nav-link" href="historico.php">Histórico</a>
             </li>
           </ul>
 
@@ -440,115 +338,21 @@
       </section>
 
       <section class="dashboard-section" id="historico">
-        <div class="row g-3">
-          <div class="col-xl-8">
-            <div class="card h-100">
-              <div class="card-body">
-                <div class="section-heading compact-heading">
-                  <div>
-                    <span class="section-kicker">Amostras</span>
-                    <h2>Histórico</h2>
-                  </div>
-                </div>
-
-                <div class="table-responsive">
-                  <table class="table table-hover align-middle history-table mb-0">
-                    <thead>
-                      <tr>
-                        <th scope="col">Data/Hora</th>
-                        <th scope="col">Tipo</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Valor/Estado</th>
-                        <th scope="col">Origem</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tabela-historico">
-                      <?php if (count($historico) == 0): ?>
-                        <!-- Mostra uma mensagem quando ainda não existe histórico. -->
-                        <tr>
-                          <td colspan="5">Nenhum registro encontrado.</td>
-                        </tr>
-                      <?php else: ?>
-                        <!-- Cria uma linha da tabela para cada registro encontrado no log. -->
-                        <?php foreach ($historico as $registro): ?>
-                          <tr>
-                            <td><?php echo $registro[0]; ?></td>
-                            <td><?php echo $registro[1]; ?></td>
-                            <td><?php echo $registro[2]; ?></td>
-                            <td><?php echo $registro[3]; ?></td>
-                            <td><span class="origin-label"><?php echo $registro[4]; ?></span></td>
-                          </tr>
-                        <?php endforeach; ?>
-                      <?php endif; ?>
-                    </tbody>
-                  </table>
-                </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="section-heading compact-heading">
+              <div>
+                <span class="section-kicker">Registos</span>
+                <h2>Histórico</h2>
               </div>
             </div>
-          </div>
 
-          <div class="col-xl-4">
-            <div class="card h-100 temperature-card">
-              <div class="card-body">
-                <div class="section-heading compact-heading">
-                  <div>
-                    <span class="section-kicker">Tendência</span>
-                    <h2>Histórico de Temperatura</h2>
-                  </div>
-                </div>
+            <p class="sensor-meta">Consulta os registos dos sensores e atuadores numa página separada.</p>
 
-                <div class="temperature-chart" aria-label="Histórico visual de temperatura">
-                  <div class="chart-item">
-                    <div class="chart-track">
-                      <div class="chart-bar" style="height: 42%"></div>
-                    </div>
-                    <span class="chart-label">20,9 °C</span>
-                  </div>
-                  <div class="chart-item">
-                    <div class="chart-track">
-                      <div class="chart-bar" style="height: 48%"></div>
-                    </div>
-                    <span class="chart-label">21,1 °C</span>
-                  </div>
-                  <div class="chart-item">
-                    <div class="chart-track">
-                      <div class="chart-bar" style="height: 54%"></div>
-                    </div>
-                    <span class="chart-label">21,4 °C</span>
-                  </div>
-                  <div class="chart-item">
-                    <div class="chart-track">
-                      <div class="chart-bar" style="height: 50%"></div>
-                    </div>
-                    <span class="chart-label">21,2 °C</span>
-                  </div>
-                  <div class="chart-item">
-                    <div class="chart-track">
-                      <div class="chart-bar" style="height: 62%"></div>
-                    </div>
-                    <span class="chart-label">21,7 °C</span>
-                  </div>
-                  <div class="chart-item">
-                    <div class="chart-track">
-                      <div class="chart-bar" style="height: 60%"></div>
-                    </div>
-                    <span class="chart-label">21,6 °C</span>
-                  </div>
-                  <div class="chart-item">
-                    <div class="chart-track">
-                      <div class="chart-bar" style="height: 64%"></div>
-                    </div>
-                    <span class="chart-label">21,8 °C</span>
-                  </div>
-                  <div class="chart-item">
-                    <div class="chart-track">
-                      <div class="chart-bar" style="height: 60%"></div>
-                    </div>
-                    <span class="chart-label">21,6 °C</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <a class="btn btn-primary" href="historico.php">
+              <i class="bi bi-clock-history"></i>
+              Ver histórico
+            </a>
           </div>
         </div>
       </section>
