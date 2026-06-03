@@ -1,19 +1,6 @@
 <?php
-  // Tenta ler o estado atual da campainha do ficheiro
-  $ficheiro_campainha = "api/files/campainha/valor.txt";
-  $valor_campainha = file_exists($ficheiro_campainha) ? file_get_contents($ficheiro_campainha) : "0";
-
-  $ficheiro_led = "api/files/led/valor.txt";
-  $valor_led = file_exists($ficheiro_led) ? file_get_contents($ficheiro_led) : "0";
-
-  $ficheiro_botao_campainha = "api/files/botao-campainha/valor.txt";
-  $valor_botao_campainha = file_exists($ficheiro_botao_campainha) ? file_get_contents($ficheiro_botao_campainha) : "0";
-
   $ficheiro_sensor_movimento = "api/files/sensor-movimento/valor.txt";
   $valor_sensor_movimento = file_exists($ficheiro_sensor_movimento) ? file_get_contents($ficheiro_sensor_movimento) : "0";
-
-  $ficheiro_botao_alarme = "api/files/botao-alarme/valor.txt";
-  $valor_botao_alarme = file_exists($ficheiro_botao_alarme) ? file_get_contents($ficheiro_botao_alarme) : "0";
 
   $ficheiro_sensor_temperatura = "api/files/sensor-temperatura/valor.txt";
   $valor_sensor_temperatura = file_exists($ficheiro_sensor_temperatura) ? file_get_contents($ficheiro_sensor_temperatura) : "0";
@@ -82,8 +69,42 @@
     return $historico;
   }
 
-  // Por enquanto lê o log da campainha, mas depois será mudado para ler os logs de forma dinâmica.
-  $historico = lerLogs("api/files/campainha/log.txt");
+    // 1. Criamos um histórico vazio (uma lista limpa)
+  $historico = array();
+
+  // 2. O 'glob' pesquisa automaticamente todos os ficheiros log.txt dentro da pasta files
+  $todos_os_logs = glob("api/files/*/log.txt");
+
+  // 3. Fazemos um ciclo simples para ler cada ficheiro que ele encontrou
+  foreach ($todos_os_logs as $ficheiro) {
+      // Lê o ficheiro atual
+      $log_desta_pasta = lerLogs($ficheiro);
+      
+      // array_merge junta as linhas deste log ao nosso histórico principal
+      $historico = array_merge($historico, $log_desta_pasta);
+  }
+
+  // 4. Ordenação cronológica (Mais recente primeiro)
+  usort($historico, function($a, $b) {
+      // strtotime transforma o texto da data em segundos para o PHP conseguir comparar números
+      return strtotime($b[0]) - strtotime($a[0]);
+  });
+
+  // Se o JavaScript pedir "tabela=sim", o PHP desenha só as linhas e PARA!
+  if (isset($_GET['tabela'])) {
+      foreach ($historico as $registro) {
+          echo "<tr>";
+          echo "<td>" . $registro[0] . "</td>";
+          echo "<td>" . $registro[1] . "</td>";
+          echo "<td>" . $registro[2] . "</td>";
+          echo "<td>" . $registro[3] . "</td>";
+          echo "<td><span class='origin-label'>" . $registro[4] . "</span></td>";
+          echo "</tr>";
+      }
+      exit(); // Este comando é a magia: faz o PHP parar e não carregar o HTML todo!
+  }
+  // -----------------------------
+
 ?>
 
 <!doctype html>
@@ -145,31 +166,6 @@
             <p class="overline mb-2">Casa Inteligente</p>
             <h1 class="mb-0">Painel principal</h1>
           </div>
-          <div class="col-lg-5">
-            <div class="row g-3">
-              <div class="col-4">
-                <div class="status-tile">
-                  <i class="bi bi-shield-check"></i>
-                  <span>Segurança</span>
-                  <strong>Ativa</strong>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="status-tile">
-                  <i class="bi bi-house-gear"></i>
-                  <span>Divisão</span>
-                  <strong>Sala</strong>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="status-tile">
-                  <i class="bi bi-wifi"></i>
-                  <span>Rede</span>
-                  <strong>Estável</strong>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -198,32 +194,9 @@
                   <?php echo ($valor_sensor_movimento == '1') ? 'Ativo' : 'Inativo'; ?>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
-                  <span class="sensor-meta">Origem: ?</span>
+                  <span class="sensor-meta">Origem: Arduino</span>
                   <span class="state-badge <?php echo ($valor_sensor_movimento == '1') ? 'state-on' : 'state-off'; ?>" id="badgeSensorMovimento">
                     <?php echo ($valor_sensor_movimento == '1') ? 'Ativo' : 'Inativo'; ?>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card sensor-card <?php echo ($valor_botao_alarme == '1') ? 'sensor-active' : 'sensor-closed'; ?> h-100" id="cartaoBotaoAlarme">
-              <div class="card-body">
-                <div class="d-flex align-items-start justify-content-between gap-3">
-                  <div>
-                    <h3 class="sensor-title">Alarme</h3>
-                    <p class="sensor-meta mb-0">Botão de Pressão</p>
-                  </div>
-                  <span class="sensor-icon"><i class="bi-record-circle-fill"></i></span>
-                </div>
-                <div class="sensor-value" id="valorBotaoAlarme">
-                  <?php echo ($valor_botao_alarme == '1') ? 'Ativo' : 'Inativo'; ?>
-                </div>
-                <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
-                  <span class="sensor-meta">Origem: ?</span>
-                  <span class="state-badge <?php echo ($valor_botao_alarme == '1') ? 'state-on' : 'state-off'; ?>" id="badgeBotaoAlarme">
-                    <?php echo ($valor_botao_alarme == '1') ? 'Ativo' : 'Inativo'; ?>
                   </span>
                 </div>
               </div>
@@ -242,7 +215,7 @@
                 </div>
                 <div class="sensor-value" id="valorSensorTemperatura">Inativo</div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
-                  <span class="sensor-meta">Origem: MCU</span>
+                  <span class="sensor-meta">Origem: Arduino</span>
                   <span class="state-badge state-off" id="badgeSensorTemperatura">
                     Inativo
                   </span>
@@ -265,7 +238,7 @@
                   <?php echo ($valor_sensor_chama == '1') ? 'Ativo' : 'Inativo'; ?>
                 </div>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
-                  <span class="sensor-meta">Origem: ?</span>
+                  <span class="sensor-meta">Origem: Raspberry</span>
                   <span class="state-badge <?php echo ($valor_sensor_chama == '1') ? 'state-on' : 'state-off'; ?>" id="badgeSensorChama">
                     <?php echo ($valor_sensor_chama == '1') ? 'Ativo' : 'Inativo'; ?>
                   </span>
@@ -473,7 +446,7 @@
                         <th scope="col">Origem</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tabela-historico">
                       <?php if (count($historico) == 0): ?>
                         <!-- Mostra uma mensagem quando ainda não existe histórico. -->
                         <tr>

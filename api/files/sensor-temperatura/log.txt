@@ -1,0 +1,1 @@
+02-06-2026 10:23:07;Sensor;sensor-temperatura;25;Arduino
