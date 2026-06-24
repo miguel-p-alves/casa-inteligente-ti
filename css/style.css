@@ -530,6 +530,12 @@ body {
   white-space: nowrap;
 }
 
+.chart-container {
+  position: relative;
+  height: 30rem;
+  width: 100%; 
+}
+
 @media (max-width: 991.98px) {
   .dashboard-shell {
     padding: 1rem;

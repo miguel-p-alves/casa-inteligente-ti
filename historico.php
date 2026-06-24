@@ -10,6 +10,16 @@
   );
 
   $filtro_nome = "";
+  $filtro_data_inicio = "";
+  $filtro_data_fim = "";
+
+  if (isset($_GET["data_inicio"])) {
+      $filtro_data_inicio = $_GET["data_inicio"];
+  } 
+
+  if (isset($_GET["data_fim"])) {
+      $filtro_data_fim = $_GET["data_fim"];
+  } 
 
   if (isset($_GET["nome"]) && array_key_exists($_GET["nome"], $dispositivos)) {
     $filtro_nome = $_GET["nome"];
@@ -95,7 +105,67 @@
     }
   }
 
+ function carregarDadosGraficoTemperatura($ficheiro_log, $data_inicio, $data_fim) {
+    $temperaturas = array();
+
+    if (file_exists($ficheiro_log)) {
+      $conteudo = file_get_contents($ficheiro_log);
+      $linhas = explode(PHP_EOL, $conteudo);
+
+      foreach ($linhas as $linha) {
+        $linha = trim($linha);
+
+        if ($linha != "") {
+          $dados = explode(";", $linha);
+
+          if (count($dados) == 5) {
+           
+            // 1. Isolar apenas os 10 primeiros caracteres (ex: "02-06-2026")
+            $data_pt = substr($dados[0], 0, 10);
+            
+            // 2. Cortar a data pelos traços
+            $partes = explode("-", $data_pt);
+            
+            // 3. Montar no formato do HTML (Ano-Mês-Dia)
+            // $partes[2] é o Ano (2026), $partes[1] é o Mês (06), $partes[0] é o Dia (02)
+            $data_registo = $partes[2] . "-" . $partes[1] . "-" . $partes[0];
+            
+            $passou_filtro = true;
+            
+            if ($data_inicio != "") {
+                if ($data_registo < $data_inicio) {
+                    $passou_filtro = false;
+                }
+            }
+            
+            if ($data_fim != "") {
+                if ($data_registo > $data_fim) {
+                    $passou_filtro = false;
+                }
+            }
+
+            // 3. Guarda se passou no teste
+            if ($passou_filtro) {
+              $temperaturas[] = array($dados[0], $dados[3]);
+            }
+          }
+        }
+      }
+    }
+
+    return $temperaturas;
+  }
+
   $historico = carregarHistorico($dispositivos, $filtro_nome);
+  $temperaturas = carregarDadosGraficoTemperatura("api/files/sensor-temperatura/log.txt", $filtro_data_inicio, $filtro_data_fim);
+  $datas_grafico = "";
+  $valores_grafico = "";
+
+  // Prepara os valores que vão ser usados pelo Chart.js.
+  foreach ($temperaturas as $temperatura) {
+    $datas_grafico = $datas_grafico . "'" . $temperatura[0] . "',";
+    $valores_grafico = $valores_grafico . $temperatura[1] . ",";
+  }
 
   if (isset($_GET["tabela"])) {
     mostrarLinhasHistorico($historico);
@@ -164,7 +234,45 @@
           </div>
         </div>
       </section>
+       <div class="card mb-3">
+          <div class="card-body">
+            <div class="section-heading compact-heading">
+              <div>
+                <span class="section-kicker">Temperatura</span>
+                <h2>Histórico de temperatura</h2>
+              </div>
+            </div>
 
+            <div class="chart-container">
+              <canvas id="graficoTemperatura"></canvas>
+            </div> <hr class="mt-4 mb-3">
+
+            <form class="row g-3 align-items-end" method="GET" action="historico.php">
+              <?php if(isset($_GET['nome']) && $_GET['nome'] != ""): ?>
+                <input type="hidden" name="nome" value="<?php echo htmlspecialchars($_GET['nome']); ?>">
+              <?php endif; ?>
+
+              <div class="col-12 col-md-4">
+                <label class="capture-label" for="data_inicio">Data Início</label>
+                <input type="date" class="form-control" id="data_inicio" name="data_inicio" value="<?php echo htmlspecialchars($filtro_data_inicio); ?>">
+              </div>
+
+              <div class="col-12 col-md-4">
+                <label class="capture-label" for="data_fim">Data Fim</label>
+                <input type="date" class="form-control" id="data_fim" name="data_fim" value="<?php echo htmlspecialchars($filtro_data_fim); ?>">
+              </div>
+
+              <div class="col-12 col-md-auto">
+                <button class="btn btn-primary" type="submit">Filtrar Gráfico</button>
+              </div>
+
+              <div class="col-12 col-md-auto">
+                <a class="btn btn-outline-secondary" href="historico.php<?php echo isset($_GET['nome']) && $_GET['nome'] != "" ? '?nome='.htmlspecialchars($_GET['nome']) : ''; ?>">Limpar Datas</a>
+              </div>
+            </form>
+            
+          </div>
+        </div>
       <section class="dashboard-section" id="historico">
         <div class="card mb-3">
           <div class="card-body">
@@ -191,7 +299,7 @@
             </form>
           </div>
         </div>
-
+        
         <div class="card">
           <div class="card-body">
             <div class="section-heading compact-heading">
@@ -223,6 +331,38 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Cria o gráfico de temperatura com os dados preparados em PHP.
+      var graficoTemperatura = document.getElementById("graficoTemperatura");
+
+     new Chart(graficoTemperatura, {
+        type: "line",
+        data: {
+          labels: [<?php echo $datas_grafico; ?>],
+          datasets: [{
+            label: "Temperatura (°C)",
+            data: [<?php echo $valores_grafico; ?>],
+            borderColor: "#0f766e",
+            backgroundColor: "rgba(15, 118, 110, 0.15)",
+            borderWidth: 2,
+            fill: true
+          }]
+        },
+        options: {
+          maintainAspectRatio: false, // Diz ao gráfico para respeitar os 400px de altura que pusemos no HTML
+          scales: {
+            x: {
+              ticks: {
+                maxTicksLimit: 10, // Limita as datas em baixo a um máximo de 10 espaçadas!
+                maxRotation: 45,   // Inclina ligeiramente o texto para caber melhor
+                minRotation: 45
+              }
+            }
+          }
+        }
+      });
+    </script>
     <script src="js/dashboard.js"></script>
   </body>
 </html>
