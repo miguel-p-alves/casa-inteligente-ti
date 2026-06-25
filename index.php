@@ -11,17 +11,17 @@
   // Utilizadores do protótipo.
   $utilizadores = array(
     array(
-      "username" => "admin",
+      "username" => "Admin",
       "password_hash" => password_hash("admin", PASSWORD_DEFAULT),
       "role" => "admin"
     ),
     array(
-      "username" => "resident",
+      "username" => "Resident",
       "password_hash" => password_hash("resident", PASSWORD_DEFAULT),
       "role" => "resident"
     ),
     array(
-      "username" => "guest",
+      "username" => "Guest",
       "password_hash" => password_hash("guest", PASSWORD_DEFAULT),
       "role" => "guest"
     )
@@ -71,7 +71,7 @@
       </section>
 
       <section class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-5">
+        <div class="row g-3 align-items-center">
           <div class="card">
             <div class="card-body p-4">
               <div class="section-heading compact-heading">

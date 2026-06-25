@@ -1,1 +1,21 @@
 
+24-06-2026 21:55:37;Atuador;led-temperatura;1;Dashboard
+24-06-2026 21:55:37;Atuador;led-temperatura;0;Dashboard
+24-06-2026 21:57:08;Atuador;led-temperatura;1;Dashboard
+24-06-2026 21:57:09;Atuador;led-temperatura;0;Dashboard
+24-06-2026 21:57:42;Atuador;led-temperatura;1;Dashboard
+24-06-2026 22:00:41;Atuador;led-temperatura;0;Dashboard
+25-06-2026 18:07:50;Atuador;led-temperatura;1;Dashboard
+25-06-2026 18:08:03;Atuador;led-temperatura;0;Dashboard
+25-06-2026 19:05:43;Atuador;led-temperatura;1;Dashboard
+25-06-2026 19:05:49;Atuador;led-temperatura;0;Dashboard
+25-06-2026 19:13:33;Atuador;led-temperatura;1;Dashboard
+25-06-2026 19:13:40;Atuador;led-temperatura;0;Dashboard
+25-06-2026 19:14:19;Atuador;led-temperatura;1;Arduino
+25-06-2026 19:14:34;Atuador;led-temperatura;0;Dashboard
+25-06-2026 19:16:04;Atuador;led-temperatura;1;Arduino
+25-06-2026 19:16:35;Atuador;led-temperatura;0;Arduino
+25-06-2026 19:16:40;Atuador;led-temperatura;1;Dashboard
+25-06-2026 19:16:44;Atuador;led-temperatura;0;Dashboard
+25-06-2026 19:18:38;Atuador;led-temperatura;1;Arduino
+25-06-2026 19:18:56;Atuador;led-temperatura;0;Arduino

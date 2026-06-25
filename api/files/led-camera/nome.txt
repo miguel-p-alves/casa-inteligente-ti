@@ -1,1 +1,1 @@
-luz-camera
+led-camera

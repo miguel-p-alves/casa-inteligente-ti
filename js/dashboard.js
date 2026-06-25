@@ -69,16 +69,23 @@ function enviarComandoAPI(nomeDispositivo, valor) {
 
 function capturarImagem() {
   var textoData = document.getElementById("ultimaCaptura");
+  var imagemWebcam = document.getElementById("imagemWebcam");
 
-  if (!textoData) {
+  if (!textoData || !imagemWebcam) {
     return;
   }
 
-  // Agora usamos a função do teu professor aqui também!
+  // 1. Atualiza a data no ecrã
   textoData.innerText = get_date();
 
-  // Futuramente, a imagem real pode ser enviada pela Raspberry Pi para o servidor PHP.
-  // Agora apenas se atualiza a data/hora de exemplo.
+  // 2. Envia o comando "1" para a API, o que vai acordar o teu script Python!
+  enviarComandoAPI("camera", "1");
+
+  // 3. Espera 6 segundos (tempo para o Python focar a câmara, tirar a foto e fazer upload) e atualiza a imagem no HTML
+  setTimeout(() => {
+    // O "?t=" adiciona um valor único ao link para forçar o navegador a esquecer a imagem antiga e carregar a nova
+    imagemWebcam.src = "api/images/webcam.jpg?t=" + new Date().getTime();
+  }, 6000); 
 }
 
 function get_date() {

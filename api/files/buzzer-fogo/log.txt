@@ -5,3 +5,43 @@
 02-06-2026 10:15:51;Atuador;buzzer-fogo;1;Dashboard
 03-06-2026 17:04:42;Atuador;buzzer-fogo;0;Dashboard
 03-06-2026 17:04:42;Atuador;buzzer-fogo;1;Dashboard
+24-06-2026 21:55:40;Atuador;buzzer-fogo;0;Dashboard
+24-06-2026 21:55:40;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 16:13:56;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 16:51:20;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 16:52:43;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 16:55:30;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 16:56:10;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 16:56:37;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 16:57:33;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 16:59:25;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 16:59:27;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 17:11:41;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 17:11:54;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 17:11:56;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 17:12:26;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 17:12:35;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 17:14:12;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 17:18:25;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 17:18:27;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 17:18:29;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 17:20:16;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 17:22:17;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 18:19:59;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 18:20:01;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 18:48:55;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 18:48:59;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 18:49:08;Atuador;buzzer-fogo;1;Raspberry Pi
+25-06-2026 18:49:26;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 18:49:28;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 18:52:26;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 18:52:28;Atuador;buzzer-fogo;0;Raspberry Pi
+25-06-2026 18:52:32;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 18:52:32;Atuador;buzzer-fogo;0;Raspberry Pi
+25-06-2026 18:56:31;Atuador;buzzer-fogo;1;Dashboard
+25-06-2026 18:56:34;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 18:56:36;Atuador;buzzer-fogo;0;Dashboard
+25-06-2026 18:56:48;Atuador;buzzer-fogo;1;Raspberry Pi
+25-06-2026 18:56:53;Atuador;buzzer-fogo;0;Raspberry Pi
+25-06-2026 19:21:33;Atuador;buzzer-fogo;1;Raspberry Pi
+25-06-2026 19:21:35;Atuador;buzzer-fogo;0;Raspberry Pi

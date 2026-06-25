@@ -1,1 +1,30 @@
 
+25-06-2026 16:37:28;Comando;camera;1;MCU
+25-06-2026 16:37:35;Comando;camera;0;Script Python Camera
+25-06-2026 16:40:08;Comando;camera;1;MCU
+25-06-2026 16:40:12;Comando;camera;0;Script Python Camera
+25-06-2026 16:40:45;Atuador;camera;1;Dashboard
+25-06-2026 16:40:50;Atuador;camera;1;Dashboard
+25-06-2026 16:41:18;Comando;camera;1;MCU
+25-06-2026 16:41:28;Comando;camera;0;Script Python Camera
+25-06-2026 16:42:03;Comando;camera;1;MCU
+25-06-2026 16:42:08;Comando;camera;0;Script Python Camera
+25-06-2026 17:13:27;Comando;camera;1;MCU
+25-06-2026 17:13:54;Comando;camera;0;Script Python Camera
+25-06-2026 17:24:30;Comando;camera;1;MCU
+25-06-2026 17:24:35;Comando;camera;0;Script Python Camera
+25-06-2026 17:31:21;Comando;camera;1;MCU
+25-06-2026 17:31:25;Comando;camera;0;Script Python Camera
+25-06-2026 17:37:27;Comando;camera;1;MCU
+25-06-2026 17:37:32;Comando;camera;0;Script Python Camera
+25-06-2026 18:08:27;Comando;camera;1;MCU
+25-06-2026 18:08:31;Comando;camera;0;Script Python Camera
+25-06-2026 19:04:13;Comando;camera;1;MCU
+25-06-2026 19:04:20;Comando;camera;0;Script Python Camera
+25-06-2026 19:04:47;Comando;camera;1;MCU
+25-06-2026 19:04:53;Comando;camera;0;Script Python Camera
+25-06-2026 19:19:54;Comando;camera;1;MCU
+25-06-2026 19:20:34;Comando;camera;1;MCU
+25-06-2026 19:21:08;Comando;camera;0;Script Python Camera
+25-06-2026 19:21:19;Comando;camera;1;MCU
+25-06-2026 19:21:23;Comando;camera;0;Script Python Camera

@@ -92,7 +92,7 @@
           <div class="col-lg-7">
             <p class="overline mb-2">Casa Inteligente</p>
             <h1 class="mb-0">Painel principal</h1>
-            <p class="mb-0 mt-2">Bem-vindo, <?php echo htmlspecialchars($_SESSION["username"]); ?>. Perfil: <?php echo htmlspecialchars($_SESSION["role"]); ?>.</p>
+            <p class="mb-0 mt-2">Bem-vindo, <?php echo htmlspecialchars($_SESSION["username"]); ?>.</p>
           </div>
         </div>
       </section>
@@ -135,7 +135,7 @@
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
-                    <h3 class="sensor-title">Sensor deTemperatura</h3>
+                    <h3 class="sensor-title">Sensor de Temperatura</h3>
                     <p class="sensor-meta mb-0">Monitorizada pelo Arduino</p>
                   </div>
                   <span class="sensor-icon"><i class="bi bi-thermometer-half"></i></span>
@@ -260,7 +260,7 @@
           </article>
 
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card actuator-card <?php echo ($valor_led_camera == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLedCamera">
+            <div class="card actuator-card <?php echo ($valor_led_camera == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLedFogo">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>
@@ -311,7 +311,7 @@
       </section>
 
       <section class="dashboard-section" id="camara">
-        <div class="row g-3">
+        <div class="row g-3 justify-content-center">
           <div class="col-xl-5">
             <div class="card camera-card h-100">
               <div class="card-body">
@@ -323,17 +323,9 @@
                   <i class="bi bi-camera-video camera-icon"></i>
                 </div>
 
-                <div class="camera-placeholder" role="img" aria-label="Imagem simulada da última captura">
-                  <div class="camera-overlay">
-                    <span>Raspberry Pi</span>
-                    <span>Imagem de exemplo</span>
-                  </div>
-                  <div class="room-wall">
-                    <span class="room-window"></span>
-                    <span class="room-lamp"></span>
-                    <span class="room-sofa"></span>
-                  </div>
-                </div>
+                <div class="camera-placeholder" style="background: #000; display: flex; align-items: center; justify-content: center;">
+				  <img id="imagemWebcam" src="api/images/webcam.jpg" class="img-fluid" style="max-height: 100%; border-radius: 8px;" alt="Última Captura da DroidCam">
+				</div>
 
                 <div class="capture-row">
                   <div>
@@ -350,60 +342,7 @@
               </div>
             </div>
           </div>
-
-          <div class="col-xl-7">
-            <div class="card events-card h-100">
-              <div class="card-body">
-                <div class="section-heading compact-heading">
-                  <div>
-                    <span class="section-kicker">Registos</span>
-                    <h2>Último evento</h2>
-                  </div>
-                  <i class="bi bi-activity camera-icon"></i>
-                </div>
-
-                <!-- Exemplos estáticos. No projeto final, estes registos podem vir de ficheiros .txt via PHP. -->
-                <ul class="list-group event-list">
-                  <li class="list-group-item">
-                    <span class="event-dot"></span>
-                    <span class="event-text">
-                      <strong>Movimento detetado pelo Arduino</strong>
-                      <small>27/05/2026, 14:10:00 · Arduino</small>
-                    </span>
-                  </li>
-                  <li class="list-group-item">
-                    <span class="event-dot"></span>
-                    <span class="event-text">
-                      <strong>Luz da câmara ligada</strong>
-                      <small>27/05/2026, 14:05:00 · Arduino</small>
-                    </span>
-                  </li>
-                  <li class="list-group-item">
-                    <span class="event-dot"></span>
-                    <span class="event-text">
-                      <strong>Chama detetada pela Raspberry Pi</strong>
-                      <small>27/05/2026, 13:58:00 · Raspberry Pi</small>
-                    </span>
-                  </li>
-                  <li class="list-group-item">
-                    <span class="event-dot"></span>
-                    <span class="event-text">
-                      <strong>Temperatura monitorizada pelo Arduino</strong>
-                      <small>27/05/2026, 13:52:00 · Arduino</small>
-                    </span>
-                  </li>
-                  <li class="list-group-item">
-                    <span class="event-dot"></span>
-                    <span class="event-text">
-                      <strong>Buzzer de fogo controlado pela Raspberry Pi</strong>
-                      <small>27/05/2026, 13:45:00 · Raspberry Pi</small>
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
+		</div>
       </section>
 
       <?php if($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident"): ?>
