@@ -9896,3 +9896,5 @@
 26-06-2026 16:13:16;Sensor;sensor-chama;0;Raspberry Pi
 26-06-2026 16:13:18;Sensor;sensor-chama;1;Raspberry Pi
 26-06-2026 16:13:23;Sensor;sensor-chama;0;Raspberry Pi
+26-06-2026 16:34:38;Sensor;sensor-chama;1;Raspberry Pi
+26-06-2026 16:34:45;Sensor;sensor-chama;0;Raspberry Pi

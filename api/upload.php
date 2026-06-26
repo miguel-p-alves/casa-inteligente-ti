@@ -19,7 +19,7 @@
 			$extensoesPermitidas = ['jpg', 'jpeg', 'png'];
 			$extensao = strtolower(pathinfo($nomeOriginal, PATHINFO_EXTENSION));
 			
-			if (!in_array($extensao, $extensoesPermitidas)) {
+			if (in_array($extensao, $extensoesPermitidas) == false) {
 				http_response_code(400);
 				echo("Upload NOT OK: Apenas imagens JPG ou PNG são permitidas.");
 				exit();

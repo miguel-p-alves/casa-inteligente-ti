@@ -1,4 +1,4 @@
-/* ── Variáveis de cor ─────────────────────────────── */
+/* Variáveis de cor */
 :root {
   --cor-fundo: #f4f8fb;
   --cor-superficie: #ffffff;
@@ -11,7 +11,7 @@
   --cor-conforto: #f2a93b;
 }
 
-/* ── Base ─────────────────────────────────────────── */
+/* Base */
 * {
   box-sizing: border-box;
 }
@@ -24,10 +24,10 @@ body {
   margin: 0;
   color: var(--cor-texto);
   background: var(--cor-fundo);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: sans-serif;
 }
 
-/* ── Navbar ───────────────────────────────────────── */
+/* Navbar */
 .app-navbar {
   background: #0f5f6b;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -60,14 +60,14 @@ body {
   font-weight: 600;
 }
 
-/* ── Layout principal ─────────────────────────────── */
+/* Layout principal */
 .dashboard-shell {
   max-width: 1440px;
   margin: 0 auto;
   padding: 1.5rem;
 }
 
-/* ── Banner do topo ───────────────────────────────── */
+/* Banner do topo */
 .overview-band {
   padding: 1.5rem;
   border-radius: 8px;
@@ -89,7 +89,7 @@ body {
   text-transform: uppercase;
 }
 
-/* ── Secções ──────────────────────────────────────── */
+/* Secções */
 .dashboard-section {
   margin-bottom: 1.5rem;
   scroll-margin-top: 70px;
@@ -114,7 +114,7 @@ body {
   color: var(--cor-tecnologia);
 }
 
-/* ── Cards base ───────────────────────────────────── */
+/* Cards base */
 .card {
   border: 1px solid #dbe5ec;
   border-radius: 8px;
@@ -122,7 +122,7 @@ body {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
 }
 
-/* ── Cartões de sensor e atuador ──────────────────── */
+/* Cartões de sensor e atuador */
 .sensor-card,
 .actuator-card {
   position: relative;
@@ -174,7 +174,7 @@ body {
   margin-bottom: 0.75rem;
 }
 
-/* ── Badges de estado ─────────────────────────────── */
+/* Badges de estado */
 .state-badge {
   display: inline-block;
   padding: 0.25rem 0.6rem;
@@ -193,14 +193,14 @@ body {
   background: rgba(100, 116, 139, 0.15);
 }
 
-/* ── Botão de controlo ────────────────────────────── */
+/* Botão de controlo */
 .control-button {
   min-width: 7rem;
   border-radius: 6px;
   font-weight: 700;
 }
 
-/* ── Câmara ───────────────────────────────────────── */
+/* Câmara */
 .camera-placeholder {
   min-height: 18rem;
   overflow: hidden;
@@ -209,6 +209,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#card-camera {
+  max-width: 67%;
+  margin: 0 auto;
 }
 
 .capture-label {
@@ -224,7 +229,7 @@ body {
   object-fit: cover;
 }
 
-/* ── Tabela de histórico ──────────────────────────── */
+/* Tabela de histórico */
 .history-table {
   min-width: 46rem;
 }
@@ -256,14 +261,14 @@ body {
   font-weight: 700;
 }
 
-/* ── Gráfico de temperatura ───────────────────────── */
+/* Gráfico de temperatura */
 .chart-container {
   position: relative;
   height: 30rem;
   width: 100%;
 }
 
-/* ── Responsivo ───────────────────────────────────── */
+/* Responsivo */
 @media (max-width: 768px) {
   .dashboard-shell {
     padding: 1rem;

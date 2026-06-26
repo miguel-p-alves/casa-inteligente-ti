@@ -1,0 +1,3 @@
+Admin:$2y$10$nxdv/hNitznenc7cBY5GIOXnJE0QEmLxwPVQoxh6vsy2mYpOGHDt.:admin
+Resident:$2y$10$R03glQP5bAaKZEhJgnH6rOvLOst30nhfa9USBwm4gyWR6lph2opIS:resident
+Guest:$2y$10$Eehj43gNt3jvYGkuHQHEN.un8Q3tLaGYdxrf4cLmgay7rPc7XbVZe:guest

@@ -4,5 +4,5 @@
 	session_unset();   // remove todas as variáveis de sessão;
 
 	session_destroy();  // destrói a sessão;
-    header("Location: index.php");
+	header("Location: index.php"); // leva pra pagina index.php
 ?>

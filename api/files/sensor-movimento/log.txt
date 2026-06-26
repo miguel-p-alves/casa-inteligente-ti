@@ -131,3 +131,6 @@
 26-06-2026 15:38:21;Sensor;sensor-movimento;0;MCU
 26-06-2026 16:13:35;Sensor;sensor-movimento;1;MCU
 26-06-2026 16:13:51;Sensor;sensor-movimento;0;MCU
+26-06-2026 16:32:06;Sensor;sensor-movimento;0;MCU
+26-06-2026 16:34:19;Sensor;sensor-movimento;1;MCU
+26-06-2026 16:34:35;Sensor;sensor-movimento;0;MCU

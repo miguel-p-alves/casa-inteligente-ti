@@ -25,13 +25,14 @@ WiFiClient clienteWifi;
 HttpClient clienteHTTP = HttpClient(clienteWifi, HOST, PORTO);
 
 // Variáveis para controlo de estado
-int estadoAnterior = -1;
+int estadoAnterior = -1; // -1 para forçar o envio na primeira leitura
 unsigned long ultimoTempoLeitura = 0;
 const unsigned long intervaloLeitura = 2000; // leituras a cada 2 segundos
 
 float temperaturaAtual = 0.0;
 const float LIMITE_TEMPERATURA = 29.0;
 
+// Guardamos o estado anterior para só enviar à API quando há mudança
 bool limiteTemperaturaAtingidoAnterior = false;
 bool estadoFogoAnterior = false;
 bool sensorChamaAnterior = false;
@@ -41,6 +42,7 @@ void setup() {
 
   pinMode(PIN_SWITCH, INPUT);
 
+  // LEDs começam desligados
   pinMode(PIN_LED_CAMARA, OUTPUT);
   digitalWrite(PIN_LED_CAMARA, LOW);
 
@@ -56,9 +58,10 @@ void setup() {
 }
 
 void loop() {
-  // Verifico o sensor de movimento em tempo real
+  // Verifica o sensor de movimento em tempo real (sem esperar os 2 segundos)
   int movimento = digitalRead(PIN_SWITCH);
 
+  // Só age se o estado mudou, para não fazer spam de pedidos à API
   if (movimento != estadoAnterior) {
     estadoAnterior = movimento;
 
@@ -69,7 +72,7 @@ void loop() {
     }
   }
 
-  // A cada 2 segundos faço as verificações periódicas
+  // As restantes verificações correm a cada 2 segundos
   if (millis() - ultimoTempoLeitura >= intervaloLeitura) {
     ultimoTempoLeitura = millis();
 
@@ -80,18 +83,16 @@ void loop() {
   }
 }
 
-// ==========================
 // MOVIMENTO
-// ==========================
-
 void movimentoDetectado() {
   Serial.println("Movimento detetado!");
   digitalWrite(PIN_LED_CAMARA, HIGH);
 
+  // Informa a API do estado do sensor, do LED e dispara a câmara
   enviarParaAPI("sensor-movimento", "1", "Sensor", "MCU");
   enviarParaAPI("led-camera", "1", "Atuador", "MCU");
   // Envio o comando para a câmara (o script Python repõe a 0)
-  enviarParaAPI("camera", "1", "Comando", "MCU");
+  enviarParaAPI("camera", "1", "Comando", "MCU"); // o script Python lê este valor e tira a foto
 }
 
 void movimentoTerminado() {
@@ -102,19 +103,17 @@ void movimentoTerminado() {
   enviarParaAPI("led-camera", "0", "Atuador", "MCU");
 }
 
-// ==========================
 // TEMPERATURA
-// ==========================
-
 void lerEnviarTemperatura() {
   float temperatura = sensortemperatura.readTemperature();
 
+  // isnan verifica se a leitura falhou (o DHT11 às vezes retorna NaN)
   if (isnan(temperatura)) {
     Serial.println("Erro ao ler o DHT11.");
     return;
   }
 
-  temperaturaAtual = temperatura; // guardo para usar nas verificações de alarme
+  temperaturaAtual = temperatura; // guarda para usar nas verificações de alarme
   Serial.print("Temperatura: ");
   Serial.print(temperatura);
   Serial.println(" ºC");
@@ -122,10 +121,9 @@ void lerEnviarTemperatura() {
   enviarParaAPI("sensor-temperatura", String(temperatura), "Sensor", "Arduino");
 }
 
-// ==========================
 // VERIFICAÇÕES DO DASHBOARD
-// ==========================
 
+// Verifica se o dashboard ligou ou desligou o LED da câmara
 void verificarLedCameraDashboard() {
   if (WiFi.status() != WL_CONNECTED) conectarWiFi();
 
@@ -133,7 +131,7 @@ void verificarLedCameraDashboard() {
 
   int codigo = clienteHTTP.responseStatusCode();
   String resposta = clienteHTTP.responseBody();
-  resposta.trim();
+  resposta.trim(); // remove espaços e \n que possam vir da resposta
 
   if (codigo == 200) {
     if (resposta == "1") {
@@ -147,7 +145,7 @@ void verificarLedCameraDashboard() {
 void verificarStatusFogo() {
   if (WiFi.status() != WL_CONNECTED) conectarWiFi();
 
-  // Leio o estado do sensor de chama guardado na API
+  // Lê o estado do sensor de chama guardado na API pelo Raspberry Pi
   clienteHTTP.get(caminhoAPI + "?nome=sensor-chama");
   clienteHTTP.responseStatusCode();
   String respSensor = clienteHTTP.responseBody();
@@ -156,13 +154,13 @@ void verificarStatusFogo() {
   bool estadoFogoAtual;
 
  if (respSensor == "1") {
-    // Chama detetada: o LED liga sempre por segurança
+    // Chama detetada: LED liga sempre por segurança, independentemente do dashboard
     estadoFogoAtual = true;
 } else if (sensorChamaAnterior == true && respSensor != "1") {
-    // O sensor acabou de desligar, forço o LED a desligar também
+    // O sensor acabou de desligar, forçamos o LED a desligar também
     estadoFogoAtual = false;
   } else {
-    // Sem chama: sigo o que o dashboard mandar
+    // Sem chama: o dashboard é que controla o LED
     clienteHTTP.get(caminhoAPI + "?nome=led-fogo");
     clienteHTTP.responseStatusCode();
     String respLedFogo = clienteHTTP.responseBody();
@@ -174,6 +172,7 @@ void verificarStatusFogo() {
     }
   }
 
+   // Atualiza o estado anterior do sensor de chama
   if (respSensor == "1") {
         sensorChamaAnterior = true;
   } else {
@@ -181,7 +180,7 @@ void verificarStatusFogo() {
   }
   
 
-  // Envio para a API só quando o estado muda, para não fazer spam de POST
+  // Só envia à API quando o estado muda, para não fazer spam de POST
   if (estadoFogoAtual && !estadoFogoAnterior) {
     enviarParaAPI("led-fogo", "1", "Atuador", "Arduino");
   } else if (!estadoFogoAtual && estadoFogoAnterior) {
@@ -207,7 +206,7 @@ void verificarLedTemperaturaDashboard() {
     limiteAtingidoAtual = false;
   }
 
-  // Envio para a API só na transição de estado
+  // Só envia à API na transição de estado (ligou ou desligou)
   if (limiteAtingidoAtual == true && limiteTemperaturaAtingidoAnterior == false) {
     enviarParaAPI("led-temperatura", "1", "Atuador", "Arduino");
   } else if (limiteAtingidoAtual == false && limiteTemperaturaAtingidoAnterior == true) {
@@ -217,12 +216,12 @@ void verificarLedTemperaturaDashboard() {
   limiteTemperaturaAtingidoAnterior = limiteAtingidoAtual;
 
   if (limiteAtingidoAtual == true) {
-    // Temperatura acima do limite: LED fica sempre ligado independentemente do dashboard
+    // Temperatura acima do limite: LED fica sempre ligado, o dashboard não tem controlo
     digitalWrite(PIN_LED_TEMPERATURA, HIGH);
     return;
   }
 
-  // Temperatura normal: o dashboard controla o LED
+  // Temperatura normal: segue o que o dashboard mandar
   clienteHTTP.get(caminhoAPI + "?nome=led-temperatura");
   int codigo = clienteHTTP.responseStatusCode();
   String resposta = clienteHTTP.responseBody();
@@ -237,13 +236,11 @@ void verificarLedTemperaturaDashboard() {
   }
 }
 
-// ==========================
 // REDE E API
-// ==========================
-
 void conectarWiFi() {
   Serial.print("A ligar ao Wi-Fi...");
 
+  // Tenta ligar em loop até conseguir
   while (WiFi.status() != WL_CONNECTED) {
     WiFi.begin(SSID, PASS_WIFI);
     Serial.print(".");
@@ -256,12 +253,13 @@ void conectarWiFi() {
 void enviarParaAPI(String nome, String valor, String tipo, String origem) {
   if (WiFi.status() != WL_CONNECTED) conectarWiFi();
 
+  // Monta os dados no formato application/x-www-form-urlencoded (equivalente a um formulário HTML)
   String dados = "nome=" + nome + "&valor=" + valor + "&hora=&tipo=" + tipo + "&origem=" + origem;
 
   clienteHTTP.post(caminhoAPI, "application/x-www-form-urlencoded", dados);
 
   int codigo = clienteHTTP.responseStatusCode();
-  clienteHTTP.responseBody(); // limpo o buffer da resposta
+  clienteHTTP.responseBody(); // lê e descarta o corpo da resposta para limpar o buffer
 
   if (codigo != 200) {
     Serial.print("Erro no POST: ");

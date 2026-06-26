@@ -116,3 +116,5 @@
 26-06-2026 15:38:12;Comando;camera;0;Raspberry Pi
 26-06-2026 16:13:38;Comando;camera;1;MCU
 26-06-2026 16:13:41;Comando;camera;0;Raspberry Pi
+26-06-2026 16:34:21;Comando;camera;1;MCU
+26-06-2026 16:34:25;Comando;camera;0;Raspberry Pi
