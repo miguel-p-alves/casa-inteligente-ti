@@ -51,3 +51,9 @@
 26-06-2026 13:06:05;Atuador;led-temperatura;0;Dashboard
 26-06-2026 14:14:39;Atuador;led-temperatura;1;Arduino
 26-06-2026 14:15:05;Atuador;led-temperatura;0;Arduino
+26-06-2026 15:28:11;Atuador;led-temperatura;1;Dashboard
+26-06-2026 15:28:16;Atuador;led-temperatura;0;Dashboard
+26-06-2026 15:28:37;Atuador;led-temperatura;1;Arduino
+26-06-2026 15:29:26;Atuador;led-temperatura;0;Arduino
+26-06-2026 16:14:29;Atuador;led-temperatura;1;Arduino
+26-06-2026 16:14:55;Atuador;led-temperatura;0;Arduino

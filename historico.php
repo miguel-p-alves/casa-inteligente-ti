@@ -8,7 +8,7 @@
 
   $dispositivos = array(
     "sensor-movimento" => "Movimento",
-    "luz-camera" => "Luz da câmara",
+    "led-camera" => "Luz da câmara",
     "sensor-temperatura" => "Temperatura",
     "led-temperatura" => "LED de temperatura",
     "sensor-chama" => "Chama",
@@ -302,7 +302,7 @@
                     <th scope="col">Origem</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="tabela-historico">
                   <?php mostrarLinhasHistorico($historico); ?>
                 </tbody>
               </table>

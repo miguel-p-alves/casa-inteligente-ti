@@ -116,3 +116,11 @@
 26-06-2026 14:22:09;Atuador;buzzer-alarme;0;Raspberry Pi
 26-06-2026 14:22:18;Atuador;buzzer-alarme;1;Raspberry Pi
 26-06-2026 14:22:48;Atuador;buzzer-alarme;0;Raspberry Pi
+26-06-2026 15:22:57;Atuador;buzzer-alarme;1;Raspberry Pi
+26-06-2026 15:23:19;Atuador;buzzer-alarme;0;Raspberry Pi
+26-06-2026 15:38:07;Atuador;buzzer-alarme;1;Raspberry Pi
+26-06-2026 15:38:23;Atuador;buzzer-alarme;0;Raspberry Pi
+26-06-2026 15:38:29;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 15:38:31;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 16:13:36;Atuador;buzzer-alarme;1;Raspberry Pi
+26-06-2026 16:13:52;Atuador;buzzer-alarme;0;Raspberry Pi

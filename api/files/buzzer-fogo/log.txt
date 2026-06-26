@@ -103,3 +103,13 @@
 26-06-2026 14:12:38;Atuador;buzzer-fogo;0;Dashboard
 26-06-2026 14:13:07;Atuador;buzzer-fogo;1;Raspberry Pi
 26-06-2026 14:13:18;Atuador;buzzer-fogo;0;Raspberry Pi
+26-06-2026 15:38:47;Atuador;buzzer-fogo;1;Dashboard
+26-06-2026 15:38:50;Atuador;buzzer-fogo;0;Dashboard
+26-06-2026 15:39:24;Atuador;buzzer-fogo;1;Raspberry Pi
+26-06-2026 15:39:26;Atuador;buzzer-fogo;0;Raspberry Pi
+26-06-2026 15:39:31;Atuador;buzzer-fogo;1;Raspberry Pi
+26-06-2026 15:39:37;Atuador;buzzer-fogo;0;Raspberry Pi
+26-06-2026 16:13:14;Atuador;buzzer-fogo;1;Raspberry Pi
+26-06-2026 16:13:16;Atuador;buzzer-fogo;0;Raspberry Pi
+26-06-2026 16:13:18;Atuador;buzzer-fogo;1;Raspberry Pi
+26-06-2026 16:13:23;Atuador;buzzer-fogo;0;Raspberry Pi

@@ -115,7 +115,7 @@ def repor_camera_para_zero():
 # =========================================================
 estado_fogo_anterior      = 0
 estado_movimento_anterior = "0"
-
+estado_chama_anterior     = 0
 
 # =========================================================
 # 5. CICLO PRINCIPAL
@@ -129,23 +129,28 @@ try:
         
         # sensor_chama.value é 1 se detetar chama, 0 caso contrário
         if sensor_chama.value == 1:
-            print("ALERTA: Chama detetada pelo sensor!")
             estado_fogo = 1
         else:
-            print("Chama: Não detetada.")
             estado_fogo = 0
-
-        # Envia o estado atual do sensor de chama para a API
-        try:
-            requests.post(API_URL, data={
-                'nome'   : 'sensor-chama',
-                'valor'  : estado_fogo,
-                'hora'   : time.strftime("%d-%m-%Y %H:%M:%S"),
-                'tipo'   : 'Sensor',
-                'origem' : 'Raspberry Pi'
-            })
-        except Exception as e:
-            print("Erro ao enviar estado do sensor de chama:", e)
+        
+        # Só envia à API se o estado mudou
+        if (estado_fogo != estado_chama_anterior):
+            if estado_fogo == 1:
+                print("ALERTA: Chama detetada!")
+            else:
+                print("Chama: Não detetada.")
+            try:
+                requests.post(API_URL, data={
+                    'nome'   : 'sensor-chama',
+                    'valor'  : estado_fogo,
+                    'hora'   : time.strftime("%d-%m-%Y %H:%M:%S"),
+                    'tipo'   : 'Sensor',
+                    'origem' : 'Raspberry Pi'
+                })
+            except Exception as e:
+                print("Erro ao enviar estado do sensor de chama:", e)
+            
+            estado_chama_anterior = estado_fogo
 
 
         # -----------------------------------------------
