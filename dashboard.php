@@ -63,11 +63,18 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
           <li class="nav-item"><a class="nav-link" href="#sensores">Sensores</a></li>
           <li class="nav-item"><a class="nav-link" href="#atuadores">Atuadores</a></li>
           <li class="nav-item"><a class="nav-link" href="#camara">Câmara</a></li>
-          <?php
-          if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident") {
-            echo '<li class="nav-item"><a class="nav-link" href="historico.php">Histórico</a></li>';
-          }
-          ?>
+                                                    <?php
+              if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident") {
+                $classe = ($valor_led_temperatura == '1') ? 'btn-outline-secondary' : 'btn-primary';
+                $texto = ($valor_led_temperatura == '1') ? 'Desligar' : 'Ligar';
+                echo '<div class="mt-2">
+                        <button class="btn ' . $classe . ' control-button" type="button" id="botaoLedTemperatura"
+                          onclick="alternarAtuador(\'cartaoLedTemperatura\', \'estadoLedTemperatura\', \'botaoLedTemperatura\', \'Ativo\', \'Inativo\', \'Desligar\', \'Ligar\', \'led-temperatura\')">
+                          ' . $texto . '
+                        </button>
+                      </div>';
+              }
+              ?>
         </ul>
 
         <span class="user-pill me-2">
@@ -167,10 +174,10 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
               <?php
               if ($_SESSION["role"] == "admin") {
                 $classe = ($valor_buzzer_alarme == '1') ? 'btn-outline-secondary' : 'btn-primary';
-                $texto  = ($valor_buzzer_alarme == '1') ? 'Desligar' : 'Ligar';
+                $texto = ($valor_buzzer_alarme == '1') ? 'Desligar' : 'Ligar';
                 echo '<div class="mt-2">
                         <button class="btn ' . $classe . ' control-button" type="button" id="botaoBuzzerAlarme"
-                          onclick="alternarAtuador('cartaoBuzzerAlarme', 'estadoBuzzerAlarme', 'botaoBuzzerAlarme', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'buzzer-alarme')">
+                          onclick="alternarAtuador(\'cartaoBuzzerAlarme\', \'estadoBuzzerAlarme\', \'botaoBuzzerAlarme\', \'Ativo\', \'Inativo\', \'Desligar\', \'Ligar\', \'buzzer-alarme\')">
                           ' . $texto . '
                         </button>
                       </div>';
@@ -193,10 +200,10 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
               <?php
               if ($_SESSION["role"] == "admin") {
                 $classe = ($valor_buzzer_fogo == '1') ? 'btn-outline-secondary' : 'btn-primary';
-                $texto  = ($valor_buzzer_fogo == '1') ? 'Desligar' : 'Ligar';
+                $texto = ($valor_buzzer_fogo == '1') ? 'Desligar' : 'Ligar';
                 echo '<div class="mt-2">
                         <button class="btn ' . $classe . ' control-button" type="button" id="botaoBuzzerFogo"
-                          onclick="alternarAtuador('cartaoBuzzerFogo', 'estadoBuzzerFogo', 'botaoBuzzerFogo', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'buzzer-fogo')">
+                          onclick="alternarAtuador(\'cartaoBuzzerFogo\', \'estadoBuzzerFogo\', \'botaoBuzzerFogo\', \'Ativo\', \'Inativo\', \'Desligar\', \'Ligar\', \'buzzer-fogo\')">
                           ' . $texto . '
                         </button>
                       </div>';
@@ -219,10 +226,10 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
               <?php
               if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident") {
                 $classe = ($valor_led_camera == '1') ? 'btn-outline-secondary' : 'btn-primary';
-                $texto  = ($valor_led_camera == '1') ? 'Desligar' : 'Ligar';
+                $texto = ($valor_led_camera == '1') ? 'Desligar' : 'Ligar';
                 echo '<div class="mt-2">
                         <button class="btn ' . $classe . ' control-button" type="button" id="botaoLedCamera"
-                          onclick="alternarAtuador('cartaoLedCamera', 'estadoLedCamera', 'botaoLedCamera', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-camera')">
+                          onclick="alternarAtuador(\'cartaoLedCamera\', \'estadoLedCamera\', \'botaoLedCamera\', \'Ativo\', \'Inativo\', \'Desligar\', \'Ligar\', \'led-camera\')">
                           ' . $texto . '
                         </button>
                       </div>';
@@ -233,7 +240,7 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
         </div>
 
         <div class="col-12 col-sm-6 col-xl-4 mb-3">
-          <div class="card actuator-card <?php echo ($valor_led_camera == '1') ? 'actuator-active' : ''; ?> h-100"
+          <div class="card actuator-card <?php echo ($valor_led_fogo == '1') ? 'actuator-active' : ''; ?> h-100"
             id="cartaoLedFogo">
             <div class="card-body">
               <h3 class="actuator-title">LED de Aviso de Fogo</h3>
@@ -245,10 +252,10 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
               <?php
               if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident") {
                 $classe = ($valor_led_fogo == '1') ? 'btn-outline-secondary' : 'btn-primary';
-                $texto  = ($valor_led_fogo == '1') ? 'Desligar' : 'Ligar';
+                $texto = ($valor_led_fogo == '1') ? 'Desligar' : 'Ligar';
                 echo '<div class="mt-2">
                         <button class="btn ' . $classe . ' control-button" type="button" id="botaoLedFogo"
-                          onclick="alternarAtuador('cartaoLedFogo', 'estadoLedFogo', 'botaoLedFogo', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-fogo')">
+                          onclick="alternarAtuador(\'cartaoLedFogo\', \'estadoLedFogo\', \'botaoLedFogo\', \'Ativo\', \'Inativo\', \'Desligar\', \'Ligar\', \'led-fogo\')">
                           ' . $texto . '
                         </button>
                       </div>';
@@ -271,10 +278,10 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
               <?php
               if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident") {
                 $classe = ($valor_led_temperatura == '1') ? 'btn-outline-secondary' : 'btn-primary';
-                $texto  = ($valor_led_temperatura == '1') ? 'Desligar' : 'Ligar';
+                $texto = ($valor_led_temperatura == '1') ? 'Desligar' : 'Ligar';
                 echo '<div class="mt-2">
                         <button class="btn ' . $classe . ' control-button" type="button" id="botaoLedTemperatura"
-                          onclick="alternarAtuador('cartaoLedTemperatura', 'estadoLedTemperatura', 'botaoLedTemperatura', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-temperatura')">
+                          onclick="alternarAtuador(\'cartaoLedTemperatura\', \'estadoLedTemperatura\', \'botaoLedTemperatura\', \'Ativo\', \'Inativo\', \'Desligar\', \'Ligar\', \'led-temperatura\')">
                           ' . $texto . '
                         </button>
                       </div>';
