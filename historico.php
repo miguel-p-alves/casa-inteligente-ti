@@ -1,11 +1,13 @@
 <?php
   $dispositivos = array(
     "sensor-movimento" => "Movimento",
-    "luz-camera" => "Luz da câmara",
+    "led-camera" => "Luz da câmara",
+    "led-fogo" => "Luz de Aviso de Fogo",
     "sensor-temperatura" => "Temperatura",
     "led-temperatura" => "LED de temperatura",
     "sensor-chama" => "Chama",
     "buzzer-fogo" => "Buzzer de fogo",
+    "buzzer-alarme" => "Buzzer da Câmara",
     "camera" => "Câmara"
   );
 

@@ -1017,3 +1017,7 @@
 25-06-2026 19:22:11;Sensor;sensor-temperatura;26.20;Arduino
 25-06-2026 19:22:17;Sensor;sensor-temperatura;26.20;Arduino
 25-06-2026 19:22:23;Sensor;sensor-temperatura;26.10;Arduino
+25-06-2026 19:22:29;Sensor;sensor-temperatura;26.10;Arduino
+25-06-2026 19:22:35;Sensor;sensor-temperatura;26.10;Arduino
+25-06-2026 19:22:41;Sensor;sensor-temperatura;26.10;Arduino
+25-06-2026 19:22:47;Sensor;sensor-temperatura;26.00;Arduino

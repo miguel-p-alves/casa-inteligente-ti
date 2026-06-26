@@ -18,11 +18,11 @@ DHT sensortemperatura(PIN_DHT, TIPO_DHT);
 // ==========================
 // REDE & SERVIDOR
 // ==========================
-char SSID[] = "labs";                   
-char PASS_WIFI[] = "1nv3nt@r2023_IPLEIRIA"; 
+char SSID[] = "Servidor";                   
+char PASS_WIFI[] = "12345678"; 
 int status = WL_IDLE_STATUS;            
 
-char HOST[] = "10.20.228.159"; 
+char HOST[] = "10.28.114.77"; 
 int PORTO = 80;                           
 String caminhoAPI = "/projeto-ti/api/api.php"; 
 
@@ -266,8 +266,8 @@ void enviarParaAPI(String nome, String valor, String tipo, String origem) {
   if (WiFi.status() != WL_CONNECTED) {
     conectarWiFi();
   }
-
-  String dadosPOST = "nome=" + nome + "&valor=" + valor + "&hora=" + String(millis()) + "&tipo=" + tipo + "&origem=" + origem;
+  
+  String dadosPOST = "nome=" + nome + "&valor=" + valor + "&hora=" + "" + "&tipo=" + tipo + "&origem=" + origem;
 
   Serial.print("[HTTP POST] A enviar: ");
   Serial.println(dadosPOST);

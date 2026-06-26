@@ -30,6 +30,9 @@
   $ficheiro_led_temperatura = "api/files/led-temperatura/valor.txt";
   $valor_led_temperatura = file_exists($ficheiro_led_temperatura) ? file_get_contents($ficheiro_led_temperatura) : "0";
 
+  $ficheiro_hora_camera = "api/files/camera/hora.txt"; // Ajusta o caminho se necessário
+  $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_hora_camera) : "Sem registo";
+
 ?>
 
 <!doctype html>
@@ -330,15 +333,9 @@
                 <div class="capture-row">
                   <div>
                     <span class="capture-label">Data/Hora</span>
-                    <strong id="ultimaCaptura">27/05/2026, 14:15:00</strong>
-                  </div>
-                  <?php if($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident"): ?>
-                    <button class="btn btn-primary" type="button" onclick="capturarImagem()">
-                      <i class="bi bi-camera"></i>
-                      Capturar imagem
-                    </button>
-                  <?php endif; ?>
-                </div>
+                    <div class="text-muted small mb-3">
+                      <strong id="horaWebcam"><?php echo $hora_camera; ?></strong>
+                    </div>
               </div>
             </div>
           </div>

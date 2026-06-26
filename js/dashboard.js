@@ -173,6 +173,29 @@ function atualizarDispositivo(nomeApi, idCartao, idBadge, idElementoExtra, isAtu
     .catch(error => console.error("Erro a ler " + nomeApi + ":", error));
 }
 
+function atualizarHoraWebcam() {
+  const elementoHora = document.getElementById("horaWebcam");
+  
+  if (elementoHora) {
+    // Carimbo de tempo para evitar que o browser guarde o texto em cache
+    const tempoAtual = new Date().getTime();
+    
+    // O caminho do ficheiro tem de ser igual ao que usaste no PHP
+    fetch("api/files/camera/hora.txt?t=" + tempoAtual)
+      .then(resposta => {
+        if (resposta.ok) {
+          return resposta.text();
+        }
+        throw new Error("Ficheiro não encontrado");
+      })
+      .then(textoDaHora => {
+        // Atualiza o texto que está no HTML
+        elementoHora.innerText = textoDaHora.trim();
+      })
+      .catch(erro => console.error("Erro a atualizar a hora da câmara:", erro));
+  }
+}
+
 function atualizarHistorico() {
   const tabela = document.getElementById("tabela-historico");
 
@@ -194,6 +217,19 @@ function atualizarHistorico() {
     .then(linhas => tabela.innerHTML = linhas);
 }
 
+function atualizarImagemWebcam() {
+  const imagem = document.getElementById("imagemWebcam");
+  
+  if (imagem) {
+    // Pega no tempo atual em milissegundos
+    const tempoAtual = new Date().getTime();
+    
+    // Atualiza a imagem adicionando o timestamp para enganar o cache do browser.
+    // Substitui o "images/webcam.jpg" pelo caminho correto se o teu for diferente!
+    imagem.src = "api/images/webcam.jpg?t=" + tempoAtual;
+  }
+}
+
 function atualizarTudo() {
   if (document.getElementById("cartaoSensorMovimento")) {
   // Sensores Arduino e Raspberry Pi.
@@ -211,6 +247,10 @@ function atualizarTudo() {
 
   //Histórico:
   atualizarHistorico();
+
+  //Imagem da Webcam:
+  atualizarImagemWebcam();
+  atualizarHoraWebcam();
 }
 
 // 3. O Relógio (setInterval) que corre a cada 2 segundos

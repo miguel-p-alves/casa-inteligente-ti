@@ -13,16 +13,16 @@ buzzer_alarme = LED(17)                # Pino Físico 11
 buzzer_fogo = LED(23)                  # Pino Físico 16
 sensor_chama = DigitalInputDevice(27)  # NOVO: Pino Físico 13 
 
-API_URL_MAIN = 'http://10.20.228.159/projeto-ti/api/api.php'
+API_URL_MAIN = 'http://10.28.114.77/projeto-ti/api/api.php'
 
 # =========================================================
 # 2. CONFIGURAÇÕES DA CÂMARA
 # =========================================================
 NOME_SENSOR = "camera" 
-BASE_URL = "http://10.20.228.159/projeto-ti/api"
+BASE_URL = "http://10.28.114.77/projeto-ti/api"
 API_URL_CAM = f"{BASE_URL}/api.php"
 UPLOAD_URL = f"{BASE_URL}/upload.php"
-DROIDCAM_URL = "http://10.20.228.158:4747/video"
+DROIDCAM_URL = "http://10.28.114.67:4747/video"
 
 # =========================================================
 # 3. FUNÇÕES DA CÂMARA
@@ -74,12 +74,14 @@ def capturar_e_enviar():
 def repor_valor_zero():
     print("A repor o valor da câmara a 0 no servidor...")
     
+    data_hora = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
+    
     dados_post = {
-        'nome': NOME_SENSOR,
+        'nome': 'camera',
         'valor': '0',
-        'hora': time.strftime("%H:%M:%S"),
+        'hora': data_hora,
         'tipo': 'Comando',
-        'origem': 'Script Python Camera'
+        'origem': 'Raspberry Pi'
     }
     
     try:
@@ -96,6 +98,7 @@ def repor_valor_zero():
 # 4. CICLO PRINCIPAL (Loop Único)
 # =========================================================
 estado_fogo_anterior = 0
+estado_movimento_anterior = "0"  # NOVO: guarda o último estado do sensor de movimento
 try:
     while True:
         # ---------------------------------------------------------
@@ -141,7 +144,22 @@ try:
                 print(time.strftime("%H:%M:%S", time.localtime()), end=" -> ")
                 print(f"Buzzer Alarme API: {estado_alarme_api} | Movimento API: {estado_movimento_api}")
                 
-                # 2. Alteras o IF para ligar se o site mandar (estado_alarme_api) OU o sensor detetar (estado_movimento_api)
+                # 2. ATUALIZAR A API APENAS QUANDO O SENSOR DE MOVIMENTO MUDA (Transição)
+                # Isto evita registar o mesmo estado no histórico repetidamente a cada 2 segundos.
+                if estado_movimento_api == "1" and estado_movimento_anterior == "0":
+                    print("Movimento detetado! A ligar o buzzer-alarme e a atualizar a API para 1...")
+                    requests.post(API_URL_MAIN, data={'nome': 'buzzer-alarme', 'valor': '1', 'hora': time.strftime("%d-%m-%Y %H:%M:%S"), 'tipo': 'Atuador', 'origem': 'Raspberry Pi'})
+                    estado_alarme_api = "1"  # Força localmente para atuar já
+
+                elif estado_movimento_api == "0" and estado_movimento_anterior == "1":
+                    print("Movimento terminou! A desligar o buzzer-alarme e a repor a API para 0...")
+                    requests.post(API_URL_MAIN, data={'nome': 'buzzer-alarme', 'valor': '0', 'hora': time.strftime("%d-%m-%Y %H:%M:%S"), 'tipo': 'Atuador', 'origem': 'Raspberry Pi'})
+                    estado_alarme_api = "0"
+
+                # Guarda o estado atual do movimento para comparar na próxima volta do ciclo
+                estado_movimento_anterior = estado_movimento_api
+
+                # 3. Liga se o site mandar (estado_alarme_api) OU o sensor detetar (estado_movimento_api)
                 if estado_alarme_api == "1" or estado_movimento_api == "1":
                     print("ALARME NORMAL ATIVADO!")
                     buzzer_alarme.blink(on_time=0.2, off_time=2, n=2)

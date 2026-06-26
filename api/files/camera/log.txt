@@ -28,3 +28,77 @@
 25-06-2026 19:21:08;Comando;camera;0;Script Python Camera
 25-06-2026 19:21:19;Comando;camera;1;MCU
 25-06-2026 19:21:23;Comando;camera;0;Script Python Camera
+25-06-2026 23:53:33;Comando;camera;1;MCU
+25-06-2026 23:57:10;Comando;camera;0;Script Python Camera
+25-06-2026 23:58:34;Comando;camera;1;MCU
+25-06-2026 23:58:39;Comando;camera;0;Script Python Camera
+26-06-2026 00:02:05;Comando;camera;1;MCU
+26-06-2026 00:02:11;Comando;camera;0;Script Python Camera
+26-06-2026 00:04:03;Comando;camera;1;MCU
+26-06-2026 00:04:09;Comando;camera;0;Script Python Camera
+26-06-2026 00:05:13;Comando;camera;1;MCU
+26-06-2026 00:05:17;Comando;camera;0;Script Python Camera
+26-06-2026 00:22:56;Comando;camera;1;MCU
+26-06-2026 00:23:01;Comando;camera;0;Script Python Camera
+26-06-2026 00:23:16;Comando;camera;1;MCU
+26-06-2026 00:23:20;Comando;camera;0;Script Python Camera
+26-06-2026 00:23:41;Comando;camera;1;MCU
+26-06-2026 00:23:45;Comando;camera;0;Script Python Camera
+26-06-2026 00:52:07;Comando;camera;1;MCU
+26-06-2026 00:52:12;Comando;camera;0;Script Python Camera
+26-06-2026 00:52:27;Comando;camera;1;MCU
+26-06-2026 00:52:31;Comando;camera;0;Script Python Camera
+26-06-2026 00:59:53;Comando;camera;1;MCU
+26-06-2026 00:59:57;Comando;camera;0;Script Python Camera
+26-06-2026 01:00:13;Comando;camera;1;MCU
+26-06-2026 01:00:30;Comando;camera;0;Script Python Camera
+26-06-2026 01:14:27;Comando;camera;1;MCU
+26-06-2026 01:14:48;Comando;camera;0;Script Python Camera
+26-06-2026 01:15:17;Comando;camera;1;MCU
+26-06-2026 01:15:20;Comando;camera;0;Script Python Camera
+26-06-2026 01:19:30;Comando;camera;1;MCU
+26-06-2026 01:24:43;Comando;camera;1;MCU
+26-06-2026 01:26:26;Comando;camera;1;MCU
+26-06-2026 01:32:29;Comando;camera;0;Script Python Camera
+26-06-2026 01:32:41;Comando;camera;1;MCU
+26-06-2026 01:32:45;Comando;camera;0;Script Python Camera
+26-06-2026 01:33:06;Comando;camera;1;MCU
+26-06-2026 01:33:11;Comando;camera;0;Script Python Camera
+26-06-2026 01:34:10;Comando;camera;1;MCU
+26-06-2026 01:34:16;Comando;camera;0;Script Python Camera
+26-06-2026 01:36:09;Comando;camera;1;MCU
+26-06-2026 01:36:15;Comando;camera;0;Script Python Camera
+26-06-2026 01:36:54;Comando;camera;1;MCU
+26-06-2026 01:37:00;Comando;camera;0;Script Python Camera
+26-06-2026 01:39:09;Comando;camera;1;MCU
+26-06-2026 01:39:13;Comando;camera;0;Script Python Camera
+26-06-2026 01:39:35;Comando;camera;1;MCU
+26-06-2026 01:39:40;Comando;camera;0;Script Python Camera
+26-06-2026 01:40:01;Comando;camera;1;MCU
+26-06-2026 01:40:06;Comando;camera;0;Script Python Camera
+26-06-2026 01:41:11;Comando;camera;1;MCU
+26-06-2026 01:41:15;Comando;camera;0;Script Python Camera
+26-06-2026 01:42:16;Comando;camera;1;MCU
+26-06-2026 01:42:22;Comando;camera;0;Script Python Camera
+26-06-2026 01:48:00;Comando;camera;1;MCU
+26-06-2026 01:48:05;Comando;camera;0;Script Python Camera
+26-06-2026 01:48:58;Comando;camera;1;MCU
+26-06-2026 01:49:04;Comando;camera;0;Script Python Camera
+26-06-2026 02:01:16;Comando;camera;1;MCU
+26-06-2026 02:01:32;Comando;camera;0;Script Python Camera
+26-06-2026 02:01:47;Comando;camera;1;MCU
+26-06-2026 02:01:51;Comando;camera;0;Script Python Camera
+26-06-2026 02:03:10;Comando;camera;1;MCU
+26-06-2026 02:03:14;Comando;camera;0;Raspberry Pi
+26-06-2026 02:07:04;Comando;camera;1;MCU
+26-06-2026 02:07:07;Comando;camera;0;Raspberry Pi
+26-06-2026 02:07:29;Comando;camera;1;MCU
+26-06-2026 02:07:33;Comando;camera;0;Raspberry Pi
+26-06-2026 02:15:46;Comando;camera;1;MCU
+26-06-2026 02:15:51;Comando;camera;0;Raspberry Pi
+26-06-2026 02:17:34;Comando;camera;1;MCU
+26-06-2026 02:17:37;Comando;camera;0;Raspberry Pi
+26-06-2026 02:18:28;Comando;camera;1;MCU
+26-06-2026 02:18:38;Comando;camera;0;Raspberry Pi
+26-06-2026 02:19:23;Comando;camera;1;MCU
+26-06-2026 02:19:29;Comando;camera;0;Raspberry Pi
