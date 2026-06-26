@@ -1,13 +1,11 @@
 <?php
   $dispositivos = array(
     "sensor-movimento" => "Movimento",
-    "led-camera" => "Luz da câmara",
-    "led-fogo" => "Luz de Aviso de Fogo",
+    "luz-camera" => "Luz da câmara",
     "sensor-temperatura" => "Temperatura",
     "led-temperatura" => "LED de temperatura",
     "sensor-chama" => "Chama",
     "buzzer-fogo" => "Buzzer de fogo",
-    "buzzer-alarme" => "Buzzer da Câmara",
     "camera" => "Câmara"
   );
 
@@ -322,7 +320,7 @@
                     <th scope="col">Origem</th>
                   </tr>
                 </thead>
-                <tbody id="tabela-historico">
+                <tbody>
                   <?php mostrarLinhasHistorico($historico); ?>
                 </tbody>
               </table>
@@ -348,7 +346,9 @@
             borderColor: "#0f766e",
             backgroundColor: "rgba(15, 118, 110, 0.15)",
             borderWidth: 2,
-            fill: true
+            fill: true,
+            pointRadius: 0,
+            pointHitRadius: 10
           }]
         },
         options: {
