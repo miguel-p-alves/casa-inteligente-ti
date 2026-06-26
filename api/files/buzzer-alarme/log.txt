@@ -12,3 +12,7 @@
 03-06-2026 17:08:10;Atuador;buzzer-alarme;0;Dashboard
 24-06-2026 11:33:22;Atuador;buzzer-alarme;1;Dashboard
 24-06-2026 11:33:23;Atuador;buzzer-alarme;0;Dashboard
+24-06-2026 21:00:39;Atuador;buzzer-alarme;1;Dashboard
+24-06-2026 21:00:39;Atuador;buzzer-alarme;0;Dashboard
+24-06-2026 21:00:40;Atuador;buzzer-alarme;1;Dashboard
+24-06-2026 21:00:40;Atuador;buzzer-alarme;0;Dashboard

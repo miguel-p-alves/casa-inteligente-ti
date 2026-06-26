@@ -260,7 +260,7 @@
           </article>
 
           <article class="col-12 col-sm-6 col-xl-4">
-            <div class="card actuator-card <?php echo ($valor_led_camera == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLedCamera">
+            <div class="card actuator-card <?php echo ($valor_led_fogo == '1') ? 'actuator-active' : ''; ?> h-100" id="cartaoLedFogo">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-3">
                   <div>

@@ -1,1 +1,3 @@
 
+24-06-2026 21:00:36;Atuador;led-temperatura;1;Dashboard
+24-06-2026 21:00:37;Atuador;led-temperatura;0;Dashboard

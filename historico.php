@@ -310,7 +310,7 @@
             </div>
 
             <div class="table-responsive">
-              <table class="table table-hover align-middle history-table mb-0">
+              <table id="historico-table" class="table table-hover align-middle history-table mb-0">
                 <thead>
                   <tr>
                     <th scope="col">Data/Hora</th>
@@ -320,7 +320,7 @@
                     <th scope="col">Origem</th>
                   </tr>
                 </thead>
-                <tbody id="tabela-historico">
+                <tbody>
                   <?php mostrarLinhasHistorico($historico); ?>
                 </tbody>
               </table>
