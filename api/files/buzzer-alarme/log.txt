@@ -44,3 +44,75 @@
 26-06-2026 09:36:55;Atuador;buzzer-alarme;0;Dashboard
 26-06-2026 09:36:55;Atuador;buzzer-alarme;1;Dashboard
 26-06-2026 09:36:56;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:59:24;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:59:24;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:59:25;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:59:25;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:59:25;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:59:25;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:59:25;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:59:25;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:59:26;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:59:26;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:59:26;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:59:26;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:59:26;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 10:18:56;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 10:18:58;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 10:18:59;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 10:19:14;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 10:19:23;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 10:20:59;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 10:21:00;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 10:21:00;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 10:21:01;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 10:21:02;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 10:21:03;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 10:22:04;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 10:22:05;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 11:12:30;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 11:12:35;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 11:12:38;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 11:12:47;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 11:12:47;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 11:12:47;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 11:12:48;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 11:12:48;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 11:12:48;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 11:12:48;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 11:12:48;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 11:12:48;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 11:12:48;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 11:12:49;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 11:12:49;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 11:12:50;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 11:13:00;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 11:13:01;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 11:13:01;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 11:13:01;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 11:13:01;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 11:13:01;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 12:45:04;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 12:45:08;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 12:59:42;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 12:59:43;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 12:59:43;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 12:59:44;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 12:59:44;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 12:59:45;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 12:59:45;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 12:59:56;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 13:06:03;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 13:06:04;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 13:06:04;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 13:06:04;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 13:06:04;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 14:12:37;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 14:14:42;Atuador;buzzer-alarme;1;Raspberry Pi
+26-06-2026 14:15:00;Atuador;buzzer-alarme;0;Raspberry Pi
+26-06-2026 14:19:29;Atuador;buzzer-alarme;1;Raspberry Pi
+26-06-2026 14:19:38;Atuador;buzzer-alarme;0;Raspberry Pi
+26-06-2026 14:21:48;Atuador;buzzer-alarme;1;Raspberry Pi
+26-06-2026 14:22:09;Atuador;buzzer-alarme;0;Raspberry Pi
+26-06-2026 14:22:18;Atuador;buzzer-alarme;1;Raspberry Pi
+26-06-2026 14:22:48;Atuador;buzzer-alarme;0;Raspberry Pi

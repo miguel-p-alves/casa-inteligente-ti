@@ -12,17 +12,17 @@
   $utilizadores = array(
     array(
       "username" => "Admin",
-      "password_hash" => password_hash("admin", PASSWORD_DEFAULT),
+      "password_hash" => '$2y$10$nxdv/hNitznenc7cBY5GIOXnJE0QEmLxwPVQoxh6vsy2mYpOGHDt.',
       "role" => "admin"
     ),
     array(
       "username" => "Resident",
-      "password_hash" => password_hash("resident", PASSWORD_DEFAULT),
+      "password_hash" => '$2y$10$R03glQP5bAaKZEhJgnH6rOvLOst30nhfa9USBwm4gyWR6lph2opIS',
       "role" => "resident"
     ),
     array(
       "username" => "Guest",
-      "password_hash" => password_hash("guest", PASSWORD_DEFAULT),
+      "password_hash" => '$2y$10$Eehj43gNt3jvYGkuHQHEN.un8Q3tLaGYdxrf4cLmgay7rPc7XbVZe',
       "role" => "guest"
     )
   );
@@ -62,48 +62,40 @@
   <body>
     <main class="dashboard-shell">
       <section class="overview-band mb-4">
-        <div class="row g-3 align-items-center">
-          <div class="col-lg-7">
-            <p class="overline mb-2">Casa Inteligente</p>
-            <h1 class="mb-0">Casa Inteligente IoT</h1>
-          </div>
-        </div>
+        <p class="overline mb-2">Casa Inteligente</p>
+        <h1>Casa Inteligente IoT</h1>
       </section>
 
-      <section class="row justify-content-center">
-        <div class="row g-3 align-items-center">
-          <div class="card">
-            <div class="card-body p-4">
-              <div class="section-heading compact-heading">
-                <div>
-                  <span class="section-kicker">Autenticação</span>
-                  <h2>Iniciar sessão</h2>
-                </div>
+      <section>
+        <div class="card">
+          <div class="card-body p-4">
+            <div class="section-heading">
+              <span class="section-kicker">Autenticação</span>
+              <h2>Iniciar sessão</h2>
+            </div>
+
+            <?php if ($mensagem_erro != ""): ?>
+              <div class="alert alert-danger" role="alert">
+                <?php echo $mensagem_erro; ?>
+              </div>
+            <?php endif; ?>
+
+            <form method="POST" action="index.php">
+              <div class="mb-3">
+                <label class="form-label" for="username">Utilizador</label>
+                <input class="form-control" type="text" id="username" name="username" required>
               </div>
 
-              <?php if ($mensagem_erro != ""): ?>
-                <div class="alert alert-danger" role="alert">
-                  <?php echo $mensagem_erro; ?>
-                </div>
-              <?php endif; ?>
+              <div class="mb-3">
+                <label class="form-label" for="password">Palavra-passe</label>
+                <input class="form-control" type="password" id="password" name="password" required>
+              </div>
 
-              <form method="POST" action="index.php">
-                <div class="mb-3">
-                  <label class="form-label" for="username">Utilizador</label>
-                  <input class="form-control" type="text" id="username" name="username" required>
-                </div>
-
-                <div class="mb-3">
-                  <label class="form-label" for="password">Palavra-passe</label>
-                  <input class="form-control" type="password" id="password" name="password" required>
-                </div>
-
-                <button class="btn btn-primary w-100" type="submit">
-                  <i class="bi bi-box-arrow-in-right"></i>
-                  Entrar
-                </button>
-              </form>
-            </div>
+              <button class="btn btn-primary" type="submit">
+                <i class="bi bi-box-arrow-in-right"></i>
+                Entrar
+              </button>
+            </form>
           </div>
         </div>
       </section>

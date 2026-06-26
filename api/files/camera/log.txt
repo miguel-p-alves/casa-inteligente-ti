@@ -102,3 +102,11 @@
 26-06-2026 02:18:38;Comando;camera;0;Raspberry Pi
 26-06-2026 02:19:23;Comando;camera;1;MCU
 26-06-2026 02:19:29;Comando;camera;0;Raspberry Pi
+26-06-2026 14:14:43;Comando;camera;1;MCU
+26-06-2026 14:14:51;Comando;camera;0;Raspberry Pi
+26-06-2026 14:19:31;Comando;camera;1;MCU
+26-06-2026 14:19:36;Comando;camera;0;Raspberry Pi
+26-06-2026 14:21:50;Comando;camera;1;MCU
+26-06-2026 14:21:53;Comando;camera;0;Raspberry Pi
+26-06-2026 14:22:20;Comando;camera;1;MCU
+26-06-2026 14:22:23;Comando;camera;0;Raspberry Pi

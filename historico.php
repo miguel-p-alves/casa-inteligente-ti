@@ -193,57 +193,43 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark app-navbar sticky-top">
       <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="index.php">
-          <span class="brand-mark"><i class="bi bi-house-heart-fill"></i></span>
-          <span>Casa Inteligente IoT</span>
+        <a class="navbar-brand" href="index.php">
+          <i class="bi bi-house-heart-fill"></i>
+          Casa Inteligente IoT
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Alternar navegação">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
           <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="menuPrincipal">
-          <ul class="navbar-nav ms-lg-4 me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" href="index.php#sensores">Sensores</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="index.php#atuadores">Atuadores</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="index.php#camara">Câmara</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="historico.php">Histórico</a>
-            </li>
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link" href="index.php#sensores">Sensores</a></li>
+            <li class="nav-item"><a class="nav-link" href="index.php#atuadores">Atuadores</a></li>
+            <li class="nav-item"><a class="nav-link" href="index.php#camara">Câmara</a></li>
+            <li class="nav-item"><a class="nav-link active" href="historico.php">Histórico</a></li>
           </ul>
 
-          <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
-            <span class="user-pill">
-              <i class="bi bi-person-circle"></i>
-              <?php echo htmlspecialchars($_SESSION["username"]); ?>
-            </span>
-            <a class="btn btn-outline-light btn-sm logout-button" href="logout.php">
-              <i class="bi bi-box-arrow-right"></i>
-              Terminar sessão
-            </a>
-          </div>
+          <span class="user-pill me-2">
+            <i class="bi bi-person-circle"></i>
+            <?php echo htmlspecialchars($_SESSION["username"]); ?>
+          </span>
+          <a class="btn btn-outline-light btn-sm" href="logout.php">
+            <i class="bi bi-box-arrow-right"></i>
+            Terminar sessão
+          </a>
         </div>
       </div>
     </nav>
 
     <main class="dashboard-shell">
       <section class="overview-band mb-4">
-        <div class="row g-3 align-items-center">
-          <div class="col-lg-7">
-            <p class="overline mb-2">Casa Inteligente</p>
-            <h1 class="mb-0">Histórico</h1>
-          </div>
-        </div>
+        <p class="overline mb-2">Casa Inteligente</p>
+        <h1>Histórico</h1>
       </section>
        <div class="card mb-3">
           <div class="card-body">
-            <div class="section-heading compact-heading">
+            <div class="section-heading">
               <div>
                 <span class="section-kicker">Temperatura</span>
                 <h2>Histórico de temperatura</h2>
@@ -254,28 +240,23 @@
               <canvas id="graficoTemperatura"></canvas>
             </div> <hr class="mt-4 mb-3">
 
-            <form class="row g-3 align-items-end" method="GET" action="historico.php">
+            <form method="GET" action="historico.php">
               <?php if(isset($_GET['nome']) && $_GET['nome'] != ""): ?>
                 <input type="hidden" name="nome" value="<?php echo htmlspecialchars($_GET['nome']); ?>">
               <?php endif; ?>
 
-              <div class="col-12 col-md-4">
+              <div class="mb-3">
                 <label class="capture-label" for="data_inicio">Data Início</label>
                 <input type="date" class="form-control" id="data_inicio" name="data_inicio" value="<?php echo htmlspecialchars($filtro_data_inicio); ?>">
               </div>
 
-              <div class="col-12 col-md-4">
+              <div class="mb-3">
                 <label class="capture-label" for="data_fim">Data Fim</label>
                 <input type="date" class="form-control" id="data_fim" name="data_fim" value="<?php echo htmlspecialchars($filtro_data_fim); ?>">
               </div>
 
-              <div class="col-12 col-md-auto">
-                <button class="btn btn-primary" type="submit">Filtrar Gráfico</button>
-              </div>
-
-              <div class="col-12 col-md-auto">
-                <a class="btn btn-outline-secondary" href="historico.php<?php echo isset($_GET['nome']) && $_GET['nome'] != "" ? '?nome='.htmlspecialchars($_GET['nome']) : ''; ?>">Limpar Datas</a>
-              </div>
+              <button class="btn btn-primary" type="submit">Filtrar Gráfico</button>
+              <a class="btn btn-outline-secondary" href="historico.php<?php echo isset($_GET['nome']) && $_GET['nome'] != "" ? '?nome='.htmlspecialchars($_GET['nome']) : ''; ?>">Limpar Datas</a>
             </form>
             
           </div>
@@ -283,8 +264,8 @@
       <section class="dashboard-section" id="historico">
         <div class="card mb-3">
           <div class="card-body">
-            <form class="row g-3 align-items-end" method="GET" action="historico.php">
-              <div class="col-12 col-md-6 col-lg-4">
+            <form method="GET" action="historico.php">
+              <div class="mb-3">
                 <label class="capture-label" for="nome">Dispositivo</label>
                 <select class="form-select" id="nome" name="nome">
                   <option value="">Todos</option>
@@ -295,21 +276,15 @@
                   <?php endforeach; ?>
                 </select>
               </div>
-
-              <div class="col-12 col-md-auto">
-                <button class="btn btn-primary" type="submit">Filtrar</button>
-              </div>
-
-              <div class="col-12 col-md-auto">
-                <a class="btn btn-outline-secondary" href="historico.php">Limpar filtro</a>
-              </div>
+              <button class="btn btn-primary" type="submit">Filtrar</button>
+              <a class="btn btn-outline-secondary" href="historico.php">Limpar filtro</a>
             </form>
           </div>
         </div>
         
         <div class="card">
           <div class="card-body">
-            <div class="section-heading compact-heading">
+            <div class="section-heading">
               <div>
                 <span class="section-kicker">Amostras</span>
                 <h2>Registos</h2>

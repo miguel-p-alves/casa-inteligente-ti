@@ -7,236 +7,280 @@ print("--- SISTEMA DE ALARME DE INCÊNDIO E CÂMARA INICIADO ---")
 print("Prima CTRL+C para terminar\n")
 
 # =========================================================
-# 1. CONFIGURAÇÃO DOS PINOS GPIO (Sensores e Alarmes)
+# 1. CONFIGURAÇÃO DOS PINOS GPIO
 # =========================================================
-buzzer_alarme = LED(17)                # Pino Físico 11
-buzzer_fogo = LED(23)                  # Pino Físico 16
-sensor_chama = DigitalInputDevice(27)  # NOVO: Pino Físico 13 
 
-API_URL_MAIN = 'http://10.28.114.77/projeto-ti/api/api.php'
+# LED é usado aqui para controlar os buzzers (ligar/desligar)
+buzzer_alarme = LED(17)               # Pino Físico 11 — buzzer do alarme de movimento
+buzzer_fogo   = LED(23)               # Pino Físico 16 — buzzer do alarme de fogo
+sensor_chama  = DigitalInputDevice(27) # Pino Físico 13 — sensor de chama
 
 # =========================================================
-# 2. CONFIGURAÇÕES DA CÂMARA
+# 2. CONFIGURAÇÕES GERAIS (API e Câmara)
 # =========================================================
-NOME_SENSOR = "camera" 
-BASE_URL = "http://10.28.114.77/projeto-ti/api"
-API_URL_CAM = f"{BASE_URL}/api.php"
-UPLOAD_URL = f"{BASE_URL}/upload.php"
+
+# URL base da API PHP que recebe e envia dados dos sensores
+API_URL    = 'http://10.28.114.77/projeto-ti/api/api.php'
+
+# URL do script PHP que recebe a imagem e a guarda no servidor
+UPLOAD_URL = 'http://10.28.114.77/projeto-ti/api/upload.php'
+
+# URL do stream de vídeo da app DroidCam (transforma o telemóvel em webcam)
 DROIDCAM_URL = "http://10.28.114.67:4747/video"
 
 # =========================================================
 # 3. FUNÇÕES DA CÂMARA
 # =========================================================
+
 def capturar_e_enviar():
+    """
+    Liga à DroidCam, espera 3 segundos para a câmara focar,
+    captura uma imagem e envia para o servidor via POST.
+    Depois repõe o valor 'camera' para 0 na API.
+    """
     print("A ligar à DroidCam e a aguardar 3 segundos para focar...")
+    
+    # Abre o stream de vídeo da DroidCam
     cap = cv2.VideoCapture(DROIDCAM_URL)
-        
-    # 1. Espera 3 segundos com a câmara ligada para ela ter tempo de focar
-    time.sleep(3)
     
-    # 2. Captura a imagem final
-    ret, frame = cap.read()
-    cap.release() # Liberta a câmara imediatamente
+    # Espera 2 segundos para a câmara ter tempo de focar
+    time.sleep(2)
+    
+    # Captura um frame (imagem) do stream
+    retorno, frame = cap.read()
+    
+    # Liberta a câmara logo após capturar
+    cap.release()
 
-    if ret:
-        print("Imagem capturada com sucesso! A preparar envio...")
-        
-        # 4. Codifica o frame do OpenCV (.png/.jpg) diretamente na memória para JPEG
-        sucesso_conversao, img_bytes = cv2.imencode('.jpg', frame)
-        
-        if not sucesso_conversao:
-            print("Erro ao converter o frame para JPEG.")
-            return False
-            
-        # 5. Prepara o dicionário de ficheiros com o nome do campo esperado pelo PHP ('imagem')
-        ficheiros = {
-            'imagem': ('webcam.jpg', img_bytes.tobytes(), 'image/jpeg')
-        }
-        
-        try:
-            # Envia o ficheiro para o teu upload.php via POST
-            resposta = requests.post(UPLOAD_URL, files=ficheiros)
-            
-            if resposta.status_code == 200 and "Upload OK" in resposta.text:
-                print("[+] Sucesso: Imagem guardada no servidor do site!")
-                return True
-            else:
-                print(f"[-] Erro no Servidor Web: Código {resposta.status_code}. Resposta: {resposta.text}")
-                return False
-                
-        except Exception as e:
-            print("Erro ao tentar comunicar com o servidor de upload:", e)
-            return False
-    else:
+    if retorno==False:
+        # Se ret for False, a captura falhou
         print("Erro: Não foi possível ler o frame da DroidCam.")
-        return False
+        return
 
-def repor_valor_zero():
-    print("A repor o valor da câmara a 0 no servidor...")
+    print("Imagem capturada! A enviar para o servidor...")
     
-    data_hora = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
+    # Converte o frame para bytes JPEG
+    sucesso, img_bytes = cv2.imencode('.jpg', frame)
     
-    dados_post = {
-        'nome': 'camera',
-        'valor': '0',
-        'hora': data_hora,
-        'tipo': 'Comando',
-        'origem': 'Raspberry Pi'
-    }
-    
+    if sucesso == False:
+        print("Erro ao converter a imagem para JPEG.")
+        return
+
+    # Prepara o ficheiro para enviar via POST
+    ficheiro = {
+        'imagem': ('webcam.jpg', img_bytes.tobytes(), 'image/jpeg')}
+
     try:
-        response = requests.post(API_URL_CAM, data=dados_post, timeout=5)
-        if response.status_code == 200:
-            print("Valor reposto a 0 com sucesso!")
+        resposta = requests.post(UPLOAD_URL, files=ficheiro)
+        
+        if resposta.status_code == 200:
+            print("[+] Imagem guardada no servidor com sucesso!")
+            # Repõe o gatilho da câmara a 0 na API para não disparar de novo
+            repor_camera_para_zero()
         else:
-            print(f"Erro ao repor a 0. Código: {response.status_code}")
+            print(f"[-] Erro no upload. Código: {resposta.status_code} | Resposta: {resposta.text}")
     except Exception as e:
-        print("Erro de comunicação ao tentar repor a 0:", e)
+        print("Erro ao comunicar com o servidor de upload:", e)
+
+
+def repor_camera_para_zero():
+    """
+    Envia um POST à API a dizer que a câmara já não precisa de disparar (valor = 0).
+    Isto evita que o gatilho fique ativo e dispare repetidamente.
+    """
+    print("A repor o gatilho da câmara a 0 na API...")
+    
+    dados = {
+        'nome'   : 'camera',
+        'valor'  : '0',
+        'hora'   : time.strftime("%d-%m-%Y %H:%M:%S"),
+        'tipo'   : 'Comando',
+        'origem' : 'Raspberry Pi'
+    }
+
+    try:
+        resposta = requests.post(API_URL, data=dados, timeout=5)
+        if resposta.status_code == 200:
+            print("Gatilho reposto a 0 com sucesso.")
+        else:
+            print(f"Erro ao repor a 0. Código: {resposta.status_code}")
+    except Exception as e:
+        print("Erro ao repor câmara a 0:", e)
 
 
 # =========================================================
-# 4. CICLO PRINCIPAL (Loop Único)
+# 4. VARIÁVEIS DE ESTADO
+# Guardam o estado anterior de cada sensor para detetar mudanças
+# (transição de 0->1 ou 1->0), evitando envios repetidos para a API
 # =========================================================
-estado_fogo_anterior = 0
-estado_movimento_anterior = "0"  # NOVO: guarda o último estado do sensor de movimento
+estado_fogo_anterior      = 0
+estado_movimento_anterior = "0"
+
+
+# =========================================================
+# 5. CICLO PRINCIPAL
+# =========================================================
 try:
     while True:
-        # ---------------------------------------------------------
-        # PASSO 1: LER SENSOR DE CHAMA E ENVIAR PARA A API (POST)
-        # ---------------------------------------------------------
+
+        # -----------------------------------------------
+        # PASSO 1: LER SENSOR DE CHAMA E ENVIAR À API
+        # -----------------------------------------------
+        
+        # sensor_chama.value é 1 se detetar chama, 0 caso contrário
         if sensor_chama.value == 1:
-            print("ALERTA: Chama detetada pelo Sensor!")
+            print("ALERTA: Chama detetada pelo sensor!")
             estado_fogo = 1
         else:
             print("Chama: Não detetada.")
             estado_fogo = 0
 
-        agora = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
-
-        dados_fogo = {
-            'nome': 'sensor-chama',
-            'valor': estado_fogo,
-            'hora': agora,
-            'tipo': 'Sensor',
-            'origem': 'Raspberry Pi'
-        }
-
+        # Envia o estado atual do sensor de chama para a API
         try:
-            resposta_post = requests.post(API_URL_MAIN, data=dados_fogo)
-            if resposta_post.status_code != 200:
-                print(f"Erro no POST do Sensor: {resposta_post.status_code}")
+            requests.post(API_URL, data={
+                'nome'   : 'sensor-chama',
+                'valor'  : estado_fogo,
+                'hora'   : time.strftime("%d-%m-%Y %H:%M:%S"),
+                'tipo'   : 'Sensor',
+                'origem' : 'Raspberry Pi'
+            })
         except Exception as e:
-            print("Erro ao comunicar o POST do Sensor:", e)
+            print("Erro ao enviar estado do sensor de chama:", e)
 
-        # ---------------------------------------------------------
-        # PASSO 2: VERIFICAÇÃO DO ALARME NORMAL (GET Buzzer + GET Movimento)
-        # ---------------------------------------------------------
+
+        # -----------------------------------------------
+        # PASSO 2: ALARME DE MOVIMENTO (GET + POST + Buzzer)
+        # -----------------------------------------------
         try:
-            # 1. Adicionas o GET do sensor de movimento além do buzzer
-            req_alarme = requests.get(f'{API_URL_MAIN}?nome=buzzer-alarme')
-            req_movimento = requests.get(f'{API_URL_MAIN}?nome=sensor-movimento')
-            
+            # Pede à API o estado atual do buzzer de alarme e do sensor de movimento
+            req_alarme   = requests.get(f'{API_URL}?nome=buzzer-alarme')
+            req_movimento = requests.get(f'{API_URL}?nome=sensor-movimento')
+
             if req_alarme.status_code == 200 and req_movimento.status_code == 200:
-                estado_alarme_api = req_alarme.text.strip()
-                estado_movimento_api = req_movimento.text.strip()
-                
-                print(time.strftime("%H:%M:%S", time.localtime()), end=" -> ")
-                print(f"Buzzer Alarme API: {estado_alarme_api} | Movimento API: {estado_movimento_api}")
-                
-                # 2. ATUALIZAR A API APENAS QUANDO O SENSOR DE MOVIMENTO MUDA (Transição)
-                # Isto evita registar o mesmo estado no histórico repetidamente a cada 2 segundos.
+                estado_alarme_api   = req_alarme.text # "0" ou "1"
+                estado_movimento_api = req_movimento.text # "0" ou "1"
+
+                print(time.strftime("%H:%M:%S"), end=" -> ")
+                print(f"Buzzer Alarme: {estado_alarme_api} | Movimento: {estado_movimento_api}")
+
+                # Só atualiza a API quando há uma MUDANÇA de estado (evita registos repetidos)
                 if estado_movimento_api == "1" and estado_movimento_anterior == "0":
-                    print("Movimento detetado! A ligar o buzzer-alarme e a atualizar a API para 1...")
-                    requests.post(API_URL_MAIN, data={'nome': 'buzzer-alarme', 'valor': '1', 'hora': time.strftime("%d-%m-%Y %H:%M:%S"), 'tipo': 'Atuador', 'origem': 'Raspberry Pi'})
-                    estado_alarme_api = "1"  # Força localmente para atuar já
+                    # Movimento começou agora, ativa o buzzer na API
+                    print("Movimento detetado! A ativar buzzer na API...")
+                    requests.post(API_URL, data={
+                        'nome': 'buzzer-alarme', 'valor': '1',
+                        'hora': time.strftime("%d-%m-%Y %H:%M:%S"),
+                        'tipo': 'Atuador', 'origem': 'Raspberry Pi'
+                    })
+                    estado_alarme_api = "1"  # Força o estado local para reagir já neste ciclo
 
                 elif estado_movimento_api == "0" and estado_movimento_anterior == "1":
-                    print("Movimento terminou! A desligar o buzzer-alarme e a repor a API para 0...")
-                    requests.post(API_URL_MAIN, data={'nome': 'buzzer-alarme', 'valor': '0', 'hora': time.strftime("%d-%m-%Y %H:%M:%S"), 'tipo': 'Atuador', 'origem': 'Raspberry Pi'})
+                    # Movimento parou → desativa o buzzer na API
+                    print("Movimento terminou! A desativar buzzer na API...")
+                    requests.post(API_URL, data={
+                        'nome': 'buzzer-alarme', 'valor': '0',
+                        'hora': time.strftime("%d-%m-%Y %H:%M:%S"),
+                        'tipo': 'Atuador', 'origem': 'Raspberry Pi'
+                    })
                     estado_alarme_api = "0"
 
-                # Guarda o estado atual do movimento para comparar na próxima volta do ciclo
+                # Guarda o estado atual do movimento para a próxima iteração
                 estado_movimento_anterior = estado_movimento_api
 
-                # 3. Liga se o site mandar (estado_alarme_api) OU o sensor detetar (estado_movimento_api)
+                # Liga o buzzer se a API mandar OU se o sensor estiver ativo
                 if estado_alarme_api == "1" or estado_movimento_api == "1":
-                    print("ALARME NORMAL ATIVADO!")
+                    print("ALARME DE MOVIMENTO ATIVO!")
                     buzzer_alarme.blink(on_time=0.2, off_time=2, n=2)
                 else:
                     buzzer_alarme.off()
             else:
-                print("Erro nos pedidos HTTP do Alarme ou Movimento")
+                print("Erro: Resposta HTTP inválida ao ler alarme/movimento.")
         except Exception as e:
-            print("Erro no GET do Alarme/Movimento:", e)
-            
-        # ---------------------------------------------------------
-        # PASSO 3: VERIFICAÇÃO DO ALARME DE FOGO (GET + POST)
-        # ---------------------------------------------------------
+            print("Erro no alarme de movimento:", e)
+
+
+        # -----------------------------------------------
+        # PASSO 3: ALARME DE FOGO (GET + POST + Buzzer)
+        # -----------------------------------------------
         try:
-            req_fogo = requests.get(f'{API_URL_MAIN}?nome=buzzer-fogo')
-            
+            # Pede à API o estado atual do buzzer de fogo
+            req_fogo = requests.get(f'{API_URL}?nome=buzzer-fogo')
+
             if req_fogo.status_code == 200:
-                estado_api = req_fogo.text.strip()
-                
-                # 1. ATUALIZAR A API APENAS QUANDO O SENSOR MUDA (Transição)
+                estado_api_fogo = req_fogo.text  # "0" ou "1"
+
+                # Só atualiza a API quando há uma MUDANÇA de estado do sensor físico
                 if estado_fogo == 1 and estado_fogo_anterior == 0:
-                    print("Sensor detetou fogo! A atualizar API para 1...")
-                    requests.post(API_URL_MAIN, data={'nome': 'buzzer-fogo', 'valor': '1', 'hora': time.strftime("%H:%M:%S"), 'tipo': 'Atuador', 'origem': 'Raspberry Pi'})
-                    estado_api = "1" # Força localmente para atuar já
-                    
+                    # Sensor detetou fogo agora, ativa o buzzer de fogo na API
+                    print("Fogo detetado pelo sensor! A ativar na API...")
+                    requests.post(API_URL, data={
+                        'nome': 'buzzer-fogo', 'valor': '1',
+                        'hora': time.strftime("%d-%m-%Y %H:%M:%S"),
+                        'tipo': 'Atuador', 'origem': 'Raspberry Pi'
+                    })
+                    estado_api_fogo = "1"
+
                 elif estado_fogo == 0 and estado_fogo_anterior == 1:
-                    print("Fogo cessou! A repor API para 0...")
-                    requests.post(API_URL_MAIN, data={'nome': 'buzzer-fogo', 'valor': '0', 'hora': time.strftime("%H:%M:%S"), 'tipo': 'Atuador', 'origem': 'Raspberry Pi'})
-                    estado_api = "0"
-                
-                # Guarda o estado atual para comparar na próxima volta do ciclo
+                    # Fogo cessou → desativa o buzzer de fogo na API
+                    print("Fogo cessou! A desativar na API...")
+                    requests.post(API_URL, data={
+                        'nome': 'buzzer-fogo', 'valor': '0',
+                        'hora': time.strftime("%d-%m-%Y %H:%M:%S"),
+                        'tipo': 'Atuador', 'origem': 'Raspberry Pi'
+                    })
+                    estado_api_fogo = "0"
+
+                # Guarda o estado atual do fogo para a próxima iteração
                 estado_fogo_anterior = estado_fogo
 
-                # 2. CONTROLAR O BUZZER
-                # Liga se o site mandar (estado_api) OU se o sensor estiver a detetar (estado_fogo)
-                if estado_api == "1" or estado_fogo == 1:
-                    print(f"{time.strftime('%H:%M:%S')} -> ALARME DE FOGO ATIVADO!")
+                # Liga o buzzer se a API mandar OU se o sensor estiver a detetar
+                if estado_api_fogo == "1" or estado_fogo == 1:
+                    print(f"{time.strftime('%H:%M:%S')} -> ALARME DE FOGO ATIVO!")
                     buzzer_fogo.blink(on_time=0.1, off_time=0.1, n=5)
                 else:
                     buzzer_fogo.off()
-                    
             else:
-                print("Erro no pedido HTTP do Fogo")
+                print("Erro: Resposta HTTP inválida ao ler estado de fogo.")
         except Exception as e:
-            print("Erro no GET/POST do Fogo:", e)
-            
-        # ---------------------------------------------------------
-        # PASSO 4: VERIFICAÇÃO DA CÂMARA (GET)
-        # ---------------------------------------------------------
-        try:
-            pedido_cam = requests.get(f"{API_URL_CAM}?nome={NOME_SENSOR}")
-            
-            if pedido_cam.status_code == 200:
-                valor_atual_cam = pedido_cam.text.strip()
-                
-                if valor_atual_cam == "1":
-                    print("\n[!] Gatilho ativado pelo Arduino! A capturar imagem...")
-                    sucesso = capturar_e_enviar()
-                    if sucesso:
-                        repor_valor_zero()
-            else:
-                print(f"Erro a comunicar com a API da Câmara. Código HTTP: {pedido_cam.status_code}")
-        except Exception as e:
-            print("Erro no GET da Câmara:", e)
+            print("Erro no alarme de fogo:", e)
 
-        # ---------------------------------------------------------
-        # Espera 2 segundos antes do próximo ciclo
-        print("-" * 50)
+
+        # -----------------------------------------------
+        # PASSO 4: VERIFICAÇÃO DO GATILHO DA CÂMARA (GET)
+        # -----------------------------------------------
+        try:
+            # Pergunta à API se o gatilho da câmara está ativo (valor = "1")
+            req_cam = requests.get(f'{API_URL}?nome=camera')
+
+            if req_cam.status_code == 200:
+                if req_cam.text.strip() == "1":
+                    print("\n[!] Gatilho da câmara ativo! A capturar imagem...")
+                    # A função já trata de capturar, enviar e repor a 0
+                    capturar_e_enviar()
+            else:
+                print(f"Erro ao verificar gatilho da câmara. Código: {req_cam.status_code}")
+        except Exception as e:
+            print("Erro ao verificar câmara:", e)
+
+
+        # -----------------------------------------------
+        # Espera 2 segundos antes de repetir o ciclo
+        # -----------------------------------------------
+        print("--------------------------------------------------")
         time.sleep(2)
-        
+
+
 except KeyboardInterrupt:
-    print("\nO programa foi interrompido pelo utilizador.")
-    
+    # O utilizador premiu CTRL+C — termina o programa de forma controlada
+    print("\nPrograma interrompido pelo utilizador.")
+
 except Exception as e:
+    # Qualquer outro erro inesperado
     print("\nErro inesperado:", e)
-    
+
 finally:
+    # Garante que os GPIOs são sempre libertados ao sair, mesmo com erro
     buzzer_alarme.close()
     buzzer_fogo.close()
     sensor_chama.close()
-    print('Terminou o Programa com segurança.')
+    print("Programa terminado com segurança.")
