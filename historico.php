@@ -1,4 +1,11 @@
 <?php
+
+  session_start();
+  if (!isset($_SESSION["username"]) || !isset($_SESSION["role"])) {
+    header("refresh:3;url=index.php");
+    die("Acesso restrito");
+  }
+
   $dispositivos = array(
     "sensor-movimento" => "Movimento",
     "luz-camera" => "Luz da câmara",
@@ -214,12 +221,12 @@
           <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
             <span class="user-pill">
               <i class="bi bi-person-circle"></i>
-              Miguel Alves
+              <?php echo htmlspecialchars($_SESSION["username"]); ?>
             </span>
-            <button class="btn btn-outline-light btn-sm logout-button" type="button">
+            <a class="btn btn-outline-light btn-sm logout-button" href="logout.php">
               <i class="bi bi-box-arrow-right"></i>
               Terminar sessão
-            </button>
+            </a>
           </div>
         </div>
       </div>

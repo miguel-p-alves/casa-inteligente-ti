@@ -25,14 +25,12 @@ body {
   min-height: 100vh;
   margin: 0;
   color: var(--cor-texto);
-  background:
-    linear-gradient(135deg, rgba(15, 95, 107, 0.08), rgba(242, 169, 59, 0.06)),
-    var(--cor-fundo);
+  background: var(--cor-fundo); 
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 .app-navbar {
-  background: linear-gradient(135deg, #123d46, #0f5f6b 58%, #1d7c59);
+  background: #0f5f6b;
   box-shadow: 0 12px 34px rgba(15, 47, 58, 0.28);
 }
 
@@ -91,9 +89,7 @@ body {
   padding: 1.5rem;
   border-radius: 8px;
   color: #ffffff;
-  background:
-    linear-gradient(135deg, rgba(18, 61, 70, 0.98), rgba(15, 95, 107, 0.94) 56%, rgba(242, 169, 59, 0.84)),
-    #123d46;
+  background: #164f5a;
   box-shadow: var(--sombra-suave);
 }
 
@@ -347,7 +343,7 @@ body {
   height: 5rem;
   border: 0.35rem solid rgba(255, 255, 255, 0.86);
   border-radius: 8px;
-  background: linear-gradient(135deg, #bce9f2, #f8d78a);
+  background: #bce9f2;
   box-shadow: inset 0 0 0 0.2rem rgba(18, 61, 70, 0.12);
 }
 
@@ -375,7 +371,7 @@ body {
   width: 3.7rem;
   height: 5.9rem;
   border-radius: 8px 8px 0 0;
-  background: linear-gradient(180deg, #ffd36a 0 42%, transparent 42% 100%);
+  background: #ffd36a;
 }
 
 .room-lamp::after {
@@ -462,9 +458,9 @@ body {
 }
 
 .table-responsive {
-  max-height: 500px;
+  max-height: 500px; /* Ajuste conforme o tamanho desejado */
   overflow-y: auto;
-  position: relative;
+  position: relative; /* Necessário para o sticky funcionar corretamente */
 }
 
 .history-table thead th {
@@ -501,9 +497,8 @@ body {
   padding: 1rem;
   border: 1px solid rgba(219, 229, 236, 0.94);
   border-radius: 8px;
-  background:
-    linear-gradient(180deg, rgba(244, 248, 251, 0.84), rgba(255, 255, 255, 0.95)),
-    #ffffff;
+  background: #ffffff;
+
 }
 
 .chart-item {
@@ -528,7 +523,7 @@ body {
   width: 70%;
   min-height: 0.7rem;
   border-radius: 8px 8px 3px 3px;
-  background: linear-gradient(180deg, var(--cor-conforto), var(--cor-alerta));
+  background: var(--cor-conforto);
   transition: height 0.35s ease;
 }
 

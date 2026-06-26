@@ -27,3 +27,5 @@
 26-06-2026 02:18:34;Atuador;buzzer-alarme;0;Raspberry Pi
 26-06-2026 02:19:23;Atuador;buzzer-alarme;1;Raspberry Pi
 26-06-2026 02:19:35;Atuador;buzzer-alarme;0;Raspberry Pi
+26-06-2026 09:20:53;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:20:53;Atuador;buzzer-alarme;0;Dashboard

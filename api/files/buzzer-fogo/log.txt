@@ -45,3 +45,9 @@
 25-06-2026 18:56:53;Atuador;buzzer-fogo;0;Raspberry Pi
 25-06-2026 19:21:33;Atuador;buzzer-fogo;1;Raspberry Pi
 25-06-2026 19:21:35;Atuador;buzzer-fogo;0;Raspberry Pi
+26-06-2026 09:29:09;Atuador;buzzer-fogo;1;Dashboard
+26-06-2026 09:29:10;Atuador;buzzer-fogo;0;Dashboard
+26-06-2026 09:29:10;Atuador;buzzer-fogo;1;Dashboard
+26-06-2026 09:29:11;Atuador;buzzer-fogo;0;Dashboard
+26-06-2026 09:29:13;Atuador;buzzer-fogo;1;Dashboard
+26-06-2026 09:29:14;Atuador;buzzer-fogo;0;Dashboard
