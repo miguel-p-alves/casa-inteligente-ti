@@ -14,3 +14,8 @@
 25-06-2026 18:08:04;Atuador;led-fogo;0;Dashboard
 25-06-2026 19:05:32;Atuador;led-fogo;1;Dashboard
 25-06-2026 19:05:42;Atuador;led-fogo;0;Dashboard
+26-06-2026 09:36:57;Atuador;led-fogo;1;Dashboard
+26-06-2026 09:36:58;Atuador;led-fogo;0;Dashboard
+26-06-2026 09:36:58;Atuador;led-fogo;1;Dashboard
+26-06-2026 09:36:58;Atuador;led-fogo;0;Dashboard
+26-06-2026 09:36:59;Atuador;led-fogo;1;Dashboard

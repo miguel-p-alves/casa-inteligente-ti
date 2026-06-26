@@ -37,6 +37,7 @@ unsigned long ultimoTempoLeitura = 0;
 const unsigned long intervaloLeitura = 2000; // Executa as tarefas a cada 2 segundos
 float temperaturaAtual = 0.0;
 bool limiteTemperaturaAtingidoAnterior = false;
+const float LIMITE_TEMPERATURA = 29.0;
 
 void setup() {
   Serial.begin(115200);         
@@ -197,49 +198,48 @@ void verificarStatusFogo() {
   }
 }
 
-
 void verificarLedTemperaturaDashboard() {
   if (WiFi.status() != WL_CONNECTED) {
     conectarWiFi();
   }
 
+  // 1. Verifica se a temperatura atual está em condição de alarme
+  bool limiteAtingidoAtual = (temperaturaAtual > LIMITE_TEMPERATURA);
+
+  // 2. Envia para a API SÓ na transição (evita spam de POST)
+  if (limiteAtingidoAtual && !limiteTemperaturaAtingidoAnterior) {
+    Serial.println("Temperatura acima do limite! A enviar LED=1 para a API...");
+    enviarParaAPI("led-temperatura", "1", "Atuador", "Arduino");
+  }
+  else if (!limiteAtingidoAtual && limiteTemperaturaAtingidoAnterior) {
+    Serial.println("Temperatura normalizou. A enviar LED=0 para a API...");
+    enviarParaAPI("led-temperatura", "0", "Atuador", "Arduino");
+  }
+  limiteTemperaturaAtingidoAnterior = limiteAtingidoAtual;
+
+  // 3. Se estiver em alarme, o LED fica sempre ligado (override de segurança)
+  if (limiteAtingidoAtual) {
+    digitalWrite(PIN_LED_TEMPERATURA, HIGH);
+    return; // não precisa de consultar o dashboard neste ciclo
+  }
+
+  // 4. Se NÃO estiver em alarme, o controlo é feito pelo dashboard (GET)
   String urlGETLedTemperatura = caminhoAPI + "?nome=led-temperatura";
   clienteHTTP.get(urlGETLedTemperatura);
 
   int codigoestado = clienteHTTP.responseStatusCode();
   String resposta = clienteHTTP.responseBody();
-  resposta.trim(); 
+  resposta.trim();
 
   if (codigoestado == 200) {
-    bool limiteAtingidoAtual = (temperaturaAtual > 29.0);
-
-    // 1. SINCRONIZAR COM A API APENAS NA TRANSIÇÃO (Evita spam de POST)
-    if (limiteAtingidoAtual && !limiteTemperaturaAtingidoAnterior) {
-      Serial.println("Temperatura > 40°C! Forçar LED a 1 na API...");
-      enviarParaAPI("led-temperatura", "1", "Atuador", "Arduino");
-      resposta = "1"; // Força localmente para ligar logo
-    } 
-    else if (!limiteAtingidoAtual && limiteTemperaturaAtingidoAnterior) {
-      Serial.println("Temperatura normalizou. Forçar LED a 0 na API...");
-      enviarParaAPI("led-temperatura", "0", "Atuador", "Arduino");
-      resposta = "0"; // Força localmente para desligar logo
-    }
-
-    // Atualiza a memória para o próximo ciclo
-    limiteTemperaturaAtingidoAnterior = limiteAtingidoAtual;
-
-    // 2. ATUAR NO LED FÍSICO
-    // Liga se a temperatura for maior que 40 OU se o site mandar ligar ("1")
-    if (resposta == "1" || limiteAtingidoAtual) {
-      digitalWrite(PIN_LED_TEMPERATURA, HIGH);
-    } else {
-      digitalWrite(PIN_LED_TEMPERATURA, LOW);
-    }
-
-    // Corrigido o texto do Serial que estava duplicado como "Aviso de Fogo" no teu código original
-    Serial.print("Valor do Led de Temperatura: ");
+    Serial.print("Valor do Led de Temperatura (dashboard): ");
     Serial.println(resposta);
 
+    if (resposta == "1") {
+      digitalWrite(PIN_LED_TEMPERATURA, HIGH);
+    } else if (resposta == "0") {
+      digitalWrite(PIN_LED_TEMPERATURA, LOW);
+    }
   } else {
     Serial.print("Erro no GET Temperatura. Código: ");
     Serial.println(codigoestado);

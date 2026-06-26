@@ -29,3 +29,18 @@
 26-06-2026 02:19:35;Atuador;buzzer-alarme;0;Raspberry Pi
 26-06-2026 09:20:53;Atuador;buzzer-alarme;1;Dashboard
 26-06-2026 09:20:53;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:36:50;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:36:51;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:36:51;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:36:52;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:36:52;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:36:53;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:36:53;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:36:53;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:36:55;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:36:55;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:36:55;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:36:55;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:36:55;Atuador;buzzer-alarme;0;Dashboard
+26-06-2026 09:36:55;Atuador;buzzer-alarme;1;Dashboard
+26-06-2026 09:36:56;Atuador;buzzer-alarme;0;Dashboard

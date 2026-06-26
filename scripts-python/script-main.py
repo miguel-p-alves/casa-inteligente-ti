@@ -123,7 +123,6 @@ try:
 
         try:
             resposta_post = requests.post(API_URL_MAIN, data=dados_fogo)
-            print(estado_fogo)
             if resposta_post.status_code != 200:
                 print(f"Erro no POST do Sensor: {resposta_post.status_code}")
         except Exception as e:
