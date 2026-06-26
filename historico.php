@@ -241,9 +241,11 @@
             </div> <hr class="mt-4 mb-3">
 
             <form method="GET" action="historico.php">
-              <?php if(isset($_GET['nome']) && $_GET['nome'] != ""): ?>
-                <input type="hidden" name="nome" value="<?php echo htmlspecialchars($_GET['nome']); ?>">
-              <?php endif; ?>
+              <?php
+              if (isset($_GET['nome']) && $_GET['nome'] != "") {
+                echo '<input type="hidden" name="nome" value="' . htmlspecialchars($_GET['nome']) . '">';
+              }
+              ?>
 
               <div class="mb-3">
                 <label class="capture-label" for="data_inicio">Data Início</label>
@@ -269,11 +271,12 @@
                 <label class="capture-label" for="nome">Dispositivo</label>
                 <select class="form-select" id="nome" name="nome">
                   <option value="">Todos</option>
-                  <?php foreach ($dispositivos as $nome => $label): ?>
-                    <option value="<?php echo htmlspecialchars($nome); ?>" <?php echo ($filtro_nome == $nome) ? "selected" : ""; ?>>
-                      <?php echo htmlspecialchars($label); ?>
-                    </option>
-                  <?php endforeach; ?>
+                  <?php
+                  foreach ($dispositivos as $nome => $label) {
+                    $selecionado = ($filtro_nome == $nome) ? 'selected' : '';
+                    echo '<option value="' . htmlspecialchars($nome) . '" ' . $selecionado . '>' . htmlspecialchars($label) . '</option>';
+                  }
+                  ?>
                 </select>
               </div>
               <button class="btn btn-primary" type="submit">Filtrar</button>

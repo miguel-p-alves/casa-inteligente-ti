@@ -63,9 +63,11 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
           <li class="nav-item"><a class="nav-link" href="#sensores">Sensores</a></li>
           <li class="nav-item"><a class="nav-link" href="#atuadores">Atuadores</a></li>
           <li class="nav-item"><a class="nav-link" href="#camara">Câmara</a></li>
-          <?php if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident"): ?>
-            <li class="nav-item"><a class="nav-link" href="historico.php">Histórico</a></li>
-          <?php endif; ?>
+          <?php
+          if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident") {
+            echo '<li class="nav-item"><a class="nav-link" href="historico.php">Histórico</a></li>';
+          }
+          ?>
         </ul>
 
         <span class="user-pill me-2">
@@ -162,16 +164,18 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
                 id="estadoBuzzerAlarme">
                 <?php echo ($valor_buzzer_alarme == '1') ? 'Ativo' : 'Inativo'; ?>
               </span>
-              <?php if ($_SESSION["role"] == "admin"): ?>
-                <div class="mt-2">
-                  <button
-                    class="btn <?php echo ($valor_buzzer_alarme == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button"
-                    type="button" id="botaoBuzzerAlarme"
-                    onclick="alternarAtuador('cartaoBuzzerAlarme', 'estadoBuzzerAlarme', 'botaoBuzzerAlarme', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'buzzer-alarme')">
-                    <?php echo ($valor_buzzer_alarme == '1') ? 'Desligar' : 'Ligar'; ?>
-                  </button>
-                </div>
-              <?php endif; ?>
+              <?php
+              if ($_SESSION["role"] == "admin") {
+                $classe = ($valor_buzzer_alarme == '1') ? 'btn-outline-secondary' : 'btn-primary';
+                $texto  = ($valor_buzzer_alarme == '1') ? 'Desligar' : 'Ligar';
+                echo '<div class="mt-2">
+                        <button class="btn ' . $classe . ' control-button" type="button" id="botaoBuzzerAlarme"
+                          onclick="alternarAtuador('cartaoBuzzerAlarme', 'estadoBuzzerAlarme', 'botaoBuzzerAlarme', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'buzzer-alarme')">
+                          ' . $texto . '
+                        </button>
+                      </div>';
+              }
+              ?>
             </div>
           </div>
         </div>
@@ -186,16 +190,18 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
                 id="estadoBuzzerFogo">
                 <?php echo ($valor_buzzer_fogo == '1') ? 'Ativo' : 'Inativo'; ?>
               </span>
-              <?php if ($_SESSION["role"] == "admin"): ?>
-                <div class="mt-2">
-                  <button
-                    class="btn <?php echo ($valor_buzzer_fogo == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button"
-                    type="button" id="botaoBuzzerFogo"
-                    onclick="alternarAtuador('cartaoBuzzerFogo', 'estadoBuzzerFogo', 'botaoBuzzerFogo', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'buzzer-fogo')">
-                    <?php echo ($valor_buzzer_fogo == '1') ? 'Desligar' : 'Ligar'; ?>
-                  </button>
-                </div>
-              <?php endif; ?>
+              <?php
+              if ($_SESSION["role"] == "admin") {
+                $classe = ($valor_buzzer_fogo == '1') ? 'btn-outline-secondary' : 'btn-primary';
+                $texto  = ($valor_buzzer_fogo == '1') ? 'Desligar' : 'Ligar';
+                echo '<div class="mt-2">
+                        <button class="btn ' . $classe . ' control-button" type="button" id="botaoBuzzerFogo"
+                          onclick="alternarAtuador('cartaoBuzzerFogo', 'estadoBuzzerFogo', 'botaoBuzzerFogo', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'buzzer-fogo')">
+                          ' . $texto . '
+                        </button>
+                      </div>';
+              }
+              ?>
             </div>
           </div>
         </div>
@@ -210,16 +216,18 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
                 id="estadoLedCamera">
                 <?php echo ($valor_led_camera == '1') ? 'Ativo' : 'Inativo'; ?>
               </span>
-              <?php if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident"): ?>
-                <div class="mt-2">
-                  <button
-                    class="btn <?php echo ($valor_led_camera == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button"
-                    type="button" id="botaoLedCamera"
-                    onclick="alternarAtuador('cartaoLedCamera', 'estadoLedCamera', 'botaoLedCamera', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-camera')">
-                    <?php echo ($valor_led_camera == '1') ? 'Desligar' : 'Ligar'; ?>
-                  </button>
-                </div>
-              <?php endif; ?>
+              <?php
+              if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident") {
+                $classe = ($valor_led_camera == '1') ? 'btn-outline-secondary' : 'btn-primary';
+                $texto  = ($valor_led_camera == '1') ? 'Desligar' : 'Ligar';
+                echo '<div class="mt-2">
+                        <button class="btn ' . $classe . ' control-button" type="button" id="botaoLedCamera"
+                          onclick="alternarAtuador('cartaoLedCamera', 'estadoLedCamera', 'botaoLedCamera', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-camera')">
+                          ' . $texto . '
+                        </button>
+                      </div>';
+              }
+              ?>
             </div>
           </div>
         </div>
@@ -234,16 +242,18 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
                 id="estadoLedFogo">
                 <?php echo ($valor_led_fogo == '1') ? 'Ativo' : 'Inativo'; ?>
               </span>
-              <?php if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident"): ?>
-                <div class="mt-2">
-                  <button
-                    class="btn <?php echo ($valor_led_fogo == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button"
-                    type="button" id="botaoLedFogo"
-                    onclick="alternarAtuador('cartaoLedFogo', 'estadoLedFogo', 'botaoLedFogo', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-fogo')">
-                    <?php echo ($valor_led_fogo == '1') ? 'Desligar' : 'Ligar'; ?>
-                  </button>
-                </div>
-              <?php endif; ?>
+              <?php
+              if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident") {
+                $classe = ($valor_led_fogo == '1') ? 'btn-outline-secondary' : 'btn-primary';
+                $texto  = ($valor_led_fogo == '1') ? 'Desligar' : 'Ligar';
+                echo '<div class="mt-2">
+                        <button class="btn ' . $classe . ' control-button" type="button" id="botaoLedFogo"
+                          onclick="alternarAtuador('cartaoLedFogo', 'estadoLedFogo', 'botaoLedFogo', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-fogo')">
+                          ' . $texto . '
+                        </button>
+                      </div>';
+              }
+              ?>
             </div>
           </div>
         </div>
@@ -258,16 +268,18 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
                 id="estadoLedTemperatura">
                 <?php echo ($valor_led_temperatura == '1') ? 'Ativo' : 'Inativo'; ?>
               </span>
-              <?php if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident"): ?>
-                <div class="mt-2">
-                  <button
-                    class="btn <?php echo ($valor_led_temperatura == '1') ? 'btn-outline-secondary' : 'btn-primary'; ?> control-button"
-                    type="button" id="botaoLedTemperatura"
-                    onclick="alternarAtuador('cartaoLedTemperatura', 'estadoLedTemperatura', 'botaoLedTemperatura', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-temperatura')">
-                    <?php echo ($valor_led_temperatura == '1') ? 'Desligar' : 'Ligar'; ?>
-                  </button>
-                </div>
-              <?php endif; ?>
+              <?php
+              if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident") {
+                $classe = ($valor_led_temperatura == '1') ? 'btn-outline-secondary' : 'btn-primary';
+                $texto  = ($valor_led_temperatura == '1') ? 'Desligar' : 'Ligar';
+                echo '<div class="mt-2">
+                        <button class="btn ' . $classe . ' control-button" type="button" id="botaoLedTemperatura"
+                          onclick="alternarAtuador('cartaoLedTemperatura', 'estadoLedTemperatura', 'botaoLedTemperatura', 'Ativo', 'Inativo', 'Desligar', 'Ligar', 'led-temperatura')">
+                          ' . $texto . '
+                        </button>
+                      </div>';
+              }
+              ?>
             </div>
           </div>
         </div>
@@ -297,8 +309,9 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
       </div>
     </section>
 
-    <?php if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident"): ?>
-      <section class="dashboard-section" id="historico">
+    <?php
+    if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "resident") {
+      echo '<section class="dashboard-section" id="historico">
         <div class="card">
           <div class="card-body">
             <div class="section-heading">
@@ -312,8 +325,9 @@ $hora_camera = file_exists($ficheiro_hora_camera) ? file_get_contents($ficheiro_
             </a>
           </div>
         </div>
-      </section>
-    <?php endif; ?>
+      </section>';
+    }
+    ?>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
